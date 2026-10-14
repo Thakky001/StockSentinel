@@ -325,16 +325,23 @@ def run_screener(
     # 1. Load SPY benchmark
     spy_daily = load_historical_bars("SPY")
     if not spy_daily:
-        logger.info("SPY benchmark missing from cache. Live-fetching SPY (Nexus500 pattern)...")
-        try:
-            start_dt, _, end_dt = downloader.calculate_date_range(mode="cold_start")
-            res = downloader.download_single_ticker("SPY", start_dt.isoformat(), end_dt.isoformat())
-            if res.get("bars"):
-                spy_daily = res["bars"]
-                parquet_cache.save_to_parquet("SPY", spy_daily)
-                logger.info(f"Loaded live SPY benchmark: {len(spy_daily)} daily bars.")
-        except Exception as e:
-            logger.warning(f"Could not live-fetch SPY: {e}")
+        logger.info("SPY benchmark missing from cache. Live-fetching SPY (Nexus500 pattern: period='2y', threads=False)...")
+        for attempt in range(3):
+            try:
+                import yfinance as yf
+                df = yf.download("SPY", period="2y", interval="1d", auto_adjust=False, progress=False, threads=False)
+                if df is not None and not df.empty:
+                    if hasattr(df.columns, 'levels') or isinstance(df.columns, downloader.pd.MultiIndex):
+                        df.columns = df.columns.get_level_values(0)
+                    bars = downloader._extract_bars_from_single_df(df, "SPY")
+                    if bars and len(bars) >= min_weeks:
+                        spy_daily = bars
+                        parquet_cache.save_to_parquet("SPY", spy_daily)
+                        logger.info(f"Loaded live SPY benchmark: {len(spy_daily)} daily bars.")
+                        break
+            except Exception as e:
+                logger.warning(f"Live-fetch SPY attempt {attempt + 1} failed: {e}")
+            downloader.time.sleep(3.0)
 
     if not spy_daily:
         err_msg = "SPY benchmark data is empty. Please run sync first."

@@ -153,13 +153,14 @@ def _extract_bars_from_single_df(df: pd.DataFrame, ticker: str) -> List[Dict[str
 
 def download_single_ticker(
     ticker: str,
-    start_date: str,
-    end_date: str,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     max_retries: int = config.MAX_RETRIES,
+    period: str = "2y",
 ) -> Dict[str, Any]:
     """
-    Downloads daily bars for a single ticker with backoff retry.
-    Isolates errors for delisted/unregistered tickers.
+    Downloads daily bars for a single ticker using period='2y' (Nexus500 pattern).
+    Isolates errors for delisted/unregistered tickers without blocking loops.
     """
     yf_sym = to_yfinance_symbol(ticker)
     attempt = 0
@@ -171,8 +172,8 @@ def download_single_ticker(
             logger.debug(f"Downloading single ticker {ticker} ({yf_sym}), attempt {attempt + 1}")
             df = yf.download(
                 tickers=yf_sym,
-                start=start_date,
-                end=end_date,
+                period=period,
+                interval="1d",
                 threads=False,
                 progress=False,
                 auto_adjust=False,
@@ -181,21 +182,18 @@ def download_single_ticker(
                 break
         except Exception as e:
             last_error = str(e)
-            logger.warning(f"Error fetching single ticker {ticker}: {e}")
+            if "not found" in str(e).lower() or "delisted" in str(e).lower():
+                break
 
         attempt += 1
         if attempt < max_retries:
-            delay = calculate_backoff_delay(attempt, jitter=True)
-            time.sleep(delay)
+            time.sleep(3.0)
 
     if df is None or df.empty:
-        # Fallback to direct Ticker.history (v8 public chart API, bypasses cookie/crumb rate limits)
+        # Fallback to direct Ticker.history (v8 public chart API)
         try:
-            logger.debug(f"Invoking Ticker.history fallback for {ticker} ({yf_sym})")
             t = yf.Ticker(yf_sym)
-            df = t.history(start=start_date, end=end_date, auto_adjust=False)
-            if (df is None or df.empty) and ticker == "SPY":
-                df = t.history(period="2y", auto_adjust=False)
+            df = t.history(period=period, auto_adjust=False)
         except Exception as e:
             logger.debug(f"Ticker.history fallback error for {ticker}: {e}")
 
@@ -226,14 +224,14 @@ def download_single_ticker(
 
 def download_batch_with_retry(
     chunk_tickers: List[str],
-    start_date: str,
-    end_date: str,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     max_retries: int = config.MAX_RETRIES,
+    period: str = "2y",
 ) -> Dict[str, List[Dict[str, Any]]]:
     """
-    Downloads daily bars for a batch of <= 50 tickers using yfinance with exponential backoff.
-    If the batch call fails or misses certain tickers, invokes single-ticker fallback
-    to isolate failures without failing healthy tickers.
+    Downloads daily bars for a batch of <= 50 tickers using yfinance with period='2y' (Nexus500 pattern).
+    Cleanly extracts data per ticker without blocking on delisted/missing symbols.
     
     Returns:
         Dict mapping canonical ticker -> list of normalized daily bar dictionaries.
@@ -243,22 +241,22 @@ def download_batch_with_retry(
 
     # Handle single-ticker chunk directly
     if len(chunk_tickers) == 1:
-        single_res = download_single_ticker(chunk_tickers[0], start_date, end_date, max_retries)
+        single_res = download_single_ticker(chunk_tickers[0], start_date, end_date, max_retries, period=period)
         return {chunk_tickers[0]: single_res["bars"]}
 
     yf_symbols = [to_yfinance_symbol(t) for t in chunk_tickers]
     results: Dict[str, List[Dict[str, Any]]] = {t: [] for t in chunk_tickers}
     attempt = 0
     df = None
-    batch_failed = False
 
     while attempt < max_retries:
         try:
             logger.info(f"Downloading batch of {len(chunk_tickers)} tickers (attempt {attempt + 1})...")
+            # Nexus500 pattern: period='2y' avoids crumb 429/401 rate-limiting
             df = yf.download(
                 tickers=yf_symbols,
-                start=start_date,
-                end=end_date,
+                period=period,
+                interval="1d",
                 group_by="ticker",
                 threads=False,
                 progress=False,
@@ -271,15 +269,10 @@ def download_batch_with_retry(
 
         attempt += 1
         if attempt < max_retries:
-            delay = max(5.0, calculate_backoff_delay(attempt, jitter=True))
-            logger.info(f"Pacing retry for {delay:.1f}s to reset Yahoo Finance cookies...")
-            time.sleep(delay)
+            logger.info("Pacing retry for 5.0s to reset Yahoo Finance session...")
+            time.sleep(5.0)
 
-    if df is None or df.empty:
-        logger.warning(f"Batch download failed after {max_retries} attempts. Falling back to single-ticker downloads.")
-        batch_failed = True
-
-    if not batch_failed and df is not None:
+    if df is not None and not df.empty:
         # Multi-ticker DataFrame parsing (robust level checking from Nexus500)
         is_multi_index = isinstance(df.columns, pd.MultiIndex)
         lvl0 = df.columns.get_level_values(0).unique().tolist() if is_multi_index else []
@@ -296,34 +289,13 @@ def download_batch_with_retry(
                         sub_df = df.xs(yf_sym, axis=1, level=1)
                 elif len(chunk_tickers) == 1:
                     sub_df = df
-                else:
-                    # Multi-ticker batch returned single-level DataFrame: ambiguous attribution
-                    logger.debug(f"Batch returned single-level DataFrame; isolating {ticker} via single download.")
-                    res = download_single_ticker(ticker, start_date, end_date, max_retries=1)
-                    results[ticker] = res["bars"]
-                    continue
 
                 if sub_df is not None and not sub_df.empty:
                     bars = _extract_bars_from_single_df(sub_df, ticker)
                     if bars:
                         results[ticker] = bars
-                    else:
-                        # Fallback for empty sub_df
-                        res = download_single_ticker(ticker, start_date, end_date, max_retries=1)
-                        results[ticker] = res["bars"]
-                else:
-                    # Single-ticker fallback for missing ticker in batch
-                    res = download_single_ticker(ticker, start_date, end_date, max_retries=1)
-                    results[ticker] = res["bars"]
             except Exception as e:
-                logger.warning(f"Error parsing {ticker} from batch ({e}). Attempting single-ticker fallback.")
-                res = download_single_ticker(ticker, start_date, end_date, max_retries=1)
-                results[ticker] = res["bars"]
-    else:
-        # Catastrophic batch failure: execute single-ticker fallback for each ticker
-        for ticker in chunk_tickers:
-            res = download_single_ticker(ticker, start_date, end_date, max_retries=2)
-            results[ticker] = res["bars"]
+                logger.debug(f"Could not parse {ticker} from batch: {e}")
 
     return results
 

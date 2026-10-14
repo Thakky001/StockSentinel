@@ -41,10 +41,9 @@ venv/
 ENV/
 env/
 
-# Screener Data Cache
-screener/data/parquet/*.parquet
+# Screener Data Cache (pre-cached universe for instant zero-network execution)
+!screener/data/parquet/*.parquet
 !screener/data/parquet/.gitkeep
-!screener/data/parquet/SPY.parquet
 
 # Node.js & Web artifacts
 node_modules/
