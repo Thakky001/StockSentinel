@@ -180,6 +180,17 @@ def download_single_ticker(
             time.sleep(delay)
 
     if df is None or df.empty:
+        # Fallback to direct Ticker.history (v8 public chart API, bypasses cookie/crumb rate limits)
+        try:
+            logger.debug(f"Invoking Ticker.history fallback for {ticker} ({yf_sym})")
+            t = yf.Ticker(yf_sym)
+            df = t.history(start=start_date, end=end_date, auto_adjust=False)
+            if (df is None or df.empty) and ticker == "SPY":
+                df = t.history(period="2y", auto_adjust=False)
+        except Exception as e:
+            logger.debug(f"Ticker.history fallback error for {ticker}: {e}")
+
+    if df is None or df.empty:
         return {
             "ticker": ticker,
             "success": False,

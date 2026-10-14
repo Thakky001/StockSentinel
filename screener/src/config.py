@@ -42,10 +42,10 @@ PARQUET_DIR = Path(os.getenv("PARQUET_DIR", str(DATA_DIR / "parquet"))).resolve(
 UNIVERSE_SEED_FILE = Path(os.getenv("UNIVERSE_SEED_FILE", str(DATA_DIR / "universe" / "russell3000_sp1500.json"))).resolve()
 
 # Downloader Settings
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", "50"))
-RATE_LIMIT_DELAY = float(os.getenv("RATE_LIMIT_DELAY", "1.5"))
+BATCH_SIZE = int(os.getenv("BATCH_SIZE", "25"))
+RATE_LIMIT_DELAY = float(os.getenv("RATE_LIMIT_DELAY", "3.0"))
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "4"))
-BACKOFF_BASE = float(os.getenv("BACKOFF_BASE", "1.0"))
+BACKOFF_BASE = float(os.getenv("BACKOFF_BASE", "2.0"))
 BACKOFF_MAX = float(os.getenv("BACKOFF_MAX", "30.0"))
 
 # Sync Windows

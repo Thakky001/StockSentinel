@@ -44,6 +44,7 @@ env/
 # Screener Data Cache
 screener/data/parquet/*.parquet
 !screener/data/parquet/.gitkeep
+!screener/data/parquet/SPY.parquet
 
 # Node.js & Web artifacts
 node_modules/
