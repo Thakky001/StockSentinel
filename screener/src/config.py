@@ -26,22 +26,10 @@ POSTGRES_DB = os.getenv("POSTGRES_DB", "stocksentinel")
 POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
 
-def _fix_render_database_url(url: str) -> str:
-    if not url:
-        return url
-    import re
-    region = os.getenv("RENDER_REGION", "singapore")
-    return re.sub(
-        r"@([a-z0-9]+-[a-z0-9]+-[a-z0-9]+)([:/])",
-        rf"@\1.{region}-postgres.render.com\2",
-        url,
-        flags=re.IGNORECASE
-    ) if "dpg-" in url and ".render.com" not in url else url
-
-DATABASE_URL = _fix_render_database_url(os.getenv(
+DATABASE_URL = os.getenv(
     "DATABASE_URL",
     f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{DB_PORT}/{POSTGRES_DB}"
-))
+)
 
 # Redis Configuration
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")

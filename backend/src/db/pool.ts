@@ -14,25 +14,11 @@ import fs from 'fs';
 // Load environment variables from the root .env file (one level up from backend/)
 dotenv.config({ path: '../.env' });
 
-/** Normalize short Render internal hostnames to FQDN so DNS resolution never fails */
-function fixRenderDatabaseUrl(url: string): string {
-  if (!url) return url;
-  return url.replace(/@(dpg-[a-z0-9]+-[a-z0-9]+)([:\/])/i, (match, host, suffix) => {
-    if (!host.includes('.')) {
-      const region = process.env.RENDER_REGION ?? 'singapore';
-      return `@${host}.${region}-postgres.render.com${suffix}`;
-    }
-    return match;
-  });
-}
-
 /** Clean and prepare database URL for cloud and local environments */
 function cleanDatabaseUrl(rawUrl: string): string {
   if (!rawUrl) return rawUrl;
-  let url = fixRenderDatabaseUrl(rawUrl);
   // Strip any sslmode parameter so pg-connection-string does NOT wipe out our rejectUnauthorized: false option
-  url = url.replace(/([?&])sslmode=[^&]+/gi, '$1').replace(/[?&]$/, '');
-  return url;
+  return rawUrl.replace(/([?&])sslmode=[^&]+/gi, '$1').replace(/[?&]$/, '');
 }
 
 /** Build pool configuration from environment variables */

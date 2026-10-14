@@ -120,7 +120,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             if "SPY benchmark data is empty" in str(e):
                 logger.warning("SPY benchmark data missing. Automatically synchronizing SPY and initial universe data first...")
                 try:
-                    sync.run_sync(cold_start=False, tickers=selected_tickers)
+                    sync.run_sync(cold_start=True, tickers=selected_tickers)
                     logger.info("Synchronization complete. Resuming screener...")
                     results = screener.run_screener(
                         scan_date=args.scan_date,

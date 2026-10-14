@@ -97,7 +97,14 @@ def run_sync(
             spy_needs_fetch = True
 
     if spy_needs_fetch:
-        spy_res = downloader.download_batch_with_retry(["SPY"], start_str, end_str)
+        # If cached_spy is completely empty, ensure we download full cold_start lookback (730 days)
+        if not cached_spy:
+            spy_start_dt, _, spy_end_dt = downloader.calculate_date_range(target_friday, mode="cold_start")
+            s_start, s_end = spy_start_dt.isoformat(), spy_end_dt.isoformat()
+        else:
+            s_start, s_end = start_str, end_str
+
+        spy_res = downloader.download_batch_with_retry(["SPY"], s_start, s_end)
         spy_bars = spy_res.get("SPY", [])
         if spy_bars:
             merged_spy = parquet_cache.merge_daily_bars(cached_spy, spy_bars)
