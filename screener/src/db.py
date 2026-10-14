@@ -13,6 +13,12 @@ logger = logging.getLogger(__name__)
 
 def get_db_connection():
     """Establishes and returns a direct PostgreSQL database connection."""
+    db_url = config.DATABASE_URL
+    if db_url and "localhost" not in db_url and "127.0.0.1" not in db_url:
+        if "sslmode" not in db_url and (".render.com" in db_url or "dpg-" in db_url or "neon.tech" in db_url or "supabase.co" in db_url):
+            delimiter = "&" if "?" in db_url else "?"
+            db_url = f"{db_url}{delimiter}sslmode=require"
+        return psycopg2.connect(db_url)
     return psycopg2.connect(
         host=config.DB_HOST,
         port=config.DB_PORT,

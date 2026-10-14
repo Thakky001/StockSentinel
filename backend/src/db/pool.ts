@@ -14,17 +14,32 @@ import fs from 'fs';
 // Load environment variables from the root .env file (one level up from backend/)
 dotenv.config({ path: '../.env' });
 
+/** Normalize short Render internal hostnames to FQDN so DNS resolution never fails */
+function fixRenderDatabaseUrl(url: string): string {
+  if (!url) return url;
+  return url.replace(/@(dpg-[a-z0-9]+-[a-z0-9]+)([:\/])/i, (match, host, suffix) => {
+    if (!host.includes('.')) {
+      const region = process.env.RENDER_REGION ?? 'singapore';
+      return `@${host}.${region}-postgres.render.com${suffix}`;
+    }
+    return match;
+  });
+}
+
 /** Build pool configuration from environment variables */
 function buildPoolConfig(): PoolConfig {
-  const databaseUrl = process.env.DATABASE_URL;
+  let databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl) {
+    databaseUrl = fixRenderDatabaseUrl(databaseUrl);
+    const isCloud = databaseUrl.includes('.render.com') || databaseUrl.includes('neon.tech') || databaseUrl.includes('supabase.co');
+
     return {
       connectionString: databaseUrl,
-      ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
+      ssl: isCloud || process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
       max: 20,
       idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
+      connectionTimeoutMillis: 10_000,
     };
   }
 
