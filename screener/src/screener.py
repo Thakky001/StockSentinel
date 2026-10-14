@@ -6,7 +6,7 @@ Features: F17 (Breakout Filter), F18 (Target/Risk Math), F19 (Entry Status), F20
 import logging
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
-from screener.src import config, db, parquet_cache, universe
+from screener.src import config, db, downloader, parquet_cache, universe
 from screener.src.indicators import (
     align_weekly_bars,
     compute_mansfield_relative_strength,
@@ -325,6 +325,18 @@ def run_screener(
     # 1. Load SPY benchmark
     spy_daily = load_historical_bars("SPY")
     if not spy_daily:
+        logger.info("SPY benchmark missing from cache. Live-fetching SPY (Nexus500 pattern)...")
+        try:
+            start_dt, _, end_dt = downloader.calculate_date_range(mode="cold_start")
+            res = downloader.download_single_ticker("SPY", start_dt.isoformat(), end_dt.isoformat())
+            if res.get("bars"):
+                spy_daily = res["bars"]
+                parquet_cache.save_to_parquet("SPY", spy_daily)
+                logger.info(f"Loaded live SPY benchmark: {len(spy_daily)} daily bars.")
+        except Exception as e:
+            logger.warning(f"Could not live-fetch SPY: {e}")
+
+    if not spy_daily:
         err_msg = "SPY benchmark data is empty. Please run sync first."
         logger.error(err_msg)
         raise RuntimeError(err_msg)
@@ -338,6 +350,25 @@ def run_screener(
     # Determine tickers to scan
     target_tickers = tickers if tickers is not None else universe.get_active_universe()
     target_tickers = [t for t in target_tickers if t != "SPY"]
+
+    # Self-healing pre-scan ingestion: fetch missing tickers in batches (threads=False)
+    missing_tickers = [t for t in target_tickers if not (config.PARQUET_DIR / f"{t}.parquet").exists()]
+    if missing_tickers:
+        logger.info(f"Found {len(missing_tickers)} tickers missing local cache. Fetching in batches (threads=False)...")
+        try:
+            start_dt, _, end_dt = downloader.calculate_date_range(mode="cold_start")
+            fetched = downloader.download_universe(
+                missing_tickers,
+                start_dt.isoformat(),
+                end_dt.isoformat(),
+                chunk_size=config.BATCH_SIZE,
+                rate_limit_delay=config.RATE_LIMIT_DELAY,
+            )
+            for t_sym, b_list in fetched.items():
+                parquet_cache.save_to_parquet(t_sym, b_list or [])
+            logger.info(f"Pre-scan ingestion complete. Cached {len(fetched)} tickers to Parquet.")
+        except Exception as e:
+            logger.warning(f"Auto-sync of missing tickers encountered an error: {e}")
 
     logger.info(f"Targeting {len(target_tickers)} tickers for screening (warmup={min_weeks}w)...")
 
@@ -453,9 +484,10 @@ def run_screener(
             import json
             signals_file = config.DATA_DIR / "latest_signals.json"
             signals_file.parent.mkdir(parents=True, exist_ok=True)
+            final_scan_date = str(scan_date or (qualified_signals[0]["scan_date"] if qualified_signals else date.today()))
             with open(signals_file, "w", encoding="utf-8") as f:
                 json.dump({
-                    "scan_date": str(effective_date),
+                    "scan_date": final_scan_date,
                     "generated_at": datetime.utcnow().isoformat() + "Z",
                     "signals_found": len(qualified_signals),
                     "signals": qualified_signals,

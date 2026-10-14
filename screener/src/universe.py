@@ -211,7 +211,8 @@ def get_active_universe() -> List[str]:
         with db.db_cursor(commit=False) as cur:
             cur.execute("SELECT ticker FROM stocks WHERE is_active = TRUE ORDER BY ticker ASC;")
             rows = cur.fetchall()
-            if rows:
+            # If database has a populated stock universe (more than just SPY benchmark)
+            if rows and any(r[0] != "SPY" for r in rows):
                 return [r[0] for r in rows]
     except Exception as e:
         logger.warning(f"Could not load active universe from database ({e}). Falling back to seed file.")

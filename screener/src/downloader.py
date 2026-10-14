@@ -251,7 +251,7 @@ def download_batch_with_retry(
                 start=start_date,
                 end=end_date,
                 group_by="ticker",
-                threads=True,
+                threads=False,
                 progress=False,
                 auto_adjust=False,
             )
@@ -262,7 +262,8 @@ def download_batch_with_retry(
 
         attempt += 1
         if attempt < max_retries:
-            delay = calculate_backoff_delay(attempt, jitter=True)
+            delay = max(5.0, calculate_backoff_delay(attempt, jitter=True))
+            logger.info(f"Pacing retry for {delay:.1f}s to reset Yahoo Finance cookies...")
             time.sleep(delay)
 
     if df is None or df.empty:
@@ -270,16 +271,19 @@ def download_batch_with_retry(
         batch_failed = True
 
     if not batch_failed and df is not None:
-        # Multi-ticker DataFrame parsing
+        # Multi-ticker DataFrame parsing (robust level checking from Nexus500)
         is_multi_index = isinstance(df.columns, pd.MultiIndex)
+        lvl0 = df.columns.get_level_values(0).unique().tolist() if is_multi_index else []
+        lvl1 = df.columns.get_level_values(1).unique().tolist() if is_multi_index and len(df.columns.levels) > 1 else []
+
         for ticker in chunk_tickers:
             yf_sym = to_yfinance_symbol(ticker)
             try:
                 sub_df = None
                 if is_multi_index:
-                    if yf_sym in df.columns.levels[0]:
+                    if yf_sym in lvl0:
                         sub_df = df[yf_sym]
-                    elif len(df.columns.levels) > 1 and yf_sym in df.columns.levels[1]:
+                    elif yf_sym in lvl1:
                         sub_df = df.xs(yf_sym, axis=1, level=1)
                 elif len(chunk_tickers) == 1:
                     sub_df = df

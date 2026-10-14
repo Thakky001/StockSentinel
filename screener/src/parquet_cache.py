@@ -27,6 +27,8 @@ def get_parquet_path(ticker: str) -> Path:
 def save_to_parquet(ticker: str, bars: List[Dict[str, Any]]) -> bool:
     """
     Saves daily bars to a Snappy-compressed Parquet file, sorting ascending by trade_date.
+    When bars is empty (e.g. delisted stock), writes a valid 0-row schema table
+    to avoid repeated download loops.
     
     Args:
         ticker: Canonical stock ticker symbol.
@@ -35,18 +37,28 @@ def save_to_parquet(ticker: str, bars: List[Dict[str, Any]]) -> bool:
     Returns:
         True if successfully saved, False otherwise.
     """
-    if not bars:
-        return False
-
     clean_ticker = sanitize_ticker(ticker)
     path = get_parquet_path(clean_ticker)
 
     try:
-        # Sort chronologically ascending
-        sorted_bars = sorted(bars, key=lambda b: b["trade_date"])
-        
-        # Enforce canonical schema
-        table = pa.Table.from_pylist(sorted_bars)
+        schema = pa.schema([
+            ("ticker", pa.string()),
+            ("trade_date", pa.string()),
+            ("open", pa.float64()),
+            ("high", pa.float64()),
+            ("low", pa.float64()),
+            ("close", pa.float64()),
+            ("adj_close", pa.float64()),
+            ("volume", pa.int64()),
+        ])
+
+        if not bars:
+            table = pa.Table.from_pylist([], schema=schema)
+        else:
+            # Sort chronologically ascending
+            sorted_bars = sorted(bars, key=lambda b: b["trade_date"])
+            table = pa.Table.from_pylist(sorted_bars, schema=schema)
+
         pq.write_table(
             table,
             path,
