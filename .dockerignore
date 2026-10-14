@@ -12,6 +12,7 @@ __pycache__
 */__pycache__
 *.pyc
 .pytest_cache
-.agents
 *.log
 screener/data/parquet/*.parquet
+!screener/data/parquet/.gitkeep
+!screener/data/parquet/SPY.parquet

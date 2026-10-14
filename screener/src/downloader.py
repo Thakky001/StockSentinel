@@ -81,6 +81,10 @@ def normalize_daily_bar(ticker: str, trade_date: str, row: Dict[str, Any]) -> Op
     - Imputes adj_close from close if missing or NaN.
     """
     try:
+        # Flatten tuple keys if row was generated from MultiIndex DataFrame (e.g. ('Close', 'SPY') -> 'Close')
+        if any(isinstance(k, tuple) for k in row.keys()):
+            row = {k[0] if isinstance(k, tuple) else k: v for k, v in row.items()}
+
         raw_close = row.get("Close") if "Close" in row else row.get("close")
         if raw_close is None or str(raw_close).lower() == "nan":
             return None
@@ -127,6 +131,11 @@ def _extract_bars_from_single_df(df: pd.DataFrame, ticker: str) -> List[Dict[str
     """Extracts OHLCV bars from a single-ticker DataFrame."""
     if df is None or df.empty:
         return []
+
+    # Flatten MultiIndex columns if present (crucial for yfinance 0.2.40+ single-ticker downloads)
+    if hasattr(df.columns, 'levels') or isinstance(df.columns, pd.MultiIndex):
+        df = df.copy()
+        df.columns = df.columns.get_level_values(0)
 
     bars = []
     # Format trade_date string safely stripping timezones
