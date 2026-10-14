@@ -447,6 +447,23 @@ def run_screener(
         except Exception as e:
             logger.error(f"Failed to persist signals to PostgreSQL: {e}")
 
+    # 5b. Persist signals to local JSON cache for offline/standalone resilience
+    if qualified_signals:
+        try:
+            import json
+            signals_file = config.DATA_DIR / "latest_signals.json"
+            signals_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(signals_file, "w", encoding="utf-8") as f:
+                json.dump({
+                    "scan_date": str(effective_date),
+                    "generated_at": datetime.utcnow().isoformat() + "Z",
+                    "signals_found": len(qualified_signals),
+                    "signals": qualified_signals,
+                }, f, indent=2, default=str)
+            logger.info(f"Persisted {len(qualified_signals)} signals to local cache: {signals_file}")
+        except Exception as e:
+            logger.warning(f"Could not persist signals to local JSON: {e}")
+
     # 6. Audit job completion
     if db_persist and job_id:
         try:

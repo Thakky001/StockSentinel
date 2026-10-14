@@ -8,6 +8,8 @@
  *   POST /api/screener/trigger  — spawn Python screener with process lock
  */
 
+import fs from 'fs';
+import path from 'path';
 import { Router, Request, Response, NextFunction } from 'express';
 import { query } from '../db/pool';
 import { ScreenerSignal, ApiResponse, ScreenerListData } from '../types';
@@ -15,6 +17,38 @@ import { getRunningJobId, getLatestJob, runScreener } from '../services/screener
 import { MOCK_DATES, MOCK_SIGNALS } from '../db/mockDb';
 
 const router = Router();
+
+/**
+ * Loads the latest screened signals from the local JSON persistence file.
+ * Used when PostgreSQL is offline or when running in standalone mode.
+ */
+function loadLatestSignalsFromFile(): { scan_date: string; signals: ScreenerSignal[] } | null {
+  const jsonPaths = [
+    path.resolve('/app/screener/data/latest_signals.json'),
+    path.resolve(__dirname, '../../../screener/data/latest_signals.json'),
+    path.resolve(__dirname, '../../screener/data/latest_signals.json'),
+    path.resolve(process.cwd(), 'screener/data/latest_signals.json'),
+    path.resolve(process.cwd(), '../screener/data/latest_signals.json'),
+  ];
+
+  for (const p of jsonPaths) {
+    if (fs.existsSync(p)) {
+      try {
+        const raw = fs.readFileSync(p, 'utf-8');
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.signals) && parsed.signals.length > 0) {
+          return {
+            scan_date: parsed.scan_date ?? '2026-10-09',
+            signals: parsed.signals,
+          };
+        }
+      } catch (err) {
+        console.warn(`[Screener] Failed to parse ${p}:`, err);
+      }
+    }
+  }
+  return null;
+}
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -132,9 +166,15 @@ router.get(
         console.warn('[Screener /latest] Database offline or error. Serving fallback demo signals.', (dbErr as Error).message);
       }
 
-      // If database is offline or empty, use fallback mock signals
+      // If database is offline or empty, use local JSON file signals before falling back to MOCK_SIGNALS
       if (signals.length === 0) {
-        let filtered = [...MOCK_SIGNALS];
+        const fileData = loadLatestSignalsFromFile();
+        const baseSignals = fileData ? fileData.signals : MOCK_SIGNALS;
+        if (fileData) {
+          scanDate = fileData.scan_date;
+        }
+
+        let filtered = [...baseSignals];
         if (sector) filtered = filtered.filter((s) => s.sector === sector);
         if (status) filtered = filtered.filter((s) => s.entry_status === status);
         if (search) {
@@ -142,7 +182,7 @@ router.get(
           filtered = filtered.filter((s) => s.ticker.toLowerCase().includes(q) || (s.name ? s.name.toLowerCase().includes(q) : false));
         }
 
-        // Apply sorting to mock signals
+        // Apply sorting to signals
         filtered.sort((a, b) => {
           let valA: any = (a as any)[sortByRaw];
           let valB: any = (b as any)[sortByRaw];
@@ -162,7 +202,9 @@ router.get(
         });
 
         total = filtered.length;
-        scanDate = MOCK_DATES[0];
+        if (!fileData) {
+          scanDate = MOCK_DATES[0];
+        }
         signals = filtered.slice(offset, offset + limit);
       }
 
@@ -213,7 +255,12 @@ router.get(
       }
 
       if (dates.length === 0) {
-        dates = MOCK_DATES;
+        const fileData = loadLatestSignalsFromFile();
+        if (fileData?.scan_date) {
+          dates = [fileData.scan_date];
+        } else {
+          dates = MOCK_DATES;
+        }
       }
 
       const response: ApiResponse<{ dates: string[] }> = {
@@ -242,12 +289,13 @@ router.get(
       }
 
       if (!latestJob) {
+        const fileData = loadLatestSignalsFromFile();
         latestJob = {
           id: 101,
           status: 'COMPLETED' as const,
           started_at: '2026-10-09T06:00:00.000Z',
           completed_at: '2026-10-09T06:45:00.000Z',
-          signals_found: MOCK_SIGNALS.length,
+          signals_found: fileData ? fileData.signals.length : MOCK_SIGNALS.length,
           error_message: null,
         };
       }
