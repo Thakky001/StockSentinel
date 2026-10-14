@@ -1,0 +1,17 @@
+node_modules
+*/node_modules
+dist
+*/dist
+.git
+.gitignore
+.env
+.env.local
+.venv
+venv
+__pycache__
+*/__pycache__
+*.pyc
+.pytest_cache
+.agents
+*.log
+screener/data/parquet/*.parquet

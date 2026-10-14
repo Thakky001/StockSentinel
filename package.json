@@ -1,0 +1,14 @@
+{
+  "name": "stocksentinel-monorepo",
+  "version": "1.0.0",
+  "description": "StockSentinel - Stan Weinstein Stage 2 Automated Stock Screener",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm.cmd run dev",
+    "dev:frontend": "cd frontend && npm.cmd run dev",
+    "build:backend": "cd backend && npm.cmd run build",
+    "build:frontend": "cd frontend && npm.cmd run build",
+    "build": "cd backend && npm.cmd run build && cd ../frontend && npm.cmd run build",
+    "test:e2e": "python tests/run_e2e.py"
+  }
+}

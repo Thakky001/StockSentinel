@@ -1,0 +1,297 @@
+/**
+ * In-Memory Fallback Dataset for StockSentinel Backend.
+ * Automatically used when PostgreSQL is offline or unreachable,
+ * ensuring the web application, charts, and table work seamlessly.
+ */
+
+import { ScreenerSignal, CandlestickBar, SeriesPoint, VolumeBar, ChartMetrics } from '../types';
+
+export const MOCK_DATES = [
+  '2026-10-09',
+  '2026-10-02',
+  '2026-09-25',
+  '2026-09-18',
+  '2026-09-11',
+];
+
+export const MOCK_SIGNALS: (ScreenerSignal & { id: number; scan_id: number; stage: string; created_at: string })[] = [
+  {
+    id: 1,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'CELH',
+    name: 'Celsius Holdings, Inc.',
+    sector: 'Consumer Defensive',
+    industry: 'Beverages - Non-Alcoholic',
+    market_cap: 8500000000,
+    entry_price: 40.50,
+    max_buy_price: 42.53,
+    current_price: 41.80,
+    stop_loss_price: 38.20,
+    diff_pct: 3.21,
+    entry_status: 'IN_BUY_ZONE',
+    volume_surge_ratio: 2.85,
+    mrs_score: 22.40,
+    sma_30w: 36.50,
+    sma_30w_slope: 1.45,
+    prior_resistance_35w: 40.50,
+    weekly_close: 41.80,
+    weekly_volume: 18500000,
+    avg_volume_10w: 6491228,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'CRWD',
+    name: 'CrowdStrike Holdings, Inc.',
+    sector: 'Technology',
+    industry: 'Software - Infrastructure',
+    market_cap: 78000000000,
+    entry_price: 320.00,
+    max_buy_price: 336.00,
+    current_price: 325.50,
+    stop_loss_price: 298.00,
+    diff_pct: 1.72,
+    entry_status: 'IN_BUY_ZONE',
+    volume_surge_ratio: 2.45,
+    mrs_score: 18.25,
+    sma_30w: 285.20,
+    sma_30w_slope: 1.12,
+    prior_resistance_35w: 320.00,
+    weekly_close: 325.50,
+    weekly_volume: 14200000,
+    avg_volume_10w: 5795918,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'ANET',
+    name: 'Arista Networks, Inc.',
+    sector: 'Technology',
+    industry: 'Computer Hardware',
+    market_cap: 98000000000,
+    entry_price: 290.00,
+    max_buy_price: 304.50,
+    current_price: 312.40,
+    stop_loss_price: 275.50,
+    diff_pct: 7.72,
+    entry_status: 'EXTENDED',
+    volume_surge_ratio: 1.95,
+    mrs_score: 16.80,
+    sma_30w: 260.00,
+    sma_30w_slope: 1.35,
+    prior_resistance_35w: 290.00,
+    weekly_close: 312.40,
+    weekly_volume: 9800000,
+    avg_volume_10w: 5025641,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 4,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'WING',
+    name: 'Wingstop Inc.',
+    sector: 'Consumer Cyclical',
+    industry: 'Restaurants',
+    market_cap: 11500000000,
+    entry_price: 410.00,
+    max_buy_price: 430.50,
+    current_price: 438.00,
+    stop_loss_price: 385.00,
+    diff_pct: 6.83,
+    entry_status: 'EXTENDED',
+    volume_surge_ratio: 1.82,
+    mrs_score: 14.10,
+    sma_30w: 365.40,
+    sma_30w_slope: 0.95,
+    prior_resistance_35w: 410.00,
+    weekly_close: 438.00,
+    weekly_volume: 3200000,
+    avg_volume_10w: 1758241,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 5,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'NVDA',
+    name: 'NVIDIA Corporation',
+    sector: 'Technology',
+    industry: 'Semiconductors',
+    market_cap: 3200000000000,
+    entry_price: 130.00,
+    max_buy_price: 136.50,
+    current_price: 134.20,
+    stop_loss_price: 122.00,
+    diff_pct: 3.23,
+    entry_status: 'IN_BUY_ZONE',
+    volume_surge_ratio: 2.15,
+    mrs_score: 28.50,
+    sma_30w: 115.00,
+    sma_30w_slope: 1.82,
+    prior_resistance_35w: 130.00,
+    weekly_close: 134.20,
+    weekly_volume: 245000000,
+    avg_volume_10w: 113953488,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 6,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'VRT',
+    name: 'Vertiv Holdings Co',
+    sector: 'Industrials',
+    industry: 'Electrical Equipment & Parts',
+    market_cap: 38000000000,
+    entry_price: 105.00,
+    max_buy_price: 110.25,
+    current_price: 107.50,
+    stop_loss_price: 98.00,
+    diff_pct: 2.38,
+    entry_status: 'IN_BUY_ZONE',
+    volume_surge_ratio: 2.30,
+    mrs_score: 24.10,
+    sma_30w: 88.50,
+    sma_30w_slope: 1.65,
+    prior_resistance_35w: 105.00,
+    weekly_close: 107.50,
+    weekly_volume: 28000000,
+    avg_volume_10w: 12173913,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 7,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'PLTR',
+    name: 'Palantir Technologies Inc.',
+    sector: 'Technology',
+    industry: 'Software - Infrastructure',
+    market_cap: 92000000000,
+    entry_price: 40.00,
+    max_buy_price: 42.00,
+    current_price: 41.50,
+    stop_loss_price: 36.80,
+    diff_pct: 3.75,
+    entry_status: 'IN_BUY_ZONE',
+    volume_surge_ratio: 2.60,
+    mrs_score: 26.80,
+    sma_30w: 31.20,
+    sma_30w_slope: 1.75,
+    prior_resistance_35w: 40.00,
+    weekly_close: 41.50,
+    weekly_volume: 185000000,
+    avg_volume_10w: 71153846,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 8,
+    scan_id: 101,
+    scan_date: '2026-10-09',
+    ticker: 'AXON',
+    name: 'Axon Enterprise, Inc.',
+    sector: 'Industrials',
+    industry: 'Aerospace & Defense',
+    market_cap: 31000000000,
+    entry_price: 395.00,
+    max_buy_price: 414.75,
+    current_price: 392.00,
+    stop_loss_price: 368.00,
+    diff_pct: -0.76,
+    entry_status: 'BELOW_ENTRY',
+    volume_surge_ratio: 1.65,
+    mrs_score: 15.20,
+    sma_30w: 335.00,
+    sma_30w_slope: 1.10,
+    prior_resistance_35w: 395.00,
+    weekly_close: 392.00,
+    weekly_volume: 4500000,
+    avg_volume_10w: 2727272,
+    stage: 'STAGE_2_BREAKOUT',
+    created_at: new Date().toISOString(),
+  },
+];
+
+/** Generate realistic weekly candlesticks for Lightweight Charts */
+export function generateMockChartData(ticker: string, weeks = 104) {
+  const signal = MOCK_SIGNALS.find((s) => s.ticker === ticker) ?? MOCK_SIGNALS[0];
+  const companyName = signal ? signal.name : ticker;
+
+  const basePrice = signal ? signal.entry_price * 0.75 : 100;
+  const currentPrice = signal ? signal.current_price : 140;
+
+  const candlesticks: CandlestickBar[] = [];
+  const sma30: SeriesPoint[] = [];
+  const volume: VolumeBar[] = [];
+
+  const now = new Date('2026-10-09');
+  let price = basePrice;
+  const prices: number[] = [];
+
+  for (let i = weeks - 1; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i * 7);
+    const timeStr = d.toISOString().slice(0, 10);
+
+    // Upward trend towards current price
+    const progress = (weeks - i) / weeks;
+    const targetPrice = basePrice + (currentPrice - basePrice) * progress;
+    const volatility = price * 0.03;
+    const change = (Math.random() - 0.48) * volatility;
+    price = targetPrice + change;
+
+    const open = Math.round(price * 100) / 100;
+    const high = Math.round((open + Math.random() * open * 0.025) * 100) / 100;
+    const low = Math.round((open - Math.random() * open * 0.025) * 100) / 100;
+    const close = Math.round((low + Math.random() * (high - low)) * 100) / 100;
+    const volVal = Math.round(500000 + Math.random() * 2000000);
+
+    prices.push(close);
+
+    candlesticks.push({ time: timeStr, open, high, low, close });
+
+    // 30-week SMA
+    if (prices.length >= 30) {
+      const slice = prices.slice(prices.length - 30);
+      const smaVal = Math.round((slice.reduce((a, b) => a + b, 0) / 30) * 100) / 100;
+      sma30.push({ time: timeStr, value: smaVal });
+    }
+
+    const isUp = close >= open;
+    volume.push({
+      time: timeStr,
+      value: volVal,
+      color: isUp ? 'rgba(34, 197, 94, 0.4)' : 'rgba(239, 68, 68, 0.4)',
+    });
+  }
+
+  const metrics: ChartMetrics = {
+    entry_price: signal.entry_price,
+    max_buy_price: signal.max_buy_price,
+    stop_loss_price: signal.stop_loss_price,
+    status: signal.entry_status,
+    close_price: signal.current_price,
+  };
+
+  return {
+    ticker,
+    company_name: companyName,
+    candlesticks,
+    sma30,
+    volume,
+    metrics,
+  };
+}
