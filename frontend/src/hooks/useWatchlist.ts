@@ -11,7 +11,9 @@ const STORAGE_KEY = 'stocksentinel_watchlist_v1';
 function readStorage(): WatchlistItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as WatchlistItem[]) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }

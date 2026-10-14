@@ -65,11 +65,13 @@ const App: React.FC = () => {
   // Derive unique sectors from returned signals for dropdown suggestions
   const availableSectors = useMemo(() => {
     const set = new Set<string>();
-    signals.forEach((s) => {
-      if (s.sector && s.sector !== 'Unknown' && s.sector !== 'N/A') {
-        set.add(s.sector);
-      }
-    });
+    if (Array.isArray(signals)) {
+      signals.forEach((s) => {
+        if (s && s.sector && s.sector !== 'Unknown' && s.sector !== 'N/A') {
+          set.add(s.sector);
+        }
+      });
+    }
     return Array.from(set).sort();
   }, [signals]);
 

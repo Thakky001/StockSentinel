@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     fetchScreenerDates()
-      .then(setDates)
+      .then((data) => setDates(Array.isArray(data) ? data : []))
       .catch((err: unknown) => {
         setDatesError(err instanceof Error ? err.message : 'ไม่สามารถโหลดรายการวันที่ได้');
       });
@@ -74,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({
               className="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[120px]"
             >
               <option value="">รอบล่าสุด</option>
-              {dates.map((d) => (
+              {(Array.isArray(dates) ? dates : []).map((d) => (
                 <option key={d} value={d}>
                   {d}
                 </option>
