@@ -57,11 +57,13 @@ export interface ScreenerSignal {
   entry_price: number;
   max_buy_price: number;
   current_price: number;
+  close_price?: number;
   stop_loss_price: number;
   diff_pct: number;
 
   /** IN_BUY_ZONE | EXTENDED | BELOW_ENTRY | STOPPED_OUT */
   entry_status: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
+  status?: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
 
   // Weinstein / Volume indicators
   volume_surge_ratio: number;

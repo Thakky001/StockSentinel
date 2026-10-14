@@ -73,42 +73,47 @@ const WatchlistDrawer: React.FC<WatchlistDrawerProps> = ({
                 </p>
               </div>
             ) : (
-              watchlist.map((item) => (
-                <div
-                  key={item.ticker}
-                  className="bg-slate-800/90 border border-slate-700/70 hover:border-slate-600 rounded-xl p-3.5 transition-all shadow-sm flex flex-col gap-2"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold font-mono text-slate-100 text-base">
-                          {item.ticker}
-                        </span>
-                        <StatusBadge status={item.status} />
+              watchlist.map((item) => {
+                const itemPrice = Number(item.current_price ?? (item as any).close_price ?? 0);
+                const itemEntry = Number(item.entry_price ?? 0);
+                const itemStatus = item.status ?? (item as any).entry_status ?? 'IN_BUY_ZONE';
+
+                return (
+                  <div
+                    key={item.ticker}
+                    className="bg-slate-800/90 border border-slate-700/70 hover:border-slate-600 rounded-xl p-3.5 transition-all shadow-sm flex flex-col gap-2"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold font-mono text-slate-100 text-base">
+                            {item.ticker}
+                          </span>
+                          <StatusBadge status={itemStatus} />
+                        </div>
+                        <p className="text-xs text-slate-400 truncate max-w-[200px]" title={item.name}>
+                          {item.name}
+                        </p>
                       </div>
-                      <p className="text-xs text-slate-400 truncate max-w-[200px]" title={item.name}>
-                        {item.name}
-                      </p>
+
+                      <button
+                        onClick={() => onRemove(item.ticker)}
+                        className="text-slate-500 hover:text-rose-400 text-sm p-1 rounded hover:bg-slate-700/50 transition-colors"
+                        title="ลบออก"
+                      >
+                        ✕
+                      </button>
                     </div>
 
-                    <button
-                      onClick={() => onRemove(item.ticker)}
-                      className="text-slate-500 hover:text-rose-400 text-sm p-1 rounded hover:bg-slate-700/50 transition-colors"
-                      title="ลบออก"
-                    >
-                      ✕
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-700/40">
-                    <div className="flex gap-3 font-mono">
-                      <span className="text-slate-400">
-                        ราคา: <b className="text-slate-200">${item.current_price.toFixed(2)}</b>
-                      </span>
-                      <span className="text-slate-400">
-                        จุดเข้า: <b className="text-emerald-400">${item.entry_price.toFixed(2)}</b>
-                      </span>
-                    </div>
+                    <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-700/40">
+                      <div className="flex gap-3 font-mono">
+                        <span className="text-slate-400">
+                          ราคา: <b className="text-slate-200">${itemPrice.toFixed(2)}</b>
+                        </span>
+                        <span className="text-slate-400">
+                          จุดเข้า: <b className="text-emerald-400">${itemEntry.toFixed(2)}</b>
+                        </span>
+                      </div>
 
                     <button
                       onClick={() => {
@@ -121,8 +126,9 @@ const WatchlistDrawer: React.FC<WatchlistDrawerProps> = ({
                     </button>
                   </div>
                 </div>
-              ))
-            )}
+              );
+            })
+          )}
           </div>
 
           {/* Footer actions */}

@@ -13,11 +13,13 @@ export interface ScreenerSignal {
   scan_date: string;
   stage: string;
   close_price: number;
+  current_price?: number;
   entry_price: number;
   max_buy_price: number;
   stop_loss_price: number;
   diff_pct: number;
   status: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
+  entry_status?: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
   volume_surge_ratio: number;
   mrs_score: number;
   sma_30w: number;

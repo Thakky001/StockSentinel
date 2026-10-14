@@ -17,20 +17,27 @@ import { MOCK_DATES, MOCK_SIGNALS } from '../db/mockDb';
 const router = Router();
 
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Whitelist of columns that are safe to use in ORDER BY to prevent SQL injection
 // ---------------------------------------------------------------------------
-const SORTABLE_COLUMNS = new Set([
-  'mrs_score',
-  'diff_pct',
-  'entry_price',
-  'volume_surge_ratio',
-  'sma_30w',
-  'sma_30w_slope',
-  'weekly_close',
-  'scan_date',
-  'ticker',
-  'market_cap',
-]);
+const SORT_COLUMN_MAP: Record<string, string> = {
+  mrs_score: 's.mrs_score',
+  diff_pct: 's.diff_pct',
+  entry_price: 's.entry_price',
+  max_buy_price: 's.max_buy_price',
+  stop_loss_price: 's.stop_loss_price',
+  volume_surge_ratio: 's.volume_surge_ratio',
+  sma_30w: 's.sma_30w',
+  sma_30w_slope: 's.sma_30w_slope',
+  weekly_close: 's.weekly_close',
+  close_price: 's.current_price',
+  current_price: 's.current_price',
+  status: 's.entry_status',
+  entry_status: 's.entry_status',
+  scan_date: 's.scan_date',
+  ticker: 's.ticker',
+  market_cap: 'st.market_cap',
+};
 
 // ---------------------------------------------------------------------------
 // GET /api/screener/latest
@@ -46,8 +53,8 @@ router.get(
       const search = (req.query.search as string) || null;
 
       // Sort validation — default mrs_score DESC
-      let sortBy = (req.query.sort_by as string) || 'mrs_score';
-      if (!SORTABLE_COLUMNS.has(sortBy)) sortBy = 'mrs_score';
+      const sortByRaw = (req.query.sort_by as string) || 'mrs_score';
+      const sortColumn = SORT_COLUMN_MAP[sortByRaw] ?? 's.mrs_score';
 
       const orderRaw = ((req.query.order as string) || 'DESC').toUpperCase();
       const order = orderRaw === 'ASC' ? 'ASC' : 'DESC';
@@ -79,9 +86,11 @@ router.get(
             s.entry_price,
             s.max_buy_price,
             s.current_price,
+            s.current_price AS close_price,
             s.stop_loss_price,
             s.diff_pct,
             s.entry_status,
+            s.entry_status AS status,
             s.volume_surge_ratio,
             s.mrs_score,
             s.sma_30w,
@@ -101,7 +110,7 @@ router.get(
             AND ($4::text IS NULL
                  OR s.ticker ILIKE '%' || $4 || '%'
                  OR st.name  ILIKE '%' || $4 || '%')
-          ORDER BY s.${sortBy} ${order}
+          ORDER BY ${sortColumn} ${order}
           LIMIT $5 OFFSET $6
         `;
 
@@ -132,10 +141,39 @@ router.get(
           const q = search.toLowerCase();
           filtered = filtered.filter((s) => s.ticker.toLowerCase().includes(q) || (s.name ? s.name.toLowerCase().includes(q) : false));
         }
+
+        // Apply sorting to mock signals
+        filtered.sort((a, b) => {
+          let valA: any = (a as any)[sortByRaw];
+          let valB: any = (b as any)[sortByRaw];
+          if (sortByRaw === 'close_price') {
+            valA = a.current_price ?? a.weekly_close;
+            valB = b.current_price ?? b.weekly_close;
+          } else if (sortByRaw === 'status') {
+            valA = a.entry_status;
+            valB = b.entry_status;
+          }
+          if (valA === undefined) valA = 0;
+          if (valB === undefined) valB = 0;
+          if (typeof valA === 'string') {
+            return order === 'ASC' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+          }
+          return order === 'ASC' ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
+        });
+
         total = filtered.length;
         scanDate = MOCK_DATES[0];
         signals = filtered.slice(offset, offset + limit);
       }
+
+      // Normalize all signals so both close_price & current_price, status & entry_status are always present
+      const normalizedSignals = signals.map((s: any) => ({
+        ...s,
+        close_price: Number(s.close_price ?? s.current_price ?? s.weekly_close ?? 0),
+        current_price: Number(s.current_price ?? s.weekly_close ?? s.close_price ?? 0),
+        status: s.status ?? s.entry_status ?? 'IN_BUY_ZONE',
+        entry_status: s.entry_status ?? s.status ?? 'IN_BUY_ZONE',
+      }));
 
       const responseData: ScreenerListData = {
         scan_date: scanDate,
@@ -143,7 +181,7 @@ router.get(
         page,
         limit,
         total_pages: Math.max(1, Math.ceil(total / limit)),
-        signals,
+        signals: normalizedSignals,
       };
 
       const response: ApiResponse<ScreenerListData> = { success: true, data: responseData };
