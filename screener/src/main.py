@@ -110,6 +110,20 @@ def main(argv: Optional[List[str]] = None) -> int:
             )
             return 0
         except Exception as e:
+            if "SPY benchmark data is empty" in str(e):
+                logger.warning("SPY benchmark data missing. Automatically synchronizing SPY and initial universe data first...")
+                try:
+                    sync.run_sync(cold_start=False, tickers=selected_tickers)
+                    logger.info("Synchronization complete. Resuming screener...")
+                    results = screener.run_screener(
+                        scan_date=args.scan_date,
+                        tickers=selected_tickers,
+                    )
+                    logger.info("Screening completed successfully after auto-sync.")
+                    return 0
+                except Exception as sync_err:
+                    logger.error(f"Auto-sync and screening failed: {sync_err}", exc_info=True)
+                    return 1
             logger.error(f"Screening failed with error: {e}", exc_info=True)
             return 1
 

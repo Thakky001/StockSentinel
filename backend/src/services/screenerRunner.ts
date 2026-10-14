@@ -46,19 +46,24 @@ export async function runScreener(options: RunScreenerOptions = {}): Promise<Run
   const screenerRoot = options.screenerRoot ?? process.env.SCREENER_ROOT ?? path.resolve('../');
 
   // 1. Insert a RUNNING job row and get back the generated id + timestamp
-  const insertResult = await query<{ id: number; started_at: string }>(
-    `INSERT INTO scan_jobs (job_type, status, started_at)
-     VALUES ('WEEKLY_SCREENER', 'RUNNING', NOW())
-     RETURNING id, to_char(started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS started_at`,
-  );
+  let jobId = Math.floor(Date.now() / 1000);
+  let startedAt = new Date().toISOString();
 
-  const row = insertResult.rows[0];
-  if (!row) {
-    throw new Error('Failed to insert scan_jobs row before spawning screener');
+  try {
+    const insertResult = await query<{ id: number; started_at: string }>(
+      `INSERT INTO scan_jobs (job_type, status, started_at)
+       VALUES ('WEEKLY_SCREENER', 'RUNNING', NOW())
+       RETURNING id, to_char(started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS started_at`,
+    );
+
+    const row = insertResult.rows[0];
+    if (row) {
+      jobId = row.id;
+      startedAt = row.started_at;
+    }
+  } catch (err) {
+    console.warn('[ScreenerRunner] scan_jobs table not ready or DB offline, using memory job id:', (err as Error).message);
   }
-
-  const jobId = row.id;
-  const startedAt = row.started_at;
 
   // 2. Spawn the Python process asynchronously — do NOT await
   void spawnAndTrack({ pythonCmd, screenerRoot, jobId });
@@ -169,10 +174,15 @@ async function markJobFailed(jobId: number, errorMessage: string): Promise<void>
  * @returns The running job id, or null if none is active
  */
 export async function getRunningJobId(): Promise<number | null> {
-  const result = await query<{ id: number }>(
-    `SELECT id FROM scan_jobs WHERE status = 'RUNNING' LIMIT 1`,
-  );
-  return result.rows[0]?.id ?? null;
+  try {
+    const result = await query<{ id: number }>(
+      `SELECT id FROM scan_jobs WHERE status = 'RUNNING' LIMIT 1`,
+    );
+    return result.rows[0]?.id ?? null;
+  } catch (err) {
+    console.warn('[ScreenerRunner] getRunningJobId notice (handled gracefully):', (err as Error).message);
+    return null;
+  }
 }
 
 /**
@@ -182,8 +192,13 @@ export async function getRunningJobId(): Promise<number | null> {
  * @returns The latest ScanJob row or null if the table is empty
  */
 export async function getLatestJob(): Promise<ScanJob | null> {
-  const result = await query<ScanJob>(
-    `SELECT * FROM scan_jobs ORDER BY id DESC LIMIT 1`,
-  );
-  return result.rows[0] ?? null;
+  try {
+    const result = await query<ScanJob>(
+      `SELECT * FROM scan_jobs ORDER BY id DESC LIMIT 1`,
+    );
+    return result.rows[0] ?? null;
+  } catch (err) {
+    console.warn('[ScreenerRunner] getLatestJob notice (handled gracefully):', (err as Error).message);
+    return null;
+  }
 }

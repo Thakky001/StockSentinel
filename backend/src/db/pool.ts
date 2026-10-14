@@ -26,20 +26,43 @@ function fixRenderDatabaseUrl(url: string): string {
   });
 }
 
+/** Prepare and format database URL for cloud and local environments */
+function prepareDatabaseUrl(rawUrl: string): string {
+  if (!rawUrl) return rawUrl;
+  let url = fixRenderDatabaseUrl(rawUrl);
+  const isCloud =
+    url.includes('.render.com') ||
+    url.includes('dpg-') ||
+    url.includes('neon.tech') ||
+    url.includes('supabase.co');
+
+  if (isCloud && !url.includes('sslmode=')) {
+    const sep = url.includes('?') ? '&' : '?';
+    url = `${url}${sep}sslmode=require`;
+  }
+  return url;
+}
+
 /** Build pool configuration from environment variables */
 function buildPoolConfig(): PoolConfig {
   let databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl) {
-    databaseUrl = fixRenderDatabaseUrl(databaseUrl);
-    const isCloud = databaseUrl.includes('.render.com') || databaseUrl.includes('neon.tech') || databaseUrl.includes('supabase.co');
+    databaseUrl = prepareDatabaseUrl(databaseUrl);
+    const isCloud =
+      databaseUrl.includes('.render.com') ||
+      databaseUrl.includes('dpg-') ||
+      databaseUrl.includes('neon.tech') ||
+      databaseUrl.includes('supabase.co');
 
     return {
       connectionString: databaseUrl,
       ssl: isCloud || process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-      max: 20,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 10_000,
+      max: 10,
+      idleTimeoutMillis: 10_000,
+      connectionTimeoutMillis: 15_000,
+      keepAlive: true,
+      keepAliveInitialDelayMillis: 10_000,
     };
   }
 
@@ -51,9 +74,11 @@ function buildPoolConfig(): PoolConfig {
     user: process.env.POSTGRES_USER ?? process.env.DB_USER ?? 'postgres',
     password: process.env.POSTGRES_PASSWORD ?? process.env.DB_PASSWORD ?? 'postgres',
     ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-    max: 20,
-    idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
+    max: 10,
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 10_000,
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 10_000,
   };
 }
 
@@ -62,12 +87,13 @@ export const pool = new Pool(buildPoolConfig());
 
 // Log pool errors to prevent unhandled promise rejections
 pool.on('error', (err) => {
-  console.error('[Pool] Unexpected idle client error:', err.message);
+  console.warn('[Pool] Idle client notice/error (handled gracefully):', err.message);
 });
 
 /**
  * Convenience query helper that acquires a client from the pool,
  * runs the query, then releases the client back automatically.
+ * Includes automatic single-retry for transient cloud drops (e.g. Render/Neon).
  *
  * @param text  SQL statement (use $1, $2, … placeholders)
  * @param params  Positional parameter values
@@ -78,7 +104,28 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
   params?: unknown[],
 ): Promise<QueryResult<R>> {
   const start = Date.now();
-  const result = await pool.query<R>(text, params);
+  let result: QueryResult<R>;
+
+  try {
+    result = await pool.query<R>(text, params);
+  } catch (err: any) {
+    const msg = String(err?.message || '');
+    // Retry once if connection was dropped by cloud proxy timeout or idle reset
+    if (
+      msg.includes('Connection terminated') ||
+      msg.includes('ECONNRESET') ||
+      msg.includes('connection closed') ||
+      msg.includes('socket has been ended') ||
+      err?.code === '57P01' || // admin_shutdown
+      err?.code === '08006'    // connection_failure
+    ) {
+      console.warn('[Pool] Transient connection drop detected, retrying query once...', msg);
+      result = await pool.query<R>(text, params);
+    } else {
+      throw err;
+    }
+  }
+
   const duration = Date.now() - start;
 
   if (process.env.NODE_ENV !== 'production') {
@@ -97,7 +144,7 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
  */
 export async function initDatabaseSchemaIfNeeded(): Promise<void> {
   try {
-    const tableCheck = await pool.query(
+    const tableCheck = await query(
       `SELECT to_regclass('public.screener_signals') as exists;`
     );
     if (!tableCheck.rows[0]?.exists) {
@@ -111,7 +158,7 @@ export async function initDatabaseSchemaIfNeeded(): Promise<void> {
       for (const p of sqlPaths) {
         if (fs.existsSync(p)) {
           const sql = fs.readFileSync(p, 'utf-8');
-          await pool.query(sql);
+          await query(sql);
           console.log('[Pool] Database schema initialized successfully from', p);
           break;
         }

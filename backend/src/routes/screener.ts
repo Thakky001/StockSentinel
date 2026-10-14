@@ -268,7 +268,7 @@ router.get(
 // ---------------------------------------------------------------------------
 router.post(
   '/trigger',
-  async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async (_req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       // Enforce a single-execution lock: reject if a job is already running
       const runningJobId = await getRunningJobId();
@@ -277,7 +277,7 @@ router.post(
           success: false,
           error: {
             code: 'JOB_ALREADY_RUNNING',
-            message: `A screener job is already running (job #${runningJobId}). Wait for it to finish before triggering a new one.`,
+            message: `มีงานสแกนหุ้นกำลังทำงานอยู่แล้ว (Job #${runningJobId}) กรุณารอให้ระบบสแกนเสร็จสิ้นก่อนเริ่มสแกนใหม่`,
             job_id: runningJobId,
           },
         });
@@ -290,7 +290,14 @@ router.post(
       const response: ApiResponse<typeof result> = { success: true, data: result };
       res.status(202).json(response);
     } catch (err) {
-      next(err);
+      console.error('[Screener /trigger] Failed to trigger scan:', err);
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'TRIGGER_FAILED',
+          message: (err as Error).message || 'เกิดข้อผิดพลาดในการเริ่มสแกนหุ้น กรุณาลองใหม่อีกครั้งในครู่หนึ่ง',
+        },
+      });
     }
   },
 );
