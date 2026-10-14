@@ -69,6 +69,12 @@ pool.on('error', (err) => {
   console.warn('[Pool] Idle client notice/error (handled gracefully):', err.message);
 });
 
+let dbOfflineUntil = 0;
+let lastDbErrorMsg = '';
+let lastOfflineLogTime = 0;
+const DB_OFFLINE_COOLDOWN_MS = 20_000; // 20s cooldown when database connection fails
+const LOG_THROTTLE_MS = 60_000; // Only print offline warning at most once per minute
+
 /**
  * Convenience query helper that acquires a client from the pool,
  * runs the query, then releases the client back automatically.
@@ -82,11 +88,16 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
   text: string,
   params?: unknown[],
 ): Promise<QueryResult<R>> {
+  if (Date.now() < dbOfflineUntil) {
+    throw new Error(`Database offline: ${lastDbErrorMsg}`);
+  }
+
   const start = Date.now();
   let result: QueryResult<R>;
 
   try {
     result = await pool.query<R>(text, params);
+    dbOfflineUntil = 0;
   } catch (err: any) {
     const msg = String(err?.message || '');
     // Retry once if connection was dropped by cloud proxy timeout or idle reset
@@ -99,10 +110,25 @@ export async function query<R extends QueryResultRow = QueryResultRow>(
       err?.code === '08006'    // connection_failure
     ) {
       console.warn('[Pool] Transient connection drop detected, retrying query once...', msg);
-      result = await pool.query<R>(text, params);
-    } else {
-      throw err;
+      try {
+        result = await pool.query<R>(text, params);
+        dbOfflineUntil = 0;
+        return result;
+      } catch (retryErr: any) {
+        err = retryErr;
+      }
     }
+
+    dbOfflineUntil = Date.now() + DB_OFFLINE_COOLDOWN_MS;
+    lastDbErrorMsg = err?.message || 'Connection failure';
+
+    const now = Date.now();
+    if (now - lastOfflineLogTime > LOG_THROTTLE_MS) {
+      lastOfflineLogTime = now;
+      console.warn(`[Pool] Database unreachable (${lastDbErrorMsg}). Backing off for ${DB_OFFLINE_COOLDOWN_MS / 1000}s.`);
+    }
+
+    throw err;
   }
 
   const duration = Date.now() - start;

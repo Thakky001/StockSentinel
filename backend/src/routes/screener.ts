@@ -162,8 +162,10 @@ router.get(
           scanDate = result.rows[0].scan_date ?? scanDate;
           signals = result.rows.map(({ total_count: _, ...row }) => row);
         }
-      } catch (dbErr) {
-        console.warn('[Screener /latest] Database offline or error. Serving fallback demo signals.', (dbErr as Error).message);
+      } catch (dbErr: any) {
+        if (!dbErr?.message?.includes('Database offline')) {
+          console.warn('[Screener /latest] Database notice:', dbErr?.message);
+        }
       }
 
       // If database is offline or empty, use local JSON file signals before falling back to MOCK_SIGNALS
@@ -250,8 +252,10 @@ router.get(
            LIMIT 52`,
         );
         dates = result.rows.map((r) => r.scan_date);
-      } catch (dbErr) {
-        console.warn('[Screener /dates] Database offline. Serving fallback dates.', (dbErr as Error).message);
+      } catch (dbErr: any) {
+        if (!dbErr?.message?.includes('Database offline')) {
+          console.warn('[Screener /dates] Database notice:', dbErr?.message);
+        }
       }
 
       if (dates.length === 0) {

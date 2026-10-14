@@ -387,6 +387,12 @@ def run_screener(
         except Exception as e:
             logger.warning(f"Could not initialize scan_jobs table: {e}")
 
+    meta_lookup: Dict[str, Dict[str, Any]] = {}
+    try:
+        meta_lookup = {item["ticker"]: item for item in universe.load_universe_seed()}
+    except Exception as e:
+        logger.debug(f"Could not load universe seed metadata lookup: {e}")
+
     qualified_signals: List[Dict[str, Any]] = []
     processed_count = 0
     failed_count = 0
@@ -433,7 +439,36 @@ def run_screener(
                 mrs_score=mrs[last_idx],
             )
 
-            if filter_res["is_stage2"]:
+            is_qualified = filter_res["is_stage2"]
+
+            # Stan Weinstein Stage 2 Continuation & Setup Detection:
+            # If the stock didn't break out on the exact current bar, check if it had a Stage 2 breakout
+            # in recent weeks (last 8 weeks) OR is in an active Stage 2 Uptrend in the Buy Zone / Pullback Setup
+            if not is_qualified:
+                c = closes[last_idx]
+                s30 = sma30[last_idx]
+                sl = slope[last_idx]
+                piv = pivot35[last_idx]
+                m = mrs[last_idx]
+                if s30 and c > s30 and sl and sl >= 0 and m and m > 0 and piv:
+                    diff_pct = (c - piv) / piv * 100
+                    had_recent_breakout = False
+                    for b_idx in range(-1, max(-9, -len(stock_w)), -1):
+                        r_b = evaluate_stage2_filter(
+                            close=closes[b_idx],
+                            sma_30w=sma30[b_idx],
+                            sma_30w_slope=slope[b_idx],
+                            pivot_35w=pivot35[b_idx],
+                            vol_surge_ratio=surge[b_idx],
+                            mrs_score=mrs[b_idx],
+                        )
+                        if r_b["is_stage2"]:
+                            had_recent_breakout = True
+                            break
+                    if had_recent_breakout or (-12.0 <= diff_pct <= 20.0):
+                        is_qualified = True
+
+            if is_qualified:
                 risk = calculate_target_and_risk(
                     pivot_35w=pivot35[last_idx],
                     current_price=closes[last_idx]
@@ -445,10 +480,15 @@ def run_screener(
                     stop_loss_price=risk["stop_loss_price"]
                 )
 
+                meta = meta_lookup.get(ticker, {})
                 signal_record = {
                     "scan_id": job_id,
                     "scan_date": effective_scan_date,
                     "ticker": ticker,
+                    "name": meta.get("name", ticker),
+                    "sector": meta.get("sector", "Unknown"),
+                    "industry": meta.get("industry", "Unknown"),
+                    "market_cap": meta.get("market_cap"),
                     "entry_price": risk["entry_price"],
                     "max_buy_price": risk["max_buy_price"],
                     "current_price": risk["current_price"],

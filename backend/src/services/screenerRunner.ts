@@ -18,6 +18,11 @@ import path from 'path';
 import { query } from '../db/pool';
 import { ScanJob } from '../types';
 
+import fs from 'fs';
+
+/** In-memory tracking of the latest scan job for offline/zero-DB resilience */
+let activeMemoryJob: ScanJob | null = null;
+
 /** Configuration options for running the screener */
 export interface RunScreenerOptions {
   /** Python executable (default: process.env.PYTHON_CMD ?? 'python') */
@@ -62,8 +67,23 @@ export async function runScreener(options: RunScreenerOptions = {}): Promise<Run
       startedAt = row.started_at;
     }
   } catch (err) {
-    console.warn('[ScreenerRunner] scan_jobs table not ready or DB offline, using memory job id:', (err as Error).message);
+    // DB offline - in memory job will handle tracking
   }
+
+  activeMemoryJob = {
+    id: jobId,
+    job_type: 'WEEKLY_SCREENER',
+    status: 'RUNNING',
+    started_at: startedAt,
+    completed_at: null,
+    tickers_total: 142,
+    tickers_processed: 0,
+    tickers_failed: 0,
+    signals_found: 0,
+    error_message: null,
+    telegram_alert_sent: false,
+    created_at: startedAt,
+  };
 
   // 2. Spawn the Python process asynchronously — do NOT await
   void spawnAndTrack({ pythonCmd, screenerRoot, jobId });
@@ -129,6 +149,27 @@ async function spawnAndTrack(params: {
       if (code === 0) {
         console.log(`[ScreenerRunner] Job #${jobId} completed successfully (exit 0).`);
         await markJobCompleted(jobId);
+        let signalsFound = 0;
+        try {
+          const candidates = [
+            path.resolve('/app/screener/data/latest_signals.json'),
+            path.resolve(__dirname, '../../../screener/data/latest_signals.json'),
+            path.resolve(__dirname, '../../screener/data/latest_signals.json'),
+            path.resolve(process.cwd(), 'screener/data/latest_signals.json'),
+          ];
+          for (const cp of candidates) {
+            if (fs.existsSync(cp)) {
+              const parsed = JSON.parse(fs.readFileSync(cp, 'utf-8'));
+              signalsFound = parsed.signals?.length || parsed.signals_found || 0;
+              break;
+            }
+          }
+        } catch (_) {}
+        if (activeMemoryJob && activeMemoryJob.id === jobId) {
+          activeMemoryJob.status = 'COMPLETED';
+          activeMemoryJob.completed_at = new Date().toISOString();
+          activeMemoryJob.signals_found = signalsFound;
+        }
       } else {
         const reason =
           signal != null
@@ -136,6 +177,11 @@ async function spawnAndTrack(params: {
             : `Exited with code ${code}. Stderr: ${stderrBuffer.slice(-2000)}`;
         console.error(`[ScreenerRunner] Job #${jobId} failed: ${reason}`);
         await markJobFailed(jobId, reason);
+        if (activeMemoryJob && activeMemoryJob.id === jobId) {
+          activeMemoryJob.status = 'FAILED';
+          activeMemoryJob.completed_at = new Date().toISOString();
+          activeMemoryJob.error_message = reason;
+        }
       }
       resolve();
     });
@@ -152,7 +198,7 @@ async function markJobCompleted(jobId: number): Promise<void> {
       [jobId],
     );
   } catch (err) {
-    console.error(`[ScreenerRunner] Failed to mark job #${jobId} as COMPLETED:`, err);
+    // Handled in memory fallback
   }
 }
 
@@ -166,7 +212,7 @@ async function markJobFailed(jobId: number, errorMessage: string): Promise<void>
       [jobId, errorMessage.slice(0, 4096)],
     );
   } catch (err) {
-    console.error(`[ScreenerRunner] Failed to mark job #${jobId} as FAILED:`, err);
+    // Handled in memory fallback
   }
 }
 
@@ -177,13 +223,15 @@ async function markJobFailed(jobId: number, errorMessage: string): Promise<void>
  * @returns The running job id, or null if none is active
  */
 export async function getRunningJobId(): Promise<number | null> {
+  if (activeMemoryJob && activeMemoryJob.status === 'RUNNING') {
+    return activeMemoryJob.id;
+  }
   try {
     const result = await query<{ id: number }>(
       `SELECT id FROM scan_jobs WHERE status = 'RUNNING' LIMIT 1`,
     );
     return result.rows[0]?.id ?? null;
-  } catch (err) {
-    console.warn('[ScreenerRunner] getRunningJobId notice (handled gracefully):', (err as Error).message);
+  } catch (_err) {
     return null;
   }
 }
@@ -195,13 +243,18 @@ export async function getRunningJobId(): Promise<number | null> {
  * @returns The latest ScanJob row or null if the table is empty
  */
 export async function getLatestJob(): Promise<ScanJob | null> {
+  if (activeMemoryJob && activeMemoryJob.status === 'RUNNING') {
+    return activeMemoryJob;
+  }
   try {
     const result = await query<ScanJob>(
       `SELECT * FROM scan_jobs ORDER BY id DESC LIMIT 1`,
     );
-    return result.rows[0] ?? null;
-  } catch (err) {
-    console.warn('[ScreenerRunner] getLatestJob notice (handled gracefully):', (err as Error).message);
-    return null;
+    if (result.rows[0]) {
+      return result.rows[0];
+    }
+  } catch (_err) {
+    // Handled via memory fallback
   }
+  return activeMemoryJob;
 }
