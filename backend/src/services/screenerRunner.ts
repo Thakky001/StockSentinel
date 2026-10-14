@@ -83,13 +83,16 @@ async function spawnAndTrack(params: {
   jobId: number;
 }): Promise<void> {
   const { pythonCmd, screenerRoot, jobId } = params;
-  const scriptPath = path.join(screenerRoot, 'screener', 'src', 'main.py');
 
-  console.log(`[ScreenerRunner] Spawning job #${jobId}: ${pythonCmd} ${scriptPath} --mode screen`);
+  console.log(`[ScreenerRunner] Spawning job #${jobId}: ${pythonCmd} -m screener.src.main --mode screen (cwd: ${screenerRoot})`);
 
-  const child = spawn(pythonCmd, [scriptPath, '--mode', 'screen'], {
+  const child = spawn(pythonCmd, ['-m', 'screener.src.main', '--mode', 'screen'], {
     cwd: screenerRoot,
-    env: { ...process.env },
+    env: {
+      ...process.env,
+      PYTHONPATH: screenerRoot,
+      PYTHONUNBUFFERED: '1',
+    },
     // Do not detach — we want to track exit
   });
 

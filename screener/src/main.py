@@ -1,9 +1,16 @@
 """
 screener/src/main.py - CLI entrypoint for StockSentinel screener universe ingestion and daily data sync.
 """
+import sys
+from pathlib import Path
+
+# Ensure project root is in sys.path so screener.src is always importable
+_project_root = str(Path(__file__).resolve().parent.parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 import argparse
 import logging
-import sys
 from typing import List, Optional
 from screener.src import config, db, screener, sync, universe
 

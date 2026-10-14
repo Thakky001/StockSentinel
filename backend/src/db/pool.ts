@@ -26,20 +26,12 @@ function fixRenderDatabaseUrl(url: string): string {
   });
 }
 
-/** Prepare and format database URL for cloud and local environments */
-function prepareDatabaseUrl(rawUrl: string): string {
+/** Clean and prepare database URL for cloud and local environments */
+function cleanDatabaseUrl(rawUrl: string): string {
   if (!rawUrl) return rawUrl;
   let url = fixRenderDatabaseUrl(rawUrl);
-  const isCloud =
-    url.includes('.render.com') ||
-    url.includes('dpg-') ||
-    url.includes('neon.tech') ||
-    url.includes('supabase.co');
-
-  if (isCloud && !url.includes('sslmode=')) {
-    const sep = url.includes('?') ? '&' : '?';
-    url = `${url}${sep}sslmode=require`;
-  }
+  // Strip any sslmode parameter so pg-connection-string does NOT wipe out our rejectUnauthorized: false option
+  url = url.replace(/([?&])sslmode=[^&]+/gi, '$1').replace(/[?&]$/, '');
   return url;
 }
 
@@ -48,17 +40,18 @@ function buildPoolConfig(): PoolConfig {
   let databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl) {
-    databaseUrl = prepareDatabaseUrl(databaseUrl);
     const isCloud =
       databaseUrl.includes('.render.com') ||
       databaseUrl.includes('dpg-') ||
       databaseUrl.includes('neon.tech') ||
       databaseUrl.includes('supabase.co');
 
+    databaseUrl = cleanDatabaseUrl(databaseUrl);
+
     return {
       connectionString: databaseUrl,
       ssl: isCloud || process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
-      max: 10,
+      max: 5,
       idleTimeoutMillis: 10_000,
       connectionTimeoutMillis: 15_000,
       keepAlive: true,
