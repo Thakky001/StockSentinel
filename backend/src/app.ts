@@ -27,9 +27,8 @@ const app: Application = express();
 // ---------------------------------------------------------------------------
 // CORS
 // ---------------------------------------------------------------------------
-// Support comma-separated origins in CORS_ORIGIN for multi-environment setups
-// e.g. CORS_ORIGIN=http://localhost:5173,https://app.example.com
-const rawOrigins = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
+// Support comma-separated origins in CORS_ORIGIN, wildcard '*', or auto-allow onrender.com
+const rawOrigins = process.env.CORS_ORIGIN ?? '*';
 const allowedOrigins = rawOrigins
   .split(',')
   .map((o) => o.trim())
@@ -40,7 +39,15 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (e.g. curl, Postman, server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // Allow if wildcard, matches allowedOrigins, ends with onrender.com, or is in production
+      if (
+        allowedOrigins.includes('*') ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.onrender.com') ||
+        origin.startsWith('http://localhost')
+      ) {
+        return callback(null, true);
+      }
       callback(new Error(`CORS: Origin '${origin}' is not allowed.`));
     },
     methods: ['GET', 'POST', 'OPTIONS'],

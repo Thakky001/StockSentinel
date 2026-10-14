@@ -20,6 +20,8 @@ services:
         value: 10000
       - key: NODE_ENV
         value: production
+      - key: CORS_ORIGIN
+        value: "*"
       # Connect automatically to Render PostgreSQL
       - key: DATABASE_URL
         fromDatabase:
