@@ -399,6 +399,13 @@ def run_screener(
     except Exception as e:
         logger.debug(f"Could not load universe seed metadata lookup: {e}")
 
+    # Determine unified scan date for this scan run
+    run_scan_date = (
+        str(scan_date)
+        if scan_date
+        else (spy_weekly[-1]["trade_date"] if spy_weekly else str(date.today()))
+    )
+
     qualified_signals: List[Dict[str, Any]] = []
     processed_count = 0
     failed_count = 0
@@ -432,9 +439,7 @@ def run_screener(
             mrs = compute_mansfield_relative_strength(closes, spy_closes, lookback=52)
 
             last_idx = -1
-            effective_scan_date = stock_w[last_idx]["trade_date"]
-            if scan_date:
-                effective_scan_date = str(scan_date)
+            effective_scan_date = run_scan_date
 
             filter_res = evaluate_stage2_filter(
                 close=closes[last_idx],
