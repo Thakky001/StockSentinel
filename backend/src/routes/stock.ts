@@ -36,13 +36,51 @@ router.get(
       const weeksRaw = parseInt((req.query.weeks as string) || '104', 10);
       const weeks = Math.min(520, Math.max(4, isNaN(weeksRaw) ? 104 : weeksRaw));
 
+      let companyName = ticker;
+      let metrics: ChartMetrics = {
+        entry_price: 0,
+        max_buy_price: 0,
+        stop_loss_price: 0,
+        status: 'N/A',
+        close_price: 0,
+      };
+
       try {
         // ---- Fetch company name ----
         const stockResult = await query<{ name: string }>(
           `SELECT name FROM stocks WHERE ticker = $1 LIMIT 1`,
           [ticker],
         );
-        const companyName = stockResult.rows[0]?.name ?? ticker;
+        if (stockResult.rows[0]?.name) {
+          companyName = stockResult.rows[0].name;
+        }
+
+        // ---- Fetch latest metrics from screener_signals ----
+        const metricsResult = await query<{
+          entry_price: number;
+          max_buy_price: number;
+          stop_loss_price: number;
+          entry_status: string;
+          weekly_close: number;
+        }>(
+          `SELECT entry_price, max_buy_price, stop_loss_price, entry_status, weekly_close
+           FROM screener_signals
+           WHERE ticker = $1
+           ORDER BY scan_date DESC
+           LIMIT 1`,
+          [ticker],
+        );
+
+        if (metricsResult.rows[0]) {
+          const m = metricsResult.rows[0];
+          metrics = {
+            entry_price: Number(m.entry_price),
+            max_buy_price: Number(m.max_buy_price),
+            stop_loss_price: Number(m.stop_loss_price),
+            status: m.entry_status,
+            close_price: Number(m.weekly_close),
+          };
+        }
 
         const chartSql = `
           WITH weekly_bars AS (
@@ -118,38 +156,6 @@ router.get(
             }
           }
 
-          const metricsResult = await query<{
-            entry_price: number;
-            max_buy_price: number;
-            stop_loss_price: number;
-            entry_status: string;
-            weekly_close: number;
-          }>(
-            `SELECT entry_price, max_buy_price, stop_loss_price, entry_status, weekly_close
-             FROM screener_signals
-             WHERE ticker = $1
-             ORDER BY scan_date DESC
-             LIMIT 1`,
-            [ticker],
-          );
-
-          const metricsRow = metricsResult.rows[0];
-          const metrics: ChartMetrics = metricsRow
-            ? {
-                entry_price: metricsRow.entry_price,
-                max_buy_price: metricsRow.max_buy_price,
-                stop_loss_price: metricsRow.stop_loss_price,
-                status: metricsRow.entry_status,
-                close_price: metricsRow.weekly_close,
-              }
-            : {
-                entry_price: 0,
-                max_buy_price: 0,
-                stop_loss_price: 0,
-                status: 'N/A',
-                close_price: 0,
-              };
-
           const chartData: ChartData = {
             ticker,
             company_name: companyName,
@@ -166,8 +172,8 @@ router.get(
         console.warn(`[Stock /chart] DB query failed for ${ticker}. Serving fallback chart.`, (dbErr as Error).message);
       }
 
-      // Fallback: Generate realistic chart data
-      const fallbackData = generateMockChartData(ticker, weeks);
+      // Fallback: Generate realistic chart data using actual company name and metrics
+      const fallbackData = generateMockChartData(ticker, weeks, metrics, companyName);
       res.json({ success: true, data: fallbackData });
     } catch (err) {
       next(err);

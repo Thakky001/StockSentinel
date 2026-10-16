@@ -17,8 +17,13 @@ dotenv.config({ path: '../.env' });
 /** Clean and prepare database URL for cloud and local environments */
 function cleanDatabaseUrl(rawUrl: string): string {
   if (!rawUrl) return rawUrl;
-  // Strip any sslmode parameter so pg-connection-string does NOT wipe out our rejectUnauthorized: false option
-  return rawUrl.replace(/([?&])sslmode=[^&]+/gi, '$1').replace(/[?&]$/, '');
+  try {
+    const url = new URL(rawUrl);
+    url.searchParams.delete('sslmode');
+    return url.toString();
+  } catch {
+    return rawUrl;
+  }
 }
 
 /** Build pool configuration from environment variables */

@@ -226,12 +226,18 @@ export const MOCK_SIGNALS: (ScreenerSignal & { id: number; scan_id: number; stag
 ];
 
 /** Generate realistic weekly candlesticks for Lightweight Charts */
-export function generateMockChartData(ticker: string, weeks = 104) {
-  const signal = MOCK_SIGNALS.find((s) => s.ticker === ticker) ?? MOCK_SIGNALS[0];
-  const companyName = signal ? signal.name : ticker;
+export function generateMockChartData(
+  ticker: string,
+  weeks = 104,
+  customMetrics?: Partial<ChartMetrics>,
+  customName?: string,
+) {
+  const signal = MOCK_SIGNALS.find((s) => s.ticker === ticker);
+  const companyName = customName || (signal ? signal.name : ticker);
 
-  const basePrice = signal ? signal.entry_price * 0.75 : 100;
-  const currentPrice = signal ? signal.current_price : 140;
+  const currentPrice = customMetrics?.close_price || signal?.current_price || 100;
+  const entryPrice = customMetrics?.entry_price || signal?.entry_price || currentPrice * 0.95;
+  const basePrice = entryPrice * 0.75;
 
   const candlesticks: CandlestickBar[] = [];
   const sma30: SeriesPoint[] = [];
@@ -279,11 +285,11 @@ export function generateMockChartData(ticker: string, weeks = 104) {
   }
 
   const metrics: ChartMetrics = {
-    entry_price: signal.entry_price,
-    max_buy_price: signal.max_buy_price,
-    stop_loss_price: signal.stop_loss_price,
-    status: signal.entry_status,
-    close_price: signal.current_price,
+    entry_price: customMetrics?.entry_price ?? signal?.entry_price ?? entryPrice,
+    max_buy_price: customMetrics?.max_buy_price ?? signal?.max_buy_price ?? entryPrice * 1.05,
+    stop_loss_price: customMetrics?.stop_loss_price ?? signal?.stop_loss_price ?? entryPrice * 0.92,
+    status: customMetrics?.status ?? signal?.entry_status ?? 'IN_BUY_ZONE',
+    close_price: customMetrics?.close_price ?? signal?.current_price ?? currentPrice,
   };
 
   return {

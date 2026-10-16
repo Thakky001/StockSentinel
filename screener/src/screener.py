@@ -373,7 +373,13 @@ def run_screener(
             )
             for t_sym, b_list in fetched.items():
                 parquet_cache.save_to_parquet(t_sym, b_list or [])
-            logger.info(f"Pre-scan ingestion complete. Cached {len(fetched)} tickers to Parquet.")
+                if b_list:
+                    try:
+                        db.ensure_stocks_exist([t_sym])
+                        db.upsert_daily_bars(b_list)
+                    except Exception as db_err:
+                        logger.debug(f"Could not upsert fetched bars for {t_sym} to DB: {db_err}")
+            logger.info(f"Pre-scan ingestion complete. Cached {len(fetched)} tickers to Parquet and DB.")
         except Exception as e:
             logger.warning(f"Auto-sync of missing tickers encountered an error: {e}")
 

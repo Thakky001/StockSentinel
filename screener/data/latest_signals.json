@@ -1,10 +1,10 @@
 {
   "scan_date": "2026-10-09",
-  "generated_at": "2026-10-14T12:22:27.475662Z",
-  "signals_found": 35,
+  "generated_at": "2026-10-16T15:30:11.804581Z",
+  "signals_found": 36,
   "signals": [
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "AAPL",
       "name": "Apple Inc.",
@@ -28,7 +28,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "ABBV",
       "name": "AbbVie Inc.",
@@ -52,7 +52,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "ADI",
       "name": "Analog Devices Inc.",
@@ -76,7 +76,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "ADM",
       "name": "Archer-Daniels-Midland Company",
@@ -100,7 +100,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "ADP",
       "name": "Automatic Data Processing Inc.",
@@ -124,7 +124,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "AMD",
       "name": "Advanced Micro Devices Inc.",
@@ -148,7 +148,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "AMGN",
       "name": "Amgen Inc.",
@@ -172,7 +172,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "APH",
       "name": "Amphenol Corporation",
@@ -196,7 +196,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "BDX",
       "name": "Becton Dickinson and Company",
@@ -220,7 +220,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "COP",
       "name": "ConocoPhillips",
@@ -244,7 +244,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "CRM",
       "name": "Salesforce Inc.",
@@ -268,7 +268,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "CRWD",
       "name": "CrowdStrike Holdings Inc.",
@@ -292,7 +292,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "CSCO",
       "name": "Cisco Systems Inc.",
@@ -316,7 +316,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "CSX",
       "name": "CSX Corporation",
@@ -340,7 +340,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "CVX",
       "name": "Chevron Corporation",
@@ -364,7 +364,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "DE",
       "name": "Deere & Company",
@@ -388,7 +388,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "ELV",
       "name": "Elevance Health Inc.",
@@ -412,7 +412,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "EOG",
       "name": "EOG Resources Inc.",
@@ -436,7 +436,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "ETN",
       "name": "Eaton Corporation plc",
@@ -460,7 +460,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "GILD",
       "name": "Gilead Sciences Inc.",
@@ -484,7 +484,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "KO",
       "name": "The Coca-Cola Company",
@@ -508,7 +508,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "LLY",
       "name": "Eli Lilly and Company",
@@ -532,7 +532,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "MA",
       "name": "Mastercard Incorporated",
@@ -556,7 +556,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "MCK",
       "name": "McKesson Corporation",
@@ -580,7 +580,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "META",
       "name": "Meta Platforms Inc.",
@@ -604,7 +604,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "MRK",
       "name": "Merck & Co. Inc.",
@@ -628,7 +628,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "MSFT",
       "name": "Microsoft Corporation",
@@ -652,7 +652,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "NOW",
       "name": "ServiceNow Inc.",
@@ -676,7 +676,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-09",
       "ticker": "NVDA",
       "name": "NVIDIA Corporation",
@@ -700,7 +700,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "PANW",
       "name": "Palo Alto Networks Inc.",
@@ -724,7 +724,31 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
+      "scan_date": "2026-10-09",
+      "ticker": "PLTR",
+      "name": "PLTR",
+      "sector": "Unknown",
+      "industry": "Unknown",
+      "market_cap": null,
+      "entry_price": 194.78,
+      "max_buy_price": 204.519,
+      "current_price": 209.05,
+      "stop_loss_price": 179.1976,
+      "diff_pct": 7.3262,
+      "entry_status": "EXTENDED",
+      "volume_surge_ratio": 0.7702,
+      "mrs_score": 20.4866,
+      "sma_30w": 150.9113,
+      "sma_30w_slope": 1.3,
+      "prior_resistance_35w": 194.78,
+      "weekly_close": 209.05,
+      "weekly_volume": 130578300,
+      "avg_volume_10w": 169538380,
+      "stage": "Stage 2 Breakout"
+    },
+    {
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "PM",
       "name": "Philip Morris International Inc.",
@@ -748,7 +772,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "TMO",
       "name": "Thermo Fisher Scientific Inc.",
@@ -772,7 +796,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "V",
       "name": "Visa Inc.",
@@ -796,7 +820,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "VLO",
       "name": "Valero Energy Corporation",
@@ -820,7 +844,7 @@
       "stage": "Stage 2 Breakout"
     },
     {
-      "scan_id": 12,
+      "scan_id": 18,
       "scan_date": "2026-10-13",
       "ticker": "XOM",
       "name": "Exxon Mobil Corporation",
