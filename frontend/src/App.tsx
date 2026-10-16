@@ -122,7 +122,7 @@ const App: React.FC = () => {
               <span>ระบบสแกนหุ้น Stan Weinstein Stage 2</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              ระบบสแกนหุ้นสหรัฐฯ อัตโนมัติกว่า 3,800 ตัว (Russell 3000 + S&P 1500) คัดกรองจุดเบรกเอาต์ (Breakout Pivot),
+              ระบบสแกนหุ้นสหรัฐฯ อัตโนมัติในดัชนี S&P 500 คัดกรองจุดเบรกเอาต์ (Breakout Pivot),
               โวลุ่มระเบิดตัว &ge; 1.5 เท่า, เส้นค่าเฉลี่ย 30 สัปดาห์ชี้ขึ้น และค่าความแข็งแกร่ง Mansfield RS ชนะตลาด (SPY)
             </p>
           </div>

@@ -107,18 +107,30 @@ def load_from_parquet(ticker: str) -> List[Dict[str, Any]]:
 
 def merge_daily_bars(
     existing_bars: List[Dict[str, Any]],
-    new_bars: List[Dict[str, Any]]
+    new_bars: List[Dict[str, Any]],
+    max_lookback_days: int = 730,
 ) -> List[Dict[str, Any]]:
     """
     Merges historical and newly fetched daily bars, deduplicating by trade_date.
     Newer values overwrite existing entries on date collision (handling corporate actions/adjustments).
+    Prunes bars older than max_lookback_days from the latest date to keep cache file sizes bounded.
     Returns list sorted chronologically ascending by trade_date.
     """
     merged: Dict[str, Dict[str, Any]] = {b["trade_date"]: dict(b) for b in existing_bars}
     for b in new_bars:
         merged[b["trade_date"]] = dict(b)
 
-    return sorted(list(merged.values()), key=lambda x: x["trade_date"])
+    sorted_bars = sorted(list(merged.values()), key=lambda x: x["trade_date"])
+    if not sorted_bars or max_lookback_days <= 0:
+        return sorted_bars
+
+    try:
+        from datetime import datetime, timedelta
+        latest_dt = datetime.strptime(sorted_bars[-1]["trade_date"][:10], "%Y-%m-%d").date()
+        cutoff_date = (latest_dt - timedelta(days=max_lookback_days)).isoformat()
+        return [b for b in sorted_bars if b["trade_date"] >= cutoff_date]
+    except Exception:
+        return sorted_bars
 
 
 def get_latest_cached_trade_date(ticker: str) -> Optional[str]:

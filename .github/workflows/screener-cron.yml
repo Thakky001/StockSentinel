@@ -1,0 +1,72 @@
+name: Weekly Stage 2 Stock Screener
+
+on:
+  # Run every Saturday at 08:00 AM Thailand Time (UTC+7 -> 01:00 UTC)
+  # (Triggers right after Friday US market close and weekly bar finalization)
+  schedule:
+    - cron: '0 1 * * 6'
+
+  # Allow manual execution via the "Run workflow" button in GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  run-screener:
+    name: Run Stage 2 Screener on Render
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Resolve Web Service URL
+        id: config
+        run: |
+          APP_URL="${{ secrets.APP_URL || vars.APP_URL || 'https://stocksentinel-web.onrender.com' }}"
+          echo "app_url=${APP_URL}" >> $GITHUB_OUTPUT
+          echo "Target Web Service: ${APP_URL}"
+
+      - name: Wake up Render Service
+        run: |
+          echo "Pinging /health to spin up Render container if asleep..."
+          curl -s -m 90 --retry 3 --retry-delay 10 --retry-connrefused \
+            "${{ steps.config.outputs.app_url }}/health" || echo "Warmup ping completed."
+
+      - name: Trigger Stage 2 Screener Scan
+        run: |
+          echo "Triggering Stage 2 Screener scan via API..."
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            --retry 2 --retry-delay 5 \
+            "${{ steps.config.outputs.app_url }}/api/screener/trigger")
+          
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS/d')
+          
+          echo "Response: $BODY"
+          echo "HTTP Status: $HTTP_STATUS"
+          
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 201 ] || [ "$HTTP_STATUS" -eq 202 ]; then
+            echo "Screener job triggered successfully!"
+          elif [ "$HTTP_STATUS" -eq 409 ]; then
+            echo "A screener job is already running on the server."
+          else
+            echo "Failed with HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+
+      - name: Monitor Screener Job Completion
+        run: |
+          echo "Monitoring screener job completion..."
+          for i in {1..30}; do
+            STATUS_JSON=$(curl -s -m 15 "${{ steps.config.outputs.app_url }}/api/screener/status" || echo "{}")
+            JOB_STATUS=$(echo "$STATUS_JSON" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"' || echo "UNKNOWN")
+            echo "[Check $i/30] Current Job Status: $JOB_STATUS"
+            
+            if [ "$JOB_STATUS" = "COMPLETED" ]; then
+              echo "Stage 2 Screener completed successfully!"
+              exit 0
+            elif [ "$JOB_STATUS" = "FAILED" ]; then
+              echo "Screener job reported FAILED."
+              exit 1
+            fi
+            sleep 5
+          done
+          echo "Monitoring completed."

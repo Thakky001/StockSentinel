@@ -1,11 +1,11 @@
 [
   {
-    "ticker": "SPY",
-    "name": "SPDR S&P 500 ETF Trust",
-    "exchange": "ARCA",
-    "sector": "Benchmark",
-    "industry": "Index ETF",
-    "market_cap": 500000000000,
+    "ticker": "A",
+    "name": "Agilent Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -33,12 +33,34 @@
     "in_sp1500": true
   },
   {
+    "ticker": "ABNB",
+    "name": "Airbnb",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ABT",
     "name": "Abbott Laboratories",
     "exchange": "NYSE",
     "sector": "Healthcare",
     "industry": "Medical Devices",
     "market_cap": 200000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ACGL",
+    "name": "Arch Capital Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -99,12 +121,166 @@
     "in_sp1500": true
   },
   {
+    "ticker": "ADSK",
+    "name": "Autodesk",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AEE",
+    "name": "Ameren",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AEP",
+    "name": "American Electric Power",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AES",
+    "name": "AES Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Independent Power Producers & Energy Traders",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AFL",
+    "name": "Aflac",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Life & Health Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AIG",
+    "name": "American International Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Multi-line Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AIZ",
+    "name": "Assurant",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Multi-line Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AJG",
+    "name": "Arthur J. Gallagher & Co.",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Insurance Brokers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AKAM",
+    "name": "Akamai Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Internet Services & Infrastructure",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ALB",
+    "name": "Albemarle Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Specialty Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ALGN",
+    "name": "Align Technology",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Supplies",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ALL",
+    "name": "Allstate",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ALLE",
+    "name": "Allegion",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "AMAT",
     "name": "Applied Materials Inc.",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "market_cap": 170000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AMCR",
+    "name": "Amcor",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Paper & Plastic Packaging Products & Materials",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -121,12 +297,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "AME",
+    "name": "Ametek",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Electrical Components & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "AMGN",
     "name": "Amgen Inc.",
     "exchange": "NASDAQ",
     "sector": "Healthcare",
     "industry": "Biotechnology",
     "market_cap": 170000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AMP",
+    "name": "Ameriprise Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AMT",
+    "name": "American Tower",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Telecom Tower REITs",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -143,12 +352,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "ANET",
+    "name": "Arista Networks",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Communications Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "AON",
     "name": "Aon plc",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Insurance Brokers",
     "market_cap": 75000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AOS",
+    "name": "A. O. Smith",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "APA",
+    "name": "APA Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -176,12 +418,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "APO",
+    "name": "Apollo Global Management",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "APP",
+    "name": "AppLovin",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Advertising",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "APTV",
+    "name": "Aptiv",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automotive Parts & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ARE",
+    "name": "Alexandria Real Estate Equities",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Office REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ARES",
+    "name": "Ares Management",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ATO",
+    "name": "Atmos Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Gas Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "AVGO",
     "name": "Broadcom Inc.",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Semiconductors",
     "market_cap": 800000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AVY",
+    "name": "Avery Dennison",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Paper & Plastic Packaging Products & Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "AWK",
+    "name": "American Water Works",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Water Utilities",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -209,6 +539,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "AZO",
+    "name": "AutoZone",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automotive Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "BA",
     "name": "The Boeing Company",
     "exchange": "NYSE",
@@ -231,6 +572,39 @@
     "in_sp1500": true
   },
   {
+    "ticker": "BALL",
+    "name": "Ball Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Metal, Glass & Plastic Containers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BAX",
+    "name": "Baxter International",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BBY",
+    "name": "Best Buy",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Computer & Electronics Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "BDX",
     "name": "Becton Dickinson and Company",
     "exchange": "NYSE",
@@ -242,12 +616,56 @@
     "in_sp1500": true
   },
   {
+    "ticker": "BE",
+    "name": "Bloom Energy",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Electrical Components & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BEN",
+    "name": "Franklin Resources",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "BF.B",
     "name": "Brown-Forman Corporation Class B",
     "exchange": "NYSE",
     "sector": "Consumer Defensive",
     "industry": "Beverages - Wineries & Distilleries",
     "market_cap": 20000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BG",
+    "name": "Bunge Global",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Agricultural Products & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BIIB",
+    "name": "Biogen",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Biotechnology",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -275,6 +693,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "BKR",
+    "name": "Baker Hughes",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "BLK",
     "name": "BlackRock Inc.",
     "exchange": "NYSE",
@@ -297,12 +726,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "BNY",
+    "name": "BNY Mellon",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BR",
+    "name": "Broadridge Financial Solutions",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Data Processing & Outsourced Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "BRK.B",
     "name": "Berkshire Hathaway Inc. Class B",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Insurance - Diversified",
     "market_cap": 900000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BRO",
+    "name": "Brown & Brown",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Insurance Brokers",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -319,12 +781,67 @@
     "in_sp1500": true
   },
   {
+    "ticker": "BX",
+    "name": "Blackstone Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "BXP",
+    "name": "BXP, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Office REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "C",
     "name": "Citigroup Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Banks - Diversified",
     "market_cap": 120000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CAH",
+    "name": "Cardinal Health",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CARR",
+    "name": "Carrier Global",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CASY",
+    "name": "Casey's",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Food Retail",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -352,12 +869,78 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CBOE",
+    "name": "Cboe Global Markets",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CBRE",
+    "name": "CBRE Group",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Real Estate Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CCI",
+    "name": "Crown Castle",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Telecom Tower REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CCL",
+    "name": "Carnival Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "CDNS",
     "name": "Cadence Design Systems Inc.",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Software - Application",
     "market_cap": 75000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CDW",
+    "name": "CDW Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CEG",
+    "name": "Constellation Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -374,6 +957,61 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CF",
+    "name": "CF Industries",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Fertilizers & Agricultural Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CFG",
+    "name": "Citizens Financial Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CHD",
+    "name": "Church & Dwight",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Household Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CHRW",
+    "name": "C.H. Robinson",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Air Freight & Logistics",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CHTR",
+    "name": "Charter Communications",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Cable & Satellite",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "CI",
     "name": "The Cigna Group",
     "exchange": "NYSE",
@@ -385,12 +1023,67 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CIEN",
+    "name": "Ciena",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Communications Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CINF",
+    "name": "Cincinnati Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "CL",
     "name": "Colgate-Palmolive Company",
     "exchange": "NYSE",
     "sector": "Consumer Defensive",
     "industry": "Household & Personal Products",
     "market_cap": 85000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CLX",
+    "name": "Clorox",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Household Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CMCSA",
+    "name": "Comcast",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Cable & Satellite",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CME",
+    "name": "CME Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -418,12 +1111,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CMS",
+    "name": "CMS Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CNC",
+    "name": "Centene Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Managed Health Care",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CNP",
+    "name": "CenterPoint Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "COF",
+    "name": "Capital One",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Consumer Finance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "COHR",
+    "name": "Coherent Corp.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "COIN",
+    "name": "Coinbase",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "COO",
+    "name": "Cooper Companies (The)",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Supplies",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "COP",
     "name": "ConocoPhillips",
     "exchange": "NYSE",
     "sector": "Energy",
     "industry": "Oil & Gas E&P",
     "market_cap": 130000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "COR",
+    "name": "Cencora",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Distributors",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -440,12 +1221,56 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CPAY",
+    "name": "Corpay",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "CPRT",
     "name": "Copart Inc.",
     "exchange": "NASDAQ",
     "sector": "Industrials",
     "industry": "Specialty Business Services",
     "market_cap": 50000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CPT",
+    "name": "Camden Property Trust",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Multi-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CRH",
+    "name": "CRH plc",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Construction Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CRL",
+    "name": "Charles River Laboratories",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -484,6 +1309,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "CSGP",
+    "name": "CoStar Group",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Real Estate Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "CSX",
     "name": "CSX Corporation",
     "exchange": "NASDAQ",
@@ -501,6 +1337,28 @@
     "sector": "Industrials",
     "industry": "Specialty Business Services",
     "market_cap": 85000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CTSH",
+    "name": "Cognizant",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "IT Consulting & Other Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "CVNA",
+    "name": "Carvana",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automotive Retail",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -539,12 +1397,122 @@
     "in_sp1500": true
   },
   {
+    "ticker": "D",
+    "name": "Dominion Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DAL",
+    "name": "Delta Air Lines",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Passenger Airlines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DASH",
+    "name": "DoorDash",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Specialized Consumer Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DD",
+    "name": "DuPont",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Conglomerates",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DDOG",
+    "name": "Datadog",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "DE",
     "name": "Deere & Company",
     "exchange": "NYSE",
     "sector": "Industrials",
     "industry": "Farm & Heavy Construction Machinery",
     "market_cap": 110000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DECK",
+    "name": "Deckers Brands",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Footwear",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DELL",
+    "name": "Dell Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DG",
+    "name": "Dollar General",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Consumer Staples Merchandise Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DGX",
+    "name": "Quest Diagnostics",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DHI",
+    "name": "D. R. Horton",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Homebuilding",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -583,12 +1551,144 @@
     "in_sp1500": true
   },
   {
+    "ticker": "DLTR",
+    "name": "Dollar Tree",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Consumer Staples Merchandise Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DOC",
+    "name": "Healthpeak Properties",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Health Care REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DOV",
+    "name": "Dover Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DOW",
+    "name": "Dow Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Commodity Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DPZ",
+    "name": "Domino's",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Restaurants",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DRI",
+    "name": "Darden Restaurants",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Restaurants",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DTE",
+    "name": "DTE Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "DUK",
     "name": "Duke Energy Corporation",
     "exchange": "NYSE",
     "sector": "Utilities",
     "industry": "Utilities - Regulated Electric",
     "market_cap": 90000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DVA",
+    "name": "DaVita",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DVN",
+    "name": "Devon Energy",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "DXCM",
+    "name": "Dexcom",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EBAY",
+    "name": "eBay Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Broadline Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ECHO",
+    "name": "EchoStar",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Wireless Telecommunication Services",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -605,12 +1705,89 @@
     "in_sp1500": true
   },
   {
+    "ticker": "ED",
+    "name": "Consolidated Edison",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EFX",
+    "name": "Equifax",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Research & Consulting Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EG",
+    "name": "Everest Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Reinsurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EIX",
+    "name": "Edison International",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EL",
+    "name": "Est\u00e9e Lauder Companies (The)",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Personal Care Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ELV",
     "name": "Elevance Health Inc.",
     "exchange": "NYSE",
     "sector": "Healthcare",
     "industry": "Healthcare Plans",
     "market_cap": 110000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EME",
+    "name": "Emcor",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction & Engineering",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EMR",
+    "name": "Emerson Electric",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Electrical Components & Equipment",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -638,12 +1815,199 @@
     "in_sp1500": true
   },
   {
+    "ticker": "EQT",
+    "name": "EQT Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ERIE",
+    "name": "Erie Indemnity",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Insurance Brokers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ES",
+    "name": "Eversource Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ESS",
+    "name": "Essex Property Trust",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Multi-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ETN",
     "name": "Eaton Corporation plc",
     "exchange": "NYSE",
     "sector": "Industrials",
     "industry": "Electrical Equipment & Parts",
     "market_cap": 140000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ETR",
+    "name": "Entergy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EVRG",
+    "name": "Evergy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EW",
+    "name": "Edwards Lifesciences",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EXC",
+    "name": "Exelon",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EXE",
+    "name": "Expand Energy",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EXPD",
+    "name": "Expeditors International",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Air Freight & Logistics",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EXPE",
+    "name": "Expedia Group",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "EXR",
+    "name": "Extra Space Storage",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Self-Storage REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "F",
+    "name": "Ford Motor Company",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automobile Manufacturers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FANG",
+    "name": "Diamondback Energy",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FAST",
+    "name": "Fastenal",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Trading Companies & Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FCX",
+    "name": "Freeport-McMoRan",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Copper",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FDS",
+    "name": "FactSet",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -660,12 +2024,155 @@
     "in_sp1500": true
   },
   {
+    "ticker": "FDXF",
+    "name": "FedEx Freight",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Cargo Ground Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FE",
+    "name": "FirstEnergy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FERG",
+    "name": "Ferguson Enterprises",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Trading Companies & Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FFIV",
+    "name": "F5, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Communications Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "FI",
     "name": "Fiserv Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Information Technology Services",
     "market_cap": 105000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FICO",
+    "name": "Fair Isaac",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FIS",
+    "name": "Fidelity National Information Services",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FISV",
+    "name": "Fiserv",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FITB",
+    "name": "Fifth Third Bancorp",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FIX",
+    "name": "Comfort Systems USA",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction & Engineering",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FLEX",
+    "name": "Flex Ltd.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Manufacturing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FOX",
+    "name": "Fox Corporation (Class B)",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Broadcasting",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FOXA",
+    "name": "Fox Corporation (Class A)",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Broadcasting",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FRT",
+    "name": "Federal Realty Investment Trust",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Retail REITs",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -682,6 +2189,28 @@
     "in_sp1500": true
   },
   {
+    "ticker": "FTNT",
+    "name": "Fortinet",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Systems Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "FTV",
+    "name": "Fortive",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "GD",
     "name": "General Dynamics Corporation",
     "exchange": "NYSE",
@@ -693,12 +2222,56 @@
     "in_sp1500": true
   },
   {
+    "ticker": "GDDY",
+    "name": "GoDaddy",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Internet Services & Infrastructure",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "GE",
     "name": "General Electric Company",
     "exchange": "NYSE",
     "sector": "Industrials",
     "industry": "Aerospace & Defense",
     "market_cap": 200000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GEHC",
+    "name": "GE HealthCare",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GEN",
+    "name": "Gen Digital",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Systems Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GEV",
+    "name": "GE Vernova",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Heavy Electrical Equipment",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -726,6 +2299,50 @@
     "in_sp1500": true
   },
   {
+    "ticker": "GL",
+    "name": "Globe Life",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Life & Health Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GLW",
+    "name": "Corning Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GM",
+    "name": "General Motors",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automobile Manufacturers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GNRC",
+    "name": "Generac",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Heavy Electrical Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "GOOG",
     "name": "Alphabet Inc. Class C",
     "exchange": "NASDAQ",
@@ -748,12 +2365,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "GPC",
+    "name": "Genuine Parts Company",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GPN",
+    "name": "Global Payments",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GRMN",
+    "name": "Garmin",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Consumer Electronics",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "GS",
     "name": "The Goldman Sachs Group Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Capital Markets",
     "market_cap": 165000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "GWW",
+    "name": "W. W. Grainger",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HAL",
+    "name": "Halliburton",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HAS",
+    "name": "Hasbro",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Leisure Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HBAN",
+    "name": "Huntington Bancshares",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HCA",
+    "name": "HCA Healthcare",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Facilities",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -781,12 +2486,177 @@
     "in_sp1500": true
   },
   {
+    "ticker": "HIG",
+    "name": "Hartford (The)",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HII",
+    "name": "Huntington Ingalls Industries",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HLT",
+    "name": "Hilton Worldwide",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "HON",
     "name": "Honeywell International Inc.",
     "exchange": "NASDAQ",
     "sector": "Industrials",
     "industry": "Conglomerates",
     "market_cap": 135000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HONA",
+    "name": "Honeywell Aerospace",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HOOD",
+    "name": "Robinhood Markets",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Investment Banking & Brokerage",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HPE",
+    "name": "Hewlett Packard Enterprise",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HPQ",
+    "name": "HP Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HRL",
+    "name": "Hormel Foods",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HSIC",
+    "name": "Henry Schein",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HST",
+    "name": "Host Hotels & Resorts",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Hotel & Resort REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HSY",
+    "name": "Hershey Company (The)",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HUBB",
+    "name": "Hubbell Incorporated",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HUM",
+    "name": "Humana",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Managed Health Care",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "HWM",
+    "name": "Howmet Aerospace",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IBKR",
+    "name": "Interactive Brokers",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Investment Banking & Brokerage",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -809,6 +2679,61 @@
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "market_cap": 90000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IDXX",
+    "name": "Idexx Laboratories",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IEX",
+    "name": "IDEX Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IFF",
+    "name": "International Flavors & Fragrances",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Specialty Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ILMN",
+    "name": "Illumina, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "INCY",
+    "name": "Incyte",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Biotechnology",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -847,6 +2772,61 @@
     "in_sp1500": true
   },
   {
+    "ticker": "INVH",
+    "name": "Invitation Homes",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Single-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IP",
+    "name": "International Paper",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Paper & Plastic Packaging Products & Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IQV",
+    "name": "IQVIA",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IR",
+    "name": "Ingersoll Rand",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IRM",
+    "name": "Iron Mountain",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Other Specialized REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ISRG",
     "name": "Intuitive Surgical Inc.",
     "exchange": "NASDAQ",
@@ -858,12 +2838,89 @@
     "in_sp1500": true
   },
   {
+    "ticker": "IT",
+    "name": "Gartner",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "IT Consulting & Other Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ITW",
     "name": "Illinois Tool Works Inc.",
     "exchange": "NYSE",
     "sector": "Industrials",
     "industry": "Specialty Industrial Machinery",
     "market_cap": 75000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "IVZ",
+    "name": "Invesco",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "J",
+    "name": "Jacobs Solutions",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction & Engineering",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "JBHT",
+    "name": "J.B. Hunt",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Cargo Ground Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "JBL",
+    "name": "Jabil",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Manufacturing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "JCI",
+    "name": "Johnson Controls",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "JKHY",
+    "name": "Jack Henry & Associates",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -902,12 +2959,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "KDP",
+    "name": "Keurig Dr Pepper",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Soft Drinks & Non-alcoholic Beverages",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KEY",
+    "name": "KeyCorp",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KEYS",
+    "name": "Keysight Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Equipment & Instruments",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KHC",
+    "name": "Kraft Heinz",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KIM",
+    "name": "Kimco Realty",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Retail REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KKR",
+    "name": "KKR & Co.",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "KLAC",
     "name": "KLA Corporation",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Semiconductor Equipment & Materials",
     "market_cap": 105000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KMB",
+    "name": "Kimberly-Clark",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Household Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KMI",
+    "name": "Kinder Morgan",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Storage & Transportation",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -924,6 +3069,61 @@
     "in_sp1500": true
   },
   {
+    "ticker": "KR",
+    "name": "Kroger",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Food Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "KVUE",
+    "name": "Kenvue",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Personal Care Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "L",
+    "name": "Loews Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Multi-line Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LDOS",
+    "name": "Leidos",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Diversified Support Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LEN",
+    "name": "Lennar",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Homebuilding",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "LEN.B",
     "name": "Lennar Corporation Class B",
     "exchange": "NYSE",
@@ -935,12 +3135,56 @@
     "in_sp1500": true
   },
   {
+    "ticker": "LH",
+    "name": "Labcorp",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LHX",
+    "name": "L3Harris",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LII",
+    "name": "Lennox International",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "LIN",
     "name": "Linde plc",
     "exchange": "NYSE",
     "sector": "Basic Materials",
     "industry": "Specialty Chemicals",
     "market_cap": 220000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LITE",
+    "name": "Lumentum",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Communications Equipment",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -968,6 +3212,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "LNT",
+    "name": "Alliant Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "LOW",
     "name": "Lowe's Companies Inc.",
     "exchange": "NYSE",
@@ -990,12 +3245,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "LULU",
+    "name": "Lululemon Athletica",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Apparel, Accessories & Luxury Goods",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LUV",
+    "name": "Southwest Airlines",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Passenger Airlines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LVS",
+    "name": "Las Vegas Sands",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Casinos & Gaming",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LYB",
+    "name": "LyondellBasell",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Specialty Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "LYV",
+    "name": "Live Nation Entertainment",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Movies & Entertainment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "MA",
     "name": "Mastercard Incorporated",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Credit Services",
     "market_cap": 420000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MAA",
+    "name": "Mid-America Apartment Communities",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Multi-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MAR",
+    "name": "Marriott International",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MAS",
+    "name": "Masco",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1012,12 +3355,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "MCHP",
+    "name": "Microchip Technology",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "MCK",
     "name": "McKesson Corporation",
     "exchange": "NYSE",
     "sector": "Healthcare",
     "industry": "Medical Distribution",
     "market_cap": 75000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MCO",
+    "name": "Moody's Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MDLZ",
+    "name": "Mondelez International",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1034,6 +3410,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "MET",
+    "name": "MetLife",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Life & Health Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "META",
     "name": "Meta Platforms Inc.",
     "exchange": "NASDAQ",
@@ -1045,12 +3432,67 @@
     "in_sp1500": true
   },
   {
+    "ticker": "MGM",
+    "name": "MGM Resorts",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Casinos & Gaming",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MKC",
+    "name": "McCormick & Company",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MLM",
+    "name": "Martin Marietta Materials",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Construction Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "MMC",
     "name": "Marsh & McLennan Companies Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Insurance Brokers",
     "market_cap": 110000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MMM",
+    "name": "3M",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Conglomerates",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MNST",
+    "name": "Monster Beverage",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Soft Drinks & Non-alcoholic Beverages",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1078,12 +3520,78 @@
     "in_sp1500": true
   },
   {
+    "ticker": "MOS",
+    "name": "Mosaic Company (The)",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Fertilizers & Agricultural Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MPC",
+    "name": "Marathon Petroleum",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Refining & Marketing",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MPWR",
+    "name": "Monolithic Power Systems",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "MRK",
     "name": "Merck & Co. Inc.",
     "exchange": "NYSE",
     "sector": "Healthcare",
     "industry": "Drug Manufacturers - General",
     "market_cap": 310000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MRNA",
+    "name": "Moderna",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Biotechnology",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MRSH",
+    "name": "Marsh McLennan",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Insurance Brokers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MRVL",
+    "name": "Marvell Technology",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1100,12 +3608,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "MSCI",
+    "name": "MSCI",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "MSFT",
     "name": "Microsoft Corporation",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Software - Infrastructure",
     "market_cap": 3100000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MSI",
+    "name": "Motorola Solutions",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Communications Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MTB",
+    "name": "M&T Bank",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MTD",
+    "name": "Mettler Toledo",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "MU",
+    "name": "Micron Technology",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NCLH",
+    "name": "Norwegian Cruise Line Holdings",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NDAQ",
+    "name": "Nasdaq, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Financial Exchanges & Data",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NDSN",
+    "name": "Nordson Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1122,12 +3718,34 @@
     "in_sp1500": true
   },
   {
+    "ticker": "NEM",
+    "name": "Newmont",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Gold",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "NFLX",
     "name": "Netflix Inc.",
     "exchange": "NASDAQ",
     "sector": "Communication Services",
     "industry": "Entertainment",
     "market_cap": 290000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NI",
+    "name": "NiSource",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1144,12 +3762,78 @@
     "in_sp1500": true
   },
   {
+    "ticker": "NOC",
+    "name": "Northrop Grumman",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "NOW",
     "name": "ServiceNow Inc.",
     "exchange": "NYSE",
     "sector": "Technology",
     "industry": "Software - Application",
     "market_cap": 185000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NRG",
+    "name": "NRG Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Independent Power Producers & Energy Traders",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NSC",
+    "name": "Norfolk Southern",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Rail Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NTAP",
+    "name": "NetApp",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NTRS",
+    "name": "Northern Trust",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NUE",
+    "name": "Nucor",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Steel",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1166,6 +3850,105 @@
     "in_sp1500": true
   },
   {
+    "ticker": "NVR",
+    "name": "NVR, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Homebuilding",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NWS",
+    "name": "News Corp (Class B)",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Publishing",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NWSA",
+    "name": "News Corp (Class A)",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Publishing",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "NXPI",
+    "name": "NXP Semiconductors",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "O",
+    "name": "Realty Income",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Retail REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ODFL",
+    "name": "Old Dominion",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Cargo Ground Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "OKE",
+    "name": "Oneok",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Storage & Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "OMC",
+    "name": "Omnicom Group",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Advertising",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ON",
+    "name": "ON Semiconductor",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ORCL",
     "name": "Oracle Corporation",
     "exchange": "NYSE",
@@ -1177,12 +3960,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "ORLY",
+    "name": "O'Reilly Automotive",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Automotive Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "OTIS",
+    "name": "Otis Worldwide",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "OXY",
+    "name": "Occidental Petroleum",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "P",
+    "name": "Everpure",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "PANW",
     "name": "Palo Alto Networks Inc.",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Software - Infrastructure",
     "market_cap": 115000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PAYX",
+    "name": "Paychex",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Human Resource & Employment Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PCAR",
+    "name": "Paccar",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction Machinery & Heavy Transportation Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PCG",
+    "name": "PG&E Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PEG",
+    "name": "Public Service Enterprise Group",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1210,6 +4081,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "PFG",
+    "name": "Principal Financial Group",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Life & Health Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "PG",
     "name": "The Procter & Gamble Company",
     "exchange": "NYSE",
@@ -1232,12 +4114,56 @@
     "in_sp1500": true
   },
   {
+    "ticker": "PH",
+    "name": "Parker Hannifin",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PHM",
+    "name": "PulteGroup",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Homebuilding",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PKG",
+    "name": "Packaging Corporation of America",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Paper & Plastic Packaging Products & Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "PLD",
     "name": "Prologis Inc.",
     "exchange": "NYSE",
     "sector": "Real Estate",
     "industry": "REIT - Industrial",
     "market_cap": 110000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PLTR",
+    "name": "Palantir Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1254,12 +4180,188 @@
     "in_sp1500": true
   },
   {
+    "ticker": "PNC",
+    "name": "PNC Financial Services",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Diversified Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PNR",
+    "name": "Pentair",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PNW",
+    "name": "Pinnacle West Capital",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PODD",
+    "name": "Insulet Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PPG",
+    "name": "PPG Industries",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Specialty Chemicals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PPL",
+    "name": "PPL Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PRU",
+    "name": "Prudential Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Life & Health Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PSA",
+    "name": "Public Storage",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Self-Storage REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PSX",
+    "name": "Phillips 66",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Refining & Marketing",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PTC",
+    "name": "PTC Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PWR",
+    "name": "Quanta Services",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction & Engineering",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "PYPL",
+    "name": "PayPal",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "Q",
+    "name": "Qnity Electronics",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductor Materials & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "QCOM",
     "name": "QUALCOMM Incorporated",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Semiconductors",
     "market_cap": 190000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RCL",
+    "name": "Royal Caribbean Group",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Hotels, Resorts & Cruise Lines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RDDT",
+    "name": "Reddit",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Interactive Media & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "REG",
+    "name": "Regency Centers",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Retail REITs",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1276,12 +4378,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "RF",
+    "name": "Regions Financial Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Regional Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RJF",
+    "name": "Raymond James Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Investment Banking & Brokerage",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RL",
+    "name": "Ralph Lauren Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Apparel, Accessories & Luxury Goods",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RMD",
+    "name": "ResMed|",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ROK",
+    "name": "Rockwell Automation",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Electrical Components & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ROL",
+    "name": "Rollins, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Environmental & Facilities Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "ROP",
     "name": "Roper Technologies Inc.",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Software - Application",
     "market_cap": 60000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ROST",
+    "name": "Ross Stores",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Apparel Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "RSG",
+    "name": "Republic Services",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Environmental & Facilities Services",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1298,12 +4488,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "RVTY",
+    "name": "Revvity",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SBAC",
+    "name": "SBA Communications",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Telecom Tower REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "SBUX",
     "name": "Starbucks Corporation",
     "exchange": "NASDAQ",
     "sector": "Consumer Cyclical",
     "industry": "Restaurants",
     "market_cap": 110000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SCHW",
+    "name": "Charles Schwab Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Investment Banking & Brokerage",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1320,12 +4543,78 @@
     "in_sp1500": true
   },
   {
+    "ticker": "SJM",
+    "name": "J.M. Smucker Company (The)",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SKYD",
+    "name": "Skydance Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Movies & Entertainment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "SLB",
     "name": "Schlumberger Limited",
     "exchange": "NYSE",
     "sector": "Energy",
     "industry": "Oil & Gas Equipment & Services",
     "market_cap": 60000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SMCI",
+    "name": "Supermicro",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SNA",
+    "name": "Snap-on",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SNDK",
+    "name": "Sandisk",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SNPS",
+    "name": "Synopsys",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1342,12 +4631,155 @@
     "in_sp1500": true
   },
   {
+    "ticker": "SOLV",
+    "name": "Solventum",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Technology",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SPG",
+    "name": "Simon Property Group",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Retail REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "SPGI",
     "name": "S&P Global Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Financial Data & Stock Exchanges",
     "market_cap": 160000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SPY",
+    "name": "SPDR S&P 500 ETF Trust",
+    "exchange": "ARCA",
+    "sector": "Benchmark",
+    "industry": "Index ETF",
+    "market_cap": 500000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SRE",
+    "name": "Sempra",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "STE",
+    "name": "Steris",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "STLD",
+    "name": "Steel Dynamics",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Steel",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "STT",
+    "name": "State Street Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "STX",
+    "name": "Seagate Technology",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "STZ",
+    "name": "Constellation Brands",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Distillers & Vintners",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SW",
+    "name": "Smurfit Westrock",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Paper & Plastic Packaging Products & Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SWK",
+    "name": "Stanley Black & Decker",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SWKS",
+    "name": "Skyworks Solutions",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "SYF",
+    "name": "Synchrony Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Consumer Finance",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1364,12 +4796,100 @@
     "in_sp1500": true
   },
   {
+    "ticker": "SYY",
+    "name": "Sysco",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Food Distributors",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "T",
     "name": "AT&T Inc.",
     "exchange": "NYSE",
     "sector": "Communication Services",
     "industry": "Telecom Services",
     "market_cap": 155000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TDG",
+    "name": "TransDigm Group",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TDY",
+    "name": "Teledyne Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Equipment & Instruments",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TECH",
+    "name": "Bio-Techne",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TEL",
+    "name": "TE Connectivity",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Manufacturing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TER",
+    "name": "Teradyne",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Semiconductor Materials & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TFC",
+    "name": "Truist Financial",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Diversified Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TGT",
+    "name": "Target Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Consumer Staples Merchandise Retail",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1386,12 +4906,111 @@
     "in_sp1500": true
   },
   {
+    "ticker": "TKO",
+    "name": "TKO Group Holdings",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Movies & Entertainment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "TMO",
     "name": "Thermo Fisher Scientific Inc.",
     "exchange": "NYSE",
     "sector": "Healthcare",
     "industry": "Diagnostics & Research",
     "market_cap": 210000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TMUS",
+    "name": "T-Mobile US",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Wireless Telecommunication Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TPL",
+    "name": "Texas Pacific Land Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Exploration & Production",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TPR",
+    "name": "Tapestry, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Apparel, Accessories & Luxury Goods",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TRGP",
+    "name": "Targa Resources",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Storage & Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TRMB",
+    "name": "Trimble Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TROW",
+    "name": "T. Rowe Price",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Asset Management & Custody Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TRV",
+    "name": "Travelers Companies (The)",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TSCO",
+    "name": "Tractor Supply",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Other Specialty Retail",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1408,12 +5027,133 @@
     "in_sp1500": true
   },
   {
+    "ticker": "TSN",
+    "name": "Tyson Foods",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Packaged Foods & Meats",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TT",
+    "name": "Trane Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Building Products",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TTWO",
+    "name": "Take-Two Interactive",
+    "exchange": "NASDAQ",
+    "sector": "Communication Services",
+    "industry": "Interactive Home Entertainment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TWLO",
+    "name": "Twilio",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Systems Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "TXN",
     "name": "Texas Instruments Incorporated",
     "exchange": "NASDAQ",
     "sector": "Technology",
     "industry": "Semiconductors",
     "market_cap": 180000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TXT",
+    "name": "Textron",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "TYL",
+    "name": "Tyler Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "UAL",
+    "name": "United Airlines Holdings",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Passenger Airlines",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "UBER",
+    "name": "Uber",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Passenger Ground Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "UDR",
+    "name": "UDR, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Multi-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "UHS",
+    "name": "Universal Health Services",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Facilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ULTA",
+    "name": "Ulta Beauty",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Other Specialty Retail",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1463,12 +5203,45 @@
     "in_sp1500": true
   },
   {
+    "ticker": "USB",
+    "name": "U.S. Bancorp",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Diversified Banks",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "V",
     "name": "Visa Inc.",
     "exchange": "NYSE",
     "sector": "Financial Services",
     "industry": "Credit Services",
     "market_cap": 540000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VEEV",
+    "name": "Veeva Systems",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Technology",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VICI",
+    "name": "Vici Properties",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Hotel & Resort REITs",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1485,6 +5258,72 @@
     "in_sp1500": true
   },
   {
+    "ticker": "VLTO",
+    "name": "Veralto",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Environmental & Facilities Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VMC",
+    "name": "Vulcan Materials Company",
+    "exchange": "NASDAQ",
+    "sector": "Materials",
+    "industry": "Construction Materials",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VMRK",
+    "name": "Vivmark Residential",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Multi-Family Residential REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VRSK",
+    "name": "Verisk Analytics",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Research & Consulting Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VRSN",
+    "name": "Verisign",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Internet Services & Infrastructure",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VRT",
+    "name": "Vertiv",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Electrical Components & Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "VRTX",
     "name": "Vertex Pharmaceuticals Incorporated",
     "exchange": "NASDAQ",
@@ -1496,12 +5335,122 @@
     "in_sp1500": true
   },
   {
+    "ticker": "VST",
+    "name": "Vistra Corp.",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VTR",
+    "name": "Ventas",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Health Care REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VTRS",
+    "name": "Viatris",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Pharmaceuticals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "VYLR",
+    "name": "Vylor",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Staples",
+    "industry": "Agricultural Products & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "VZ",
     "name": "Verizon Communications Inc.",
     "exchange": "NYSE",
     "sector": "Communication Services",
     "industry": "Telecom Services",
     "market_cap": 180000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WAB",
+    "name": "Wabtec",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Construction Machinery & Heavy Transportation Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WAT",
+    "name": "Waters Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Life Sciences Tools & Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WDAY",
+    "name": "Workday, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Application Software",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WDC",
+    "name": "Western Digital",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Technology Hardware, Storage & Peripherals",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WEC",
+    "name": "WEC Energy Group",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Electric Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WELL",
+    "name": "Welltower",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Health Care REITs",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true
@@ -1540,6 +5489,17 @@
     "in_sp1500": true
   },
   {
+    "ticker": "WMB",
+    "name": "Williams Companies",
+    "exchange": "NASDAQ",
+    "sector": "Energy",
+    "industry": "Oil & Gas Storage & Transportation",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "WMT",
     "name": "Walmart Inc.",
     "exchange": "NYSE",
@@ -1551,12 +5511,144 @@
     "in_sp1500": true
   },
   {
+    "ticker": "WRB",
+    "name": "W. R. Berkley Corporation",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Property & Casualty Insurance",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WSM",
+    "name": "Williams-Sonoma, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Homefurnishing Retail",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WST",
+    "name": "West Pharmaceutical Services",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Supplies",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WTW",
+    "name": "Willis Towers Watson",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Insurance Brokers",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WY",
+    "name": "Weyerhaeuser",
+    "exchange": "NASDAQ",
+    "sector": "Real Estate",
+    "industry": "Timber REITs",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "WYNN",
+    "name": "Wynn Resorts",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Casinos & Gaming",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "XEL",
+    "name": "Xcel Energy",
+    "exchange": "NASDAQ",
+    "sector": "Utilities",
+    "industry": "Multi-Utilities",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
     "ticker": "XOM",
     "name": "Exxon Mobil Corporation",
     "exchange": "NYSE",
     "sector": "Energy",
     "industry": "Oil & Gas Integrated",
     "market_cap": 470000000000,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "XYL",
+    "name": "Xylem Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Industrials",
+    "industry": "Industrial Machinery & Supplies & Components",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "XYZ",
+    "name": "Block, Inc.",
+    "exchange": "NASDAQ",
+    "sector": "Financials",
+    "industry": "Transaction & Payment Processing Services",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "YUM",
+    "name": "Yum! Brands",
+    "exchange": "NASDAQ",
+    "sector": "Consumer Discretionary",
+    "industry": "Restaurants",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ZBH",
+    "name": "Zimmer Biomet",
+    "exchange": "NASDAQ",
+    "sector": "Health Care",
+    "industry": "Health Care Equipment",
+    "market_cap": null,
+    "is_active": true,
+    "in_russell3000": true,
+    "in_sp1500": true
+  },
+  {
+    "ticker": "ZBRA",
+    "name": "Zebra Technologies",
+    "exchange": "NASDAQ",
+    "sector": "Information Technology",
+    "industry": "Electronic Equipment & Instruments",
+    "market_cap": null,
     "is_active": true,
     "in_russell3000": true,
     "in_sp1500": true

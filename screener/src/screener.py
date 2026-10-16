@@ -562,6 +562,13 @@ def run_screener(
         except Exception as e:
             logger.warning(f"Could not update scan_jobs completion: {e}")
 
+    # 7. Automated Database Housekeeping (Rolling Retention Window)
+    if db_persist:
+        try:
+            db.prune_database_records()
+        except Exception as e:
+            logger.debug(f"Housekeeping notice (non-fatal): {e}")
+
     return {
         "job_id": job_id,
         "tickers_total": len(target_tickers),

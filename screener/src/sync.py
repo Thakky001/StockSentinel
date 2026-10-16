@@ -169,6 +169,12 @@ def run_sync(
         f"Upserted bars: {total_upserted_bars}."
     )
 
+    # Automated Database Housekeeping (Rolling Retention Window)
+    try:
+        db.prune_database_records()
+    except Exception as e:
+        logger.debug(f"Housekeeping notice (non-fatal): {e}")
+
     return {
         "mode": mode,
         "target_date": target_friday_str,

@@ -214,3 +214,56 @@ def get_latest_cached_date(ticker: str, cur=None) -> Optional[str]:
             cursor.execute(sql, (ticker,))
             row = cursor.fetchone()
             return str(row[0]) if row and row[0] else None
+
+
+def prune_database_records(
+    daily_bars_days: int = 730,
+    signals_days: int = 365,
+    scan_jobs_days: int = 90,
+    cur=None,
+) -> Dict[str, int]:
+    """
+    Automated Database Retention / Housekeeping Policy:
+    Prunes expired historical records in a rolling window to keep storage capped and fast:
+    - stock_daily_bars: Keeps last 730 days (2 years), required for Weinstein 30w/35w/52w indicators.
+    - screener_signals: Keeps last 365 days (52 weeks), required for frontend scan date history.
+    - scan_jobs: Keeps last 90 days (3 months) of audit run logs.
+    """
+    deleted_counts = {"daily_bars": 0, "signals": 0, "scan_jobs": 0}
+
+    def _execute_prunes(cursor):
+        cursor.execute(
+            "DELETE FROM stock_daily_bars WHERE trade_date < CURRENT_DATE - (%s || ' days')::interval;",
+            (daily_bars_days,),
+        )
+        deleted_counts["daily_bars"] = cursor.rowcount
+
+        cursor.execute(
+            "DELETE FROM screener_signals WHERE scan_date < CURRENT_DATE - (%s || ' days')::interval;",
+            (signals_days,),
+        )
+        deleted_counts["signals"] = cursor.rowcount
+
+        cursor.execute(
+            "DELETE FROM scan_jobs WHERE created_at < CURRENT_DATE - (%s || ' days')::interval;",
+            (scan_jobs_days,),
+        )
+        deleted_counts["scan_jobs"] = cursor.rowcount
+
+    try:
+        if cur:
+            _execute_prunes(cur)
+        else:
+            with db_cursor(commit=True) as cursor:
+                _execute_prunes(cursor)
+
+        logger.info(
+            f"Database housekeeping completed: pruned {deleted_counts['daily_bars']} daily bars (> {daily_bars_days}d), "
+            f"{deleted_counts['signals']} signals (> {signals_days}d), "
+            f"{deleted_counts['scan_jobs']} scan jobs (> {scan_jobs_days}d)."
+        )
+    except Exception as e:
+        logger.warning(f"Database housekeeping notice (non-fatal): {e}")
+
+    return deleted_counts
+
