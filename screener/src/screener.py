@@ -960,6 +960,25 @@ def run_screener(
         except Exception as e:
             logger.warning(f"Could not persist signals to local JSON: {e}")
 
+    # 5c. Dispatch Smart Telegram Alert (Actionable Weekly Report)
+    telegram_alert_sent = False
+    if config.TELEGRAM_ENABLED:
+        try:
+            from screener.src import telegram_alert
+            alert_date = str(scan_date or (qualified_signals[0]["scan_date"] if qualified_signals else date.today()))
+            telegram_alert_sent = telegram_alert.send_weekly_alert(
+                signals=qualified_signals,
+                scan_date=alert_date,
+                universe_count=processed_count or len(target_tickers),
+                market_regime=market_regime,
+                base_url=config.WEB_APP_BASE_URL,
+                top_n=5,
+                smart_mode=True,
+            )
+            logger.info(f"Smart Telegram alert dispatched: status={telegram_alert_sent}")
+        except Exception as e:
+            logger.warning(f"Smart Telegram alert dispatch error (non-fatal): {e}")
+
     # 6. Audit job completion
     if db_persist and job_id:
         try:
@@ -969,6 +988,7 @@ def run_screener(
                 tickers_processed=processed_count,
                 tickers_failed=failed_count,
                 signals_found=len(qualified_signals),
+                telegram_alert_sent=telegram_alert_sent,
                 market_regime=market_regime,
             )
         except Exception as e:

@@ -58,4 +58,4 @@ TELEGRAM_CHAT_ID: str = os.getenv("TELEGRAM_CHAT_ID", "")
 TELEGRAM_ENABLED: bool = os.getenv("TELEGRAM_ENABLED", "false").lower() in ("1", "true", "yes")
 
 # Web Application Base URL (used for deep-link chart URLs in Telegram cards)
-WEB_APP_BASE_URL: str = os.getenv("WEB_APP_BASE_URL", "http://localhost:5173")
+WEB_APP_BASE_URL: str = os.getenv("WEB_APP_BASE_URL", "https://stocksentinel-web.onrender.com")

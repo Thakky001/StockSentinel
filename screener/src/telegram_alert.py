@@ -166,6 +166,8 @@ def _build_status_badge(entry_status: str, diff_pct: float) -> str:
     badges: Dict[str, str] = {
         "IN_BUY_ZONE": f"🟢 <b>IN BUY ZONE ({pct_str})</b>",
         "EXTENDED": f"🟡 <b>EXTENDED ({pct_str})</b> [Wait for pullback]",
+        "PROFIT_RUN": f"🔵 <b>PROFIT RUN ({pct_str})</b> [Trailing stop locked]",
+        "TRAILING_WARNING": f"🟠 <b>TRAILING WARNING ({pct_str})</b> [Take profits]",
         "BELOW_ENTRY": f"⚪ <b>BELOW ENTRY ({pct_str})</b> [Retesting pivot]",
         "STOPPED_OUT": f"🔴 <b>STOPPED OUT ({pct_str})</b> [Risk trigger]",
     }
@@ -195,11 +197,197 @@ def format_alert_header(scan_date: str, universe_count: int, signal_count: int) 
         f"🛡️ <b>StockSentinel Weekly Stage 2 Alert</b>\n"
         f"{_HEADER_SEPARATOR}\n"
         f"📅 <b>Scan Date:</b> {escape_html(scan_date)}\n"
-        f"🎯 <b>Universe:</b> Russell 3000 + S&amp;P 1500 ({universe_count:,} stocks)\n"
+        f"🎯 <b>Universe:</b> S&amp;P 500 ({universe_count:,} stocks)\n"
         f"🚀 <b>New Breakouts:</b> {signal_count} stocks\n"
         f"{_HEADER_SEPARATOR}"
     )
     return header
+
+
+# ---------------------------------------------------------------------------
+# Smart Actionable Weekly Report Formatter
+# ---------------------------------------------------------------------------
+
+
+def format_smart_weekly_report(
+    signals: List[Dict[str, Any]],
+    scan_date: str,
+    universe_count: int = 505,
+    market_regime: str = "CAUTION_MARKET",
+    base_url: str = "https://stocksentinel-web.onrender.com",
+    top_n: int = 5,
+) -> str:
+    """
+    Renders an actionable, concise Telegram weekly report card.
+
+    Structure:
+    1. Header & Market Regime
+    2. Top 5-10 IN_BUY_ZONE breakouts (highest Mansfield RS & best entry)
+    3. Risk Triggers: STOPPED_OUT warnings (or confirmation of 0 cuts)
+    4. 6-Tier Portfolio Overview Summary
+    5. Direct link to Web Dashboard
+    """
+    clean_base_url: str = (base_url or config.WEB_APP_BASE_URL or "https://stocksentinel-web.onrender.com").rstrip("/")
+    clean_date: str = scan_date.split("T")[0] if "T" in scan_date else scan_date
+
+    # 1. Market Regime Banner
+    regime_desc: Dict[str, str] = {
+        "BEAR_MARKET": (
+            "🛑 <b>Market Regime: BEAR_MARKET (ตลาดปรับฐานรุนแรง)</b>\n"
+            "• ดัชนี SPY หลุดต่ำกว่าเส้น 30 สัปดาห์ (SMA 30w)\n"
+            "• <b>คำแนะนำ:</b> งดเปิดสถานะซื้อใหม่เด็ดขาด หรือลดขนาดไม้ลง 50-70%"
+        ),
+        "CAUTION_MARKET": (
+            "⚠️ <b>Market Regime: CAUTION_MARKET (เฝ้าระวังความผันผวน)</b>\n"
+            "• ดัชนี SPY หลุดต่ำกว่าเส้น 10w หรือความชัน 30w ชะลอตัว\n"
+            "• <b>คำแนะนำ:</b> ลดขนาดไม้ลง 30-50% เน้นเฉพาะตัวที่ RS แข็งแกร่งที่สุด"
+        ),
+        "BULL_MARKET": (
+            "🟢 <b>Market Regime: BULL_MARKET (ตลาดกระทิงเต็มตัว)</b>\n"
+            "• ดัชนี SPY ยืนเหนือเส้น 30 สัปดาห์ และความชันเป็นบวก\n"
+            "• <b>คำแนะนำ:</b> สภาวะตลาดเอื้ออำนวย เปิดสถานะซื้อได้เต็มขนาดไม้"
+        ),
+    }
+    regime_text = regime_desc.get(market_regime, f"ℹ️ <b>Market Regime: {escape_html(market_regime)}</b>")
+
+    # 2. Status Partitioning
+    in_buy_zone: List[Dict[str, Any]] = []
+    extended: List[Dict[str, Any]] = []
+    profit_run: List[Dict[str, Any]] = []
+    trailing_warning: List[Dict[str, Any]] = []
+    below_entry: List[Dict[str, Any]] = []
+    stopped_out: List[Dict[str, Any]] = []
+
+    for s in signals:
+        st = s.get("entry_status") or s.get("status") or ""
+        if st == "IN_BUY_ZONE":
+            in_buy_zone.append(s)
+        elif st == "EXTENDED":
+            extended.append(s)
+        elif st == "PROFIT_RUN":
+            profit_run.append(s)
+        elif st == "TRAILING_WARNING":
+            trailing_warning.append(s)
+        elif st == "BELOW_ENTRY":
+            below_entry.append(s)
+        elif st == "STOPPED_OUT":
+            stopped_out.append(s)
+
+    # 3. Top Picks in Buy Zone (Sort by Mansfield RS descending, tiebreak by diff_pct ascending)
+    in_buy_zone.sort(
+        key=lambda x: (
+            float(x.get("mrs_score") or -999.0),
+            -abs(float(x.get("diff_pct") or 0.0)),
+        ),
+        reverse=True,
+    )
+    top_buys = in_buy_zone[:top_n]
+
+    buy_cards: List[str] = []
+    for idx, s in enumerate(top_buys, 1):
+        ticker = escape_html(s.get("ticker", "UNKNOWN"))
+        name = escape_html(s.get("name") or ticker)
+        sector = escape_html(s.get("sector") or "N/A")
+        c_price = float(s.get("current_price") or s.get("close_price") or 0.0)
+        e_price = float(s.get("entry_price") or 0.0)
+        s_loss = float(s.get("stop_loss_price") or s.get("active_stop_loss") or 0.0)
+        diff_pct = float(s.get("diff_pct") or 0.0)
+        diff_str = f"+{diff_pct:.1f}%" if diff_pct >= 0 else f"{diff_pct:.1f}%"
+        risk_pct = ((e_price - s_loss) / e_price * 100.0) if e_price > 0 else 0.0
+        mrs = float(s.get("mrs_score") or 0.0)
+        mrs_str = f"+{mrs:.1f}" if mrs >= 0 else f"{mrs:.1f}"
+        vol_surge = float(s.get("volume_surge_ratio") or 1.0)
+        shares = int(s.get("recommended_shares") or 0)
+        capital = shares * c_price
+        earnings_warn = s.get("earnings_warning")
+
+        breakeven_badge = " [🛡️ บังทุน]" if s_loss >= e_price and e_price > 0 else ""
+        if earnings_warn:
+            warn_clean = str(earnings_warn).strip()
+            if not warn_clean.startswith("⚠️"):
+                warn_clean = f"⚠️ {warn_clean}"
+            earnings_line = f"\n   • <b>{escape_html(warn_clean)}</b>"
+        else:
+            earnings_line = ""
+
+        card_lines = [
+            f"<b>{idx}. 💎 {ticker}</b> — {name} ({sector})",
+            f"   • <b>ราคาปิด:</b> ${c_price:.2f} | <b>จุดเข้า (Pivot):</b> ${e_price:.2f} ({diff_str})",
+            f"   • <b>Stop Loss:</b> ${s_loss:.2f} (เสี่ยง {risk_pct:.1f}%){breakeven_badge}",
+            f"   • <b>Mansfield RS:</b> {mrs_str} vs SPY | <b>โวลุ่มเข้า:</b> {vol_surge:.1f}x",
+        ]
+        if shares > 0:
+            card_lines.append(f"   • <b>ไม้ซื้อแนะนำ:</b> {shares:,} หุ้น (${capital:,.0f})")
+        if earnings_line:
+            card_lines.append(earnings_line)
+
+        buy_cards.append("\n".join(card_lines))
+
+    if buy_cards:
+        buy_section = (
+            f"🟢 <b>TOP {len(buy_cards)} หุ้นโซนซื้อได้เปรียบ (IN BUY ZONE)</b>\n"
+            f"คัดเฉพาะตัวที่ Mansfield RS แข็งแกร่ง + ต้นทุนใกล้จุดเบรก:\n\n"
+            + "\n\n".join(buy_cards)
+        )
+    else:
+        buy_section = (
+            f"🟢 <b>หุ้นโซนซื้อได้เปรียบ (IN BUY ZONE)</b>\n"
+            f"• สัปดาห์นี้ไม่มีหุ้นอยู่ในระยะต้นทุนได้เปรียบ (รอจังหวะย่อตัว)"
+        )
+
+    # 4. Risk Trigger Section (STOPPED_OUT)
+    if stopped_out:
+        risk_items = []
+        for s in stopped_out:
+            t = escape_html(s.get("ticker", "UNKNOWN"))
+            nm = escape_html(s.get("name") or t)
+            cp = float(s.get("current_price") or 0.0)
+            sl = float(s.get("stop_loss_price") or s.get("active_stop_loss") or 0.0)
+            diff = float(s.get("diff_pct") or 0.0)
+            risk_items.append(f"• <b>{t}</b> ({nm}): ราคา ${cp:.2f} หลุด Stop Loss ${sl:.2f} ({diff:+.1f}%)")
+        risk_section = (
+            f"🔴 <b>สัญญาณตัดขาดทุน (STOPPED OUT) — ต้องคัตทิ้ง ({len(stopped_out)} ตัว):</b>\n"
+            + "\n".join(risk_items)
+        )
+    else:
+        risk_section = (
+            f"🔴 <b>สัญญาณตัดขาดทุน (STOPPED OUT):</b>\n"
+            f"• สัปดาห์นี้: ไม่มีหุ้นหลุดจุดตัดขาดทุน ✅"
+        )
+
+    # 5. Status Breakdown
+    breakdown_section = (
+        f"📊 <b>สรุปสถานะพอร์ต/ตลาด ({len(signals)} หุ้น):</b>\n"
+        f"• 🟢 โซนซื้อได้เปรียบ: {len(in_buy_zone)} | 🟡 วิ่งเกินโซน (+5%): {len(extended)}\n"
+        f"• 🔵 รันเทรนด์ (+15%): {len(profit_run)} | 🟠 เตือนล็อกกำไร: {len(trailing_warning)}\n"
+        f"• ⚪ จ่อเบรกแนวต้าน: {len(below_entry)}"
+    )
+
+    # 6. Web Link Footer
+    footer = (
+        f"🔗 <b>ดูกระดานสแกนฉบับเต็มและกราฟ TradingView ได้ที่:</b>\n"
+        f'<a href="{clean_base_url}/">{clean_base_url}/</a>'
+    )
+
+    # Assemble Full Report
+    report = (
+        f"🛡️ <b>StockSentinel — Weekly Stage 2 Report</b>\n"
+        f"{_HEADER_SEPARATOR}\n"
+        f"📅 <b>วันที่สแกน:</b> {escape_html(clean_date)}\n"
+        f"🌐 <b>Universe:</b> S&amp;P 500 ({universe_count:,} หุ้น)\n"
+        f"🎯 <b>สัญญาณผ่านเกณฑ์ทั้งหมด:</b> {len(signals)} หุ้น\n\n"
+        f"{regime_text}\n"
+        f"{_HEADER_SEPARATOR}\n\n"
+        f"{buy_section}\n\n"
+        f"{_HEADER_SEPARATOR}\n"
+        f"{risk_section}\n\n"
+        f"{_HEADER_SEPARATOR}\n"
+        f"{breakdown_section}\n\n"
+        f"{_HEADER_SEPARATOR}\n"
+        f"{footer}"
+    )
+
+    return report
 
 
 # ---------------------------------------------------------------------------
@@ -517,38 +705,17 @@ def send_weekly_alert(
     signals: List[Dict[str, Any]],
     scan_date: str,
     universe_count: int,
+    market_regime: str = "CAUTION_MARKET",
+    base_url: str = "",
+    top_n: int = 5,
+    smart_mode: bool = True,
 ) -> bool:
     """
     Orchestrate the full weekly alert pipeline: enrich → format → chunk → dispatch.
 
-    Pipeline steps
-    --------------
-    1. Read ``TELEGRAM_ENABLED``, ``TELEGRAM_BOT_TOKEN``, and
-       ``TELEGRAM_CHAT_ID`` from :mod:`screener.src.config`.
-    2. If alerting is disabled or credentials are missing, log a warning and
-       return ``True`` (graceful no-op – does not count as a failure).
-    3. Enrich each signal dict with company ``name`` and ``sector`` from the
-       ``stocks`` table if those fields are absent.
-    4. Render the weekly header (``format_alert_header``).
-    5. Render a stock card per signal (``format_stock_card``).
-    6. Chunk header + cards into Telegram-safe message strings
-       (``chunk_telegram_messages``).
-    7. Dispatch all chunks via ``send_telegram_message`` with a
-       ``_INTER_CHUNK_DELAY_S`` pause between each chunk.
-
-    Args:
-        signals:         List of screener signal dicts, one per breakout candidate.
-                         Each dict must contain at minimum: ``ticker``,
-                         ``entry_price``, ``current_price``, ``max_buy_price``,
-                         ``stop_loss_price``, ``diff_pct``, ``entry_status``,
-                         ``volume_surge_ratio``, ``mrs_score``, ``sma_30w``,
-                         ``sma_30w_slope``.
-        scan_date:       ISO date string (YYYY-MM-DD) of the screening run.
-        universe_count:  Total stocks in the screening universe.
-
-    Returns:
-        ``True`` if all chunks were dispatched successfully (or alerting was
-        intentionally disabled); ``False`` if any chunk failed to send.
+    When smart_mode=True, generates the actionable, concise Telegram summary report
+    with Market Regime, Top IN_BUY_ZONE candidates, Risk triggers, and web dashboard link.
+    When smart_mode=False, falls back to legacy multi-card chunking.
     """
     # ── Guard: check configuration ─────────────────────────────────────────
     if not config.TELEGRAM_ENABLED:
@@ -559,7 +726,7 @@ def send_weekly_alert(
 
     bot_token: str = config.TELEGRAM_BOT_TOKEN
     chat_id: str = config.TELEGRAM_CHAT_ID
-    base_url: str = config.WEB_APP_BASE_URL
+    app_url: str = base_url or config.WEB_APP_BASE_URL or "https://stocksentinel-web.onrender.com"
 
     if not bot_token or not chat_id:
         logger.warning(
@@ -569,28 +736,40 @@ def send_weekly_alert(
         return True
 
     logger.info(
-        "send_weekly_alert: preparing alert for %d signal(s) on %s.",
+        "send_weekly_alert: preparing alert for %d signal(s) on %s (smart_mode=%s).",
         len(signals),
         scan_date,
+        smart_mode,
     )
 
     # ── Step 1: DB enrichment ──────────────────────────────────────────────
     enriched_signals: List[Dict[str, Any]] = enrich_signals_from_db(signals)
 
-    # ── Step 2: Format header ──────────────────────────────────────────────
-    header: str = format_alert_header(
-        scan_date=scan_date,
-        universe_count=universe_count,
-        signal_count=len(enriched_signals),
-    )
+    # ── Step 2: Format message chunks ──────────────────────────────────────
+    if smart_mode:
+        report_text: str = format_smart_weekly_report(
+            signals=enriched_signals,
+            scan_date=scan_date,
+            universe_count=universe_count,
+            market_regime=market_regime,
+            base_url=app_url,
+            top_n=top_n,
+        )
+        if len(report_text) <= MAX_CHUNK_SIZE:
+            chunks = [report_text]
+        else:
+            chunks = chunk_telegram_messages(report_text[:1000], [report_text[1000:]])
+    else:
+        header: str = format_alert_header(
+            scan_date=scan_date,
+            universe_count=universe_count,
+            signal_count=len(enriched_signals),
+        )
+        stock_cards: List[str] = [
+            format_stock_card(signal, base_url=app_url) for signal in enriched_signals
+        ]
+        chunks = chunk_telegram_messages(header, stock_cards)
 
-    # ── Step 3: Format stock cards ─────────────────────────────────────────
-    stock_cards: List[str] = [
-        format_stock_card(signal, base_url=base_url) for signal in enriched_signals
-    ]
-
-    # ── Step 4: Chunk into deliverable messages ────────────────────────────
-    chunks: List[str] = chunk_telegram_messages(header, stock_cards)
     total_chunks: int = len(chunks)
 
     logger.info(
