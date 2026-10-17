@@ -19,6 +19,21 @@ import { MOCK_DATES, MOCK_SIGNALS } from '../db/mockDb';
 const router = Router();
 
 /**
+ * Normalizes any Date object or ISO timestamp string into YYYY-MM-DD format.
+ */
+function toDateOnlyString(val: any): string {
+  if (!val) return '';
+  if (val instanceof Date) {
+    const year = val.getFullYear();
+    const month = String(val.getMonth() + 1).padStart(2, '0');
+    const day = String(val.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  const str = String(val);
+  return str.includes('T') ? str.split('T')[0] : str.slice(0, 10);
+}
+
+/**
  * Loads the latest screened signals from the local JSON persistence file.
  * Used when PostgreSQL is offline or when running in standalone mode.
  */
@@ -38,7 +53,7 @@ function loadLatestSignalsFromFile(): { scan_date: string; market_regime?: strin
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.signals) && parsed.signals.length > 0) {
           return {
-            scan_date: parsed.scan_date ?? '2026-10-16',
+            scan_date: toDateOnlyString(parsed.scan_date ?? '2026-10-16'),
             market_regime: parsed.market_regime ?? 'CAUTION_MARKET',
             signals: parsed.signals,
           };
@@ -118,7 +133,7 @@ router.get(
           SELECT
             s.id,
             s.scan_id,
-            s.scan_date,
+            to_char(s.scan_date, 'YYYY-MM-DD') AS scan_date,
             s.ticker,
             st.name,
             st.sector,
@@ -175,7 +190,7 @@ router.get(
 
         if (result.rows.length > 0) {
           total = parseInt(result.rows[0].total_count, 10);
-          scanDate = result.rows[0].scan_date ?? scanDate;
+          scanDate = toDateOnlyString(result.rows[0].scan_date ?? scanDate);
           signals = result.rows.map(({ total_count: _, ...row }) => row);
         }
       } catch (dbErr: any) {
@@ -191,7 +206,7 @@ router.get(
         const fileData = loadLatestSignalsFromFile();
         const baseSignals = fileData ? fileData.signals : MOCK_SIGNALS;
         if (fileData) {
-          scanDate = fileData.scan_date;
+          scanDate = toDateOnlyString(fileData.scan_date);
           marketRegime = fileData.market_regime ?? marketRegime;
         }
 
@@ -236,6 +251,7 @@ router.get(
       // Normalize all signals so both close_price & current_price, status & entry_status are always present
       const normalizedSignals = signals.map((s: any) => ({
         ...s,
+        scan_date: toDateOnlyString(s.scan_date),
         close_price: Number(s.close_price ?? s.current_price ?? s.weekly_close ?? 0),
         current_price: Number(s.current_price ?? s.weekly_close ?? s.close_price ?? 0),
         status: s.status ?? s.entry_status ?? 'IN_BUY_ZONE',
@@ -248,7 +264,7 @@ router.get(
       }));
 
       const responseData: ScreenerListData = {
-        scan_date: scanDate,
+        scan_date: toDateOnlyString(scanDate),
         market_regime: marketRegime,
         total,
         page,

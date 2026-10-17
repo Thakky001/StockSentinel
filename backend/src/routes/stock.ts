@@ -210,7 +210,7 @@ router.get(
           const stockRow = stockResult.rows[0];
 
           const signalResult = await query<ScreenerSignal>(
-            `SELECT *
+            `SELECT *, to_char(scan_date, 'YYYY-MM-DD') AS scan_date
              FROM screener_signals
              WHERE ticker = $1
              ORDER BY scan_date DESC

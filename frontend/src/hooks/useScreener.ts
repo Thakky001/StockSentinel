@@ -49,7 +49,8 @@ export function useScreenerData(filters: ScreenerFilters): UseScreenerResult {
           setSignals(data.signals);
           setTotal(data.total);
           setTotalPages(data.total_pages);
-          setScanDate(data.scan_date);
+          const cleanScanDate = data.scan_date ? (data.scan_date.includes('T') ? data.scan_date.split('T')[0] : data.scan_date) : '';
+          setScanDate(cleanScanDate);
           setMarketRegime(data.market_regime ?? null);
         }
       } catch (err) {

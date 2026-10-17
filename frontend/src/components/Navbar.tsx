@@ -74,11 +74,14 @@ const Navbar: React.FC<NavbarProps> = ({
               className="bg-slate-800 border border-slate-600 text-slate-100 text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[120px]"
             >
               <option value="">รอบล่าสุด</option>
-              {(Array.isArray(dates) ? dates : []).map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
+              {(Array.isArray(dates) ? dates : []).map((d) => {
+                const dateOnly = d.includes('T') ? d.split('T')[0] : d;
+                return (
+                  <option key={dateOnly} value={dateOnly}>
+                    {dateOnly}
+                  </option>
+                );
+              })}
             </select>
           )}
         </div>
