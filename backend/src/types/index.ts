@@ -87,12 +87,17 @@ export interface ScreenerSignal {
   avg_volume_10w: number;
   stage: string;
 
-  // V2 Mathematical Enhancements
+  // V2 & V2.1 Mathematical Enhancements
   sma_10w?: number | null;
   base_tightness_pct?: number | null;
   atr_14w?: number | null;
   market_regime?: MarketRegime | string | null;
   recommended_shares?: number | null;
+  active_stop_loss?: number | null;
+  highest_price_since_entry?: number | null;
+  peak_gain_pct?: number | null;
+  current_gain_pct?: number | null;
+  earnings_warning?: string | null;
 
   created_at: string;
 

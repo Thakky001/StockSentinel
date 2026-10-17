@@ -267,3 +267,160 @@ def prune_database_records(
 
     return deleted_counts
 
+
+def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
+    """
+    Loads all active breakout signals from 'active_breakout_signals' keyed by symbol.
+    """
+    sql = """
+    SELECT symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
+           highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
+           recommended_shares, earnings_warning
+    FROM active_breakout_signals;
+    """
+    results: Dict[str, Dict[str, Any]] = {}
+    try:
+        def _fetch(cursor):
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            for r in rows:
+                results[r[0]] = {
+                    "symbol": r[0],
+                    "breakout_date": str(r[1]),
+                    "entry_price": float(r[2]),
+                    "max_buy_price": float(r[3]),
+                    "initial_stop_loss": float(r[4]),
+                    "active_stop_loss": float(r[5]),
+                    "highest_price_since_entry": float(r[6]),
+                    "current_price": float(r[7]),
+                    "peak_gain_pct": float(r[8]),
+                    "current_gain_pct": float(r[9]),
+                    "status": r[10],
+                    "recommended_shares": int(r[11]),
+                    "earnings_warning": r[12],
+                }
+
+        if cur:
+            _fetch(cur)
+        else:
+            with db_cursor(commit=False) as cursor:
+                _fetch(cursor)
+    except Exception as e:
+        logger.warning(f"Could not load active_breakout_signals from database: {e}")
+
+    return results
+
+
+def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> int:
+    """
+    Upserts tracked breakout lifecycle records into 'active_breakout_signals'.
+    """
+    if not signals:
+        return 0
+
+    sql = """
+    INSERT INTO active_breakout_signals (
+        symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
+        highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
+        recommended_shares, earnings_warning
+    )
+    VALUES %s
+    ON CONFLICT (symbol) DO UPDATE SET
+        entry_price = EXCLUDED.entry_price,
+        max_buy_price = EXCLUDED.max_buy_price,
+        initial_stop_loss = EXCLUDED.initial_stop_loss,
+        active_stop_loss = EXCLUDED.active_stop_loss,
+        highest_price_since_entry = EXCLUDED.highest_price_since_entry,
+        current_price = EXCLUDED.current_price,
+        peak_gain_pct = EXCLUDED.peak_gain_pct,
+        current_gain_pct = EXCLUDED.current_gain_pct,
+        status = EXCLUDED.status,
+        recommended_shares = EXCLUDED.recommended_shares,
+        earnings_warning = EXCLUDED.earnings_warning,
+        updated_at = CURRENT_TIMESTAMP;
+    """
+    values = [
+        (
+            s["symbol"],
+            s["breakout_date"],
+            s["entry_price"],
+            s["max_buy_price"],
+            s["initial_stop_loss"],
+            s["active_stop_loss"],
+            s["highest_price_since_entry"],
+            s["current_price"],
+            s["peak_gain_pct"],
+            s["current_gain_pct"],
+            s["status"],
+            s.get("recommended_shares", 0),
+            s.get("earnings_warning"),
+        )
+        for s in signals
+    ]
+
+    try:
+        if cur:
+            execute_values(cur, sql, values, page_size=500)
+        else:
+            with db_cursor(commit=True) as cursor:
+                execute_values(cursor, sql, values, page_size=500)
+        return len(values)
+    except Exception as e:
+        logger.error(f"Failed to upsert active_breakout_signals: {e}")
+        return 0
+
+
+def seed_active_breakout_signals_if_empty(cur=None) -> int:
+    """
+    Seeds active_breakout_signals with previous qualified records from screener_signals
+    if active_breakout_signals is currently empty.
+    """
+    check_sql = "SELECT COUNT(*) FROM active_breakout_signals;"
+    seed_sql = """
+    INSERT INTO active_breakout_signals (
+        symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
+        highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
+        recommended_shares, updated_at
+    )
+    SELECT 
+        s.ticker,
+        s.scan_date,
+        s.entry_price,
+        s.max_buy_price,
+        s.stop_loss_price,
+        s.stop_loss_price,
+        GREATEST(s.current_price, s.entry_price),
+        s.current_price,
+        GREATEST(0.0, ROUND(((s.current_price - s.entry_price) / NULLIF(s.entry_price, 0) * 100)::numeric, 2)),
+        ROUND(((s.current_price - s.entry_price) / NULLIF(s.entry_price, 0) * 100)::numeric, 2),
+        s.entry_status,
+        COALESCE(s.recommended_shares, 0),
+        CURRENT_TIMESTAMP
+    FROM screener_signals s
+    WHERE s.scan_date = (SELECT MAX(scan_date) FROM screener_signals)
+      AND s.entry_status != 'STOPPED_OUT'
+    ON CONFLICT (symbol) DO NOTHING;
+    """
+    count = 0
+    try:
+        def _seed(cursor):
+            nonlocal count
+            cursor.execute(check_sql)
+            row = cursor.fetchone()
+            if row and row[0] == 0:
+                logger.info("active_breakout_signals is empty. Seeding from latest screener_signals...")
+                cursor.execute(seed_sql)
+                count = cursor.rowcount
+                logger.info(f"Seeded {count} active breakout records from screener_signals.")
+
+        if cur:
+            _seed(cur)
+        else:
+            with db_cursor(commit=True) as cursor:
+                _seed(cursor)
+    except Exception as e:
+        logger.warning(f"Could not seed active_breakout_signals: {e}")
+    return count
+
+
+

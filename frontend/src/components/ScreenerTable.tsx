@@ -156,8 +156,16 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
 
                   {/* Ticker & Name */}
                   <td className="py-3 px-4">
-                    <div className="font-bold text-slate-100 flex items-center gap-1.5">
+                    <div className="font-bold text-slate-100 flex items-center gap-1.5 flex-wrap">
                       <span>{sig.ticker}</span>
+                      {sig.earnings_warning && (
+                        <span
+                          className="px-1.5 py-0.5 text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded font-semibold whitespace-nowrap animate-pulse"
+                          title="วันประกาศผลการดำเนินงานใกล้ถึง"
+                        >
+                          {sig.earnings_warning}
+                        </span>
+                      )}
                     </div>
                     <div className="text-xs text-slate-400 truncate max-w-[180px]" title={sig.name}>
                       {sig.name}
@@ -187,8 +195,13 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                   </td>
 
                   {/* Stop Loss */}
-                  <td className="py-3 px-4 text-right font-mono text-rose-400/90 text-xs">
-                    ${stopLossPrice.toFixed(2)}
+                  <td className="py-3 px-4 text-right font-mono text-xs">
+                    <span className="text-rose-400/90 font-medium">${stopLossPrice.toFixed(2)}</span>
+                    {stopLossPrice >= entryPrice && entryPrice > 0 && (
+                      <span className="block text-[10px] text-emerald-400 font-semibold" title="ยก Stop Loss ขึ้นมาจุดคุ้มทุน (Breakeven)">
+                        🛡️ บังทุน
+                      </span>
+                    )}
                   </td>
 
                   {/* Base Tightness % (4w) */}
@@ -237,10 +250,15 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                   </td>
 
                   {/* Distance % */}
-                  <td className={`py-3 px-4 text-right font-mono font-semibold text-xs ${
+                  <td className={`py-3 px-4 text-right font-mono text-xs ${
                     diffPositive ? 'text-emerald-400' : 'text-rose-400'
                   }`}>
-                    {diffPositive ? '+' : ''}{diffPct.toFixed(2)}%
+                    <span className="font-semibold">{diffPositive ? '+' : ''}{diffPct.toFixed(2)}%</span>
+                    {sig.peak_gain_pct != null && Number(sig.peak_gain_pct) > diffPct && (
+                      <span className="block text-[10px] text-slate-400 font-normal" title="กำไรสูงสุดที่เคยทำได้นับตั้งแต่เบรกเอาต์">
+                        Peak: +{Number(sig.peak_gain_pct).toFixed(1)}%
+                      </span>
+                    )}
                   </td>
 
                   {/* Status Badge */}

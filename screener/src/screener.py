@@ -28,6 +28,8 @@ logger = logging.getLogger(__name__)
 MINIMUM_REQUIRED_WEEKS = 52
 
 
+from concurrent.futures import ThreadPoolExecutor
+
 def evaluate_stage2_filter(
     close: float,
     sma_10w: Optional[float],
@@ -39,22 +41,25 @@ def evaluate_stage2_filter(
     vol_surge_ratio: Optional[float],
     mrs_score: Optional[float],
     mrs_score_prev4: Optional[float],
+    atr_14w: Optional[float] = None,
 ) -> Dict[str, Any]:
     """
-    Evaluates Stage 2 Breakout V2 multi-factor filter according to mathematical spec:
+    Evaluates Stage 2 Breakout V2.1 Discovery Filter (8 criteria):
     1. 30-Week SMA & 10-Week SMA:
        - close > sma_30w
        - sma_30w_slope >= 0.0% (4-week smoothed slope)
        - close > sma_10w (confirms short-term momentum)
     2. 35-Week Prior Resistance Pivot & Base Tightness:
        - close >= pivot_35w (breakout above prior 35w highs, excluding current week)
-       - tightness_pct <= 20.0% (tight 4w consolidation base before breakout)
+       - tightness_pct <= 18.0% (tight 4w consolidation base before breakout)
        - close >= high_52w * 0.85 (within 15% of 52-week high)
     3. Projected Volume Surge:
        - vol_surge_ratio >= 1.50 (current or projected weekly volume >= 1.5x 10w avg)
     4. Mansfield Relative Strength:
        - mrs_score > 0.0 (outperforming SPY)
        - mrs_score > mrs_score_prev4 (relative strength accelerating vs 4 weeks ago)
+    5. Minimum Volatility Filter (Bug 5):
+       - (atr_14w / close) * 100 >= 2.5% (cuts out sluggish/defensive stocks)
     """
     cond_1_trend = bool(
         sma_30w is not None
@@ -69,7 +74,7 @@ def evaluate_stage2_filter(
     cond_2_tight_base = bool(
         tightness_pct is not None
         and high_52w is not None
-        and tightness_pct <= 20.0
+        and tightness_pct <= 18.0
         and close >= (high_52w * 0.85)
     )
 
@@ -81,12 +86,16 @@ def evaluate_stage2_filter(
         and (mrs_score_prev4 is None or mrs_score > mrs_score_prev4)
     )
 
+    atr_pct = ((atr_14w / close) * 100.0) if (atr_14w is not None and close > 0) else 0.0
+    cond_5_min_volatility = bool(atr_pct >= 2.5)
+
     is_stage2 = (
         cond_1_trend
         and cond_2_breakout
         and cond_2_tight_base
         and cond_3_volume
         and cond_4_mrs
+        and cond_5_min_volatility
     )
 
     return {
@@ -96,89 +105,157 @@ def evaluate_stage2_filter(
         "cond_2_tight_base": cond_2_tight_base,
         "cond_3_volume": cond_3_volume,
         "cond_4_mrs": cond_4_mrs,
+        "cond_5_min_volatility": cond_5_min_volatility,
+        "atr_pct": round(atr_pct, 2),
     }
 
 
-def calculate_target_and_risk(
-    pivot_35w: float,
-    current_price: float,
-    atr_14w: Optional[float] = None,
-    min_low_4w: Optional[float] = None,
-    portfolio_size: float = 10000.0,
-    risk_pct: float = 0.01,
-) -> Dict[str, Any]:
+def calculate_adaptive_stop_loss(
+    entry_price: float,
+    atr_14w: float,
+    low_prev_week: float,
+) -> float:
     """
-    Calculates V2 ATR-based Risk, Buy Zone & Position Sizing:
-    - entry_price = round(pivot_35w, 4)
-    - max_buy_price = round(entry_price * 1.05, 4) (+5% chase limit)
-    - stop_loss_price:
-        stop_atr = entry_price - (1.5 * atr_14w)
-        stop_base = min_low_4w * 0.99
-        stop_hard_cap = entry_price * 0.90 (-10% max risk cap)
-        stop_loss = max(stop_hard_cap, min(stop_atr, stop_base))
-    - diff_pct = ((current_price - entry_price) / entry_price) * 100
-    - position sizing:
-        risk_per_share = max(current_price - stop_loss, 0.01)
-        dollar_risk = portfolio_size * risk_pct
-        recommended_shares = floor(dollar_risk / risk_per_share)
+    V2.1 Adaptive Stop Loss Formula (Bug 2):
+    raw_stop = max(entry_price * 0.90, entry_price - (1.5 * atr_14w), low_prev_week * 0.99)
+    stop_loss = min(entry_price * 0.98, raw_stop)
+    - Caps maximum loss at 10%
+    - Ensures stop loss is not closer than -2% to entry (prevents overly tight stops)
     """
-    entry_price = round(pivot_35w, 4)
-    max_buy_price = round(entry_price * 1.05, 4)
-
-    effective_atr = atr_14w if (atr_14w is not None and atr_14w > 0) else (entry_price * 0.05)
-    stop_atr = entry_price - (1.5 * effective_atr)
-    stop_base = (min_low_4w * 0.99) if (min_low_4w is not None and min_low_4w > 0) else stop_atr
-    stop_hard_cap = entry_price * 0.90
-
-    stop_loss = round(max(stop_hard_cap, min(stop_atr, stop_base)), 4)
-    diff_pct = round(((current_price - entry_price) / entry_price) * 100.0, 4)
-
-    risk_per_share = max(round(current_price - stop_loss, 4), 0.01)
-    dollar_risk = portfolio_size * risk_pct
-    recommended_shares = int(np.floor(dollar_risk / risk_per_share))
-
-    return {
-        "entry_price": entry_price,
-        "max_buy_price": max_buy_price,
-        "stop_loss_price": stop_loss,
-        "current_price": round(current_price, 4),
-        "diff_pct": diff_pct,
-        "risk_per_share": risk_per_share,
-        "recommended_shares": recommended_shares,
-    }
+    raw_stop = max(
+        entry_price * 0.90,
+        entry_price - (1.5 * atr_14w),
+        low_prev_week * 0.99,
+    )
+    return round(min(entry_price * 0.98, raw_stop), 4)
 
 
-def classify_entry_status(
+def calculate_position_size(
+    portfolio_size: float,
+    risk_pct: float,
+    regime_multiplier: float,
     current_price: float,
     entry_price: float,
+    stop_loss: float,
+    max_alloc_pct: float = 0.20,
+) -> Dict[str, Any]:
+    """
+    V2.1 Dynamic Position Sizing (Bug 3):
+    - Scaled by regime_multiplier (BULL=1.0, CAUTION=0.5, BEAR=0.0)
+    - Accounts for actual entry price vs current price
+    - Caps allocation per stock to 20% of portfolio
+    """
+    if regime_multiplier <= 0.0 or current_price <= stop_loss:
+        return {
+            "recommended_shares": 0,
+            "capital_used": 0.0,
+            "portfolio_weight_pct": 0.0,
+            "actual_dollar_risk": 0.0,
+            "risk_per_share": max(round(current_price - stop_loss, 4), 0.01),
+        }
+
+    # 1. Effective risk budget after market regime scaling
+    effective_risk_budget = portfolio_size * (risk_pct / 100.0) * regime_multiplier
+
+    # 2. Actual risk per share
+    effective_buy_price = max(current_price, entry_price)
+    actual_risk_per_share = max(effective_buy_price - stop_loss, entry_price * 0.01)
+
+    shares_by_risk = int(np.floor(effective_risk_budget / actual_risk_per_share))
+
+    # 3. Allocation cap (max 20% of portfolio)
+    max_capital_allowed = portfolio_size * max_alloc_pct * (1.0 if regime_multiplier > 0 else 0.0)
+    shares_by_cap = int(np.floor(max_capital_allowed / effective_buy_price))
+
+    final_shares = max(0, min(shares_by_risk, shares_by_cap))
+    capital_used = round(final_shares * effective_buy_price, 2)
+    actual_dollar_risk = round(final_shares * actual_risk_per_share, 2)
+    portfolio_weight_pct = round((capital_used / portfolio_size) * 100.0, 2) if portfolio_size > 0 else 0.0
+
+    return {
+        "recommended_shares": final_shares,
+        "capital_used": capital_used,
+        "portfolio_weight_pct": portfolio_weight_pct,
+        "actual_dollar_risk": actual_dollar_risk,
+        "risk_per_share": round(actual_risk_per_share, 4),
+    }
+
+
+def classify_entry_status_v2_1(
+    current_close: float,
+    entry_price: float,
     max_buy_price: float,
-    stop_loss_price: float,
+    active_stop_loss: float,
+    highest_price_since_entry: float,
     sma_10w: Optional[float] = None,
     sma_30w: Optional[float] = None,
 ) -> str:
     """
-    6-Tier Actionable Status for Stage 2 Trend Riding:
-    1. 🔴 STOPPED_OUT: current_price < stop_loss_price or (sma_30w and current_price < sma_30w)
-    2. 🔵 PROFIT_RUN: gain_pct >= 15.0% and (sma_10w and current_price >= sma_10w)
-    3. 🟠 TRAILING_WARNING: gain_pct >= 15.0% and (sma_10w and current_price < sma_10w)
-    4. 🟡 EXTENDED: current_price > max_buy_price and gain_pct < 15.0%
-    5. 🟢 IN_BUY_ZONE: entry_price <= current_price <= max_buy_price (favorable entry point)
-    6. ⚪ BELOW_ENTRY: near pivot (-6% to 0%) or pulled back above stop_loss
+    V2.1 6-Tier Actionable Statuses based on Peak Gain Tracking (Bug 4):
+    1. 🔴 STOPPED_OUT: current_close < active_stop_loss or (sma_30w and current_close < sma_30w)
+    2. 🟠 TRAILING_WARNING: peak_gain_pct >= 20.0 and sma_10w and current_close < sma_10w
+    3. 🔵 PROFIT_RUN: peak_gain_pct >= 20.0 and (sma_10w is None or current_close >= sma_10w)
+    4. 🟡 EXTENDED: current_close > max_buy_price and peak_gain_pct < 20.0
+    5. 🟢 IN_BUY_ZONE: entry_price <= current_close <= max_buy_price
+    6. ⚪ BELOW_ENTRY: active_stop_loss <= current_close < entry_price
     """
-    gain_pct = ((current_price - entry_price) / entry_price) * 100.0
+    peak_gain_pct = (
+        ((highest_price_since_entry - entry_price) / entry_price) * 100.0
+        if entry_price > 0
+        else 0.0
+    )
 
-    if current_price < stop_loss_price or (sma_30w is not None and current_price < sma_30w):
+    if current_close < active_stop_loss or (sma_30w is not None and current_close < sma_30w):
         return "STOPPED_OUT"
-    elif gain_pct >= 15.0 and sma_10w is not None and current_price >= sma_10w:
-        return "PROFIT_RUN"
-    elif gain_pct >= 15.0 and sma_10w is not None and current_price < sma_10w:
+    elif peak_gain_pct >= 20.0 and sma_10w is not None and current_close < sma_10w:
         return "TRAILING_WARNING"
-    elif current_price > max_buy_price:
+    elif peak_gain_pct >= 20.0 and (sma_10w is None or current_close >= sma_10w):
+        return "PROFIT_RUN"
+    elif current_close > max_buy_price:
         return "EXTENDED"
-    elif entry_price <= current_price <= max_buy_price:
+    elif entry_price <= current_close <= max_buy_price:
         return "IN_BUY_ZONE"
     else:
         return "BELOW_ENTRY"
+
+
+def fetch_earnings_warning_map(tickers: List[str], max_workers: int = 8) -> Dict[str, Optional[str]]:
+    """
+    Fetches upcoming earnings release dates (Bug 5) within [0, 14] days using yfinance calendar.
+    """
+    warning_map: Dict[str, Optional[str]] = {}
+    today = date.today()
+
+    def _check(ticker: str):
+        try:
+            import yfinance as yf
+            t = yf.Ticker(ticker)
+            cal = t.calendar
+            if isinstance(cal, dict):
+                ed_list = cal.get("Earnings Date")
+                if ed_list and len(ed_list) > 0:
+                    ed = ed_list[0]
+                    if hasattr(ed, "date"):
+                        ed = ed.date()
+                    days = (ed - today).days
+                    if 0 <= days <= 14:
+                        return ticker, f"⚠️ งบออกใน {days} วัน"
+        except Exception:
+            pass
+        return ticker, None
+
+    if not tickers:
+        return warning_map
+
+    try:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            for ticker, warning in executor.map(_check, tickers):
+                if warning:
+                    warning_map[ticker] = warning
+    except Exception as e:
+        logger.debug(f"Earnings warning check error: {e}")
+
+    return warning_map
 
 
 # =============================================================================
@@ -262,7 +339,8 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         scan_id, scan_date, ticker, entry_price, max_buy_price, current_price,
         stop_loss_price, diff_pct, entry_status, volume_surge_ratio, mrs_score,
         sma_30w, sma_30w_slope, prior_resistance_35w, weekly_close,
-        weekly_volume, avg_volume_10w, stage, sma_10w, base_tightness_pct, atr_14w, market_regime
+        weekly_volume, avg_volume_10w, stage, sma_10w, base_tightness_pct, atr_14w, market_regime,
+        active_stop_loss, peak_gain_pct, highest_price_since_entry, earnings_warning
     )
     VALUES %s
     ON CONFLICT (scan_date, ticker) DO UPDATE SET
@@ -285,7 +363,11 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         sma_10w = EXCLUDED.sma_10w,
         base_tightness_pct = EXCLUDED.base_tightness_pct,
         atr_14w = EXCLUDED.atr_14w,
-        market_regime = EXCLUDED.market_regime;
+        market_regime = EXCLUDED.market_regime,
+        active_stop_loss = EXCLUDED.active_stop_loss,
+        peak_gain_pct = EXCLUDED.peak_gain_pct,
+        highest_price_since_entry = EXCLUDED.highest_price_since_entry,
+        earnings_warning = EXCLUDED.earnings_warning;
     """
     values = [
         (
@@ -311,6 +393,10 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
             s.get("base_tightness_pct"),
             s.get("atr_14w"),
             s.get("market_regime"),
+            s.get("active_stop_loss", s["stop_loss_price"]),
+            s.get("peak_gain_pct", 0.0),
+            s.get("highest_price_since_entry", s["current_price"]),
+            s.get("earnings_warning"),
         )
         for s in deduped_list
     ]
@@ -467,6 +553,24 @@ def run_screener(
         f"SMA10w: {regime_info['spy_sma_10w']}, Slope 4w: {regime_info['spy_slope_4w']}%)"
     )
 
+    # 1c. Load or seed active breakout signals from database
+    if db_persist:
+        try:
+            db.seed_active_breakout_signals_if_empty()
+        except Exception as e:
+            logger.debug(f"Seeding check: {e}")
+
+    active_signals_db: Dict[str, Dict[str, Any]] = {}
+    if db_persist:
+        try:
+            active_signals_db = db.load_active_breakout_signals()
+            logger.info(f"Loaded {len(active_signals_db)} active breakout signals from database for lifecycle tracking.")
+        except Exception as e:
+            logger.warning(f"Could not load active_breakout_signals: {e}")
+
+    active_signals_to_upsert: List[Dict[str, Any]] = []
+    regime_multiplier = regime_info.get("regime_multiplier", 1.0)
+
     # 2. Audit job initiation
     job_id = None
     if db_persist:
@@ -544,89 +648,162 @@ def run_screener(
             mrs_p4 = mrs[last_idx - 4] if len(mrs) >= 5 and mrs[last_idx - 4] is not None else None
             atr_c = atr14[last_idx] if atr14[last_idx] is not None else (c * 0.05)
             min_l4 = min(lows[last_idx - 4 : last_idx]) if len(lows) >= 5 else (c * 0.95)
+            low_prev_1w = lows[last_idx - 1] if len(lows) >= 2 else (c * 0.95)
 
-            # Trace initial breakout pivot in recent 16 weeks if in active run
-            entry_pivot = piv
-            for k in range(1, min(17, len(closes))):
-                idx = len(closes) - 1 - k
-                if idx >= 35 and pivot35[idx] and closes[idx] >= pivot35[idx] and closes[idx] < c:
-                    entry_pivot = pivot35[idx]
-                    break
+            existing_signal = active_signals_db.get(ticker)
 
-            risk = calculate_target_and_risk(
-                pivot_35w=entry_pivot,
-                current_price=c,
-                atr_14w=atr_c,
-                min_low_4w=min_l4,
+            if existing_signal is None:
+                # ==========================================================
+                # Mode 1: Discovery Scanner (New Breakouts)
+                # Evaluates 8 criteria including Minimum Volatility filter
+                # ==========================================================
+                filter_res = evaluate_stage2_filter(
+                    close=c,
+                    sma_10w=s10,
+                    sma_30w=s30,
+                    sma_30w_slope=sl4,
+                    pivot_35w=piv,
+                    tightness_pct=tight_pct,
+                    high_52w=h52,
+                    vol_surge_ratio=vol_ratio,
+                    mrs_score=mrs_c,
+                    mrs_score_prev4=mrs_p4,
+                    atr_14w=atr_c,
+                )
+
+                if not filter_res["is_stage2"]:
+                    processed_count += 1
+                    continue
+
+                # Lock state upon initial breakout discovery
+                entry_price = piv
+                max_buy_price = round(entry_price * 1.05, 4)
+                initial_stop_loss = calculate_adaptive_stop_loss(entry_price, atr_c, low_prev_1w)
+                active_stop_loss = initial_stop_loss
+                highest_price_since_entry = max(highs[last_idx], c)
+                breakout_date = effective_scan_date
+
+            else:
+                # ==========================================================
+                # Mode 2: Active Lifecycle Tracker (Already Broken Out)
+                # DO NOT RE-FILTER THROUGH 8 DISCOVERY CRITERIA!
+                # ==========================================================
+                entry_price = float(existing_signal["entry_price"])
+                max_buy_price = float(existing_signal["max_buy_price"])
+                initial_stop_loss = float(existing_signal["initial_stop_loss"])
+                breakout_date = str(existing_signal["breakout_date"])
+
+                # Update highest price since entry
+                highest_price_since_entry = max(
+                    float(existing_signal.get("highest_price_since_entry", entry_price)),
+                    highs[last_idx],
+                    c
+                )
+
+                # Automatic Breakeven Stop: raise active stop to entry if peak gain >= 15%
+                peak_gain_check = (
+                    ((highest_price_since_entry - entry_price) / entry_price) * 100.0
+                    if entry_price > 0
+                    else 0.0
+                )
+                if peak_gain_check >= 15.0:
+                    active_stop_loss = max(initial_stop_loss, entry_price)
+                else:
+                    active_stop_loss = initial_stop_loss
+
+            # --------------------------------------------------------------
+            # Step 5: 6-Tier Status Classification & Gain Calculations
+            # --------------------------------------------------------------
+            peak_gain_pct = (
+                round(((highest_price_since_entry - entry_price) / entry_price) * 100.0, 2)
+                if entry_price > 0
+                else 0.0
+            )
+            current_gain_pct = (
+                round(((c - entry_price) / entry_price) * 100.0, 2)
+                if entry_price > 0
+                else 0.0
+            )
+
+            status = classify_entry_status_v2_1(
+                current_close=c,
+                entry_price=entry_price,
+                max_buy_price=max_buy_price,
+                active_stop_loss=active_stop_loss,
+                highest_price_since_entry=highest_price_since_entry,
+                sma_10w=s10,
+                sma_30w=s30,
+            )
+
+            # Step 4: Dynamic Position Sizing (Bug 3)
+            sizing = calculate_position_size(
                 portfolio_size=10000.0,
-                risk_pct=0.01,
+                risk_pct=1.0,
+                regime_multiplier=regime_multiplier,
+                current_price=c,
+                entry_price=entry_price,
+                stop_loss=active_stop_loss,
+                max_alloc_pct=0.20,
             )
 
-            status = classify_entry_status(
-                current_price=risk["current_price"],
-                entry_price=risk["entry_price"],
-                max_buy_price=risk["max_buy_price"],
-                stop_loss_price=risk["stop_loss_price"],
-                sma_10w=s10,
-                sma_30w=s30,
-            )
+            meta = meta_lookup.get(ticker, {})
+            signal_record = {
+                "scan_id": job_id,
+                "scan_date": effective_scan_date,
+                "ticker": ticker,
+                "name": meta.get("name", ticker),
+                "sector": meta.get("sector", "Unknown"),
+                "industry": meta.get("industry", "Unknown"),
+                "market_cap": meta.get("market_cap"),
+                "entry_price": entry_price,
+                "max_buy_price": max_buy_price,
+                "current_price": round(c, 4),
+                "stop_loss_price": active_stop_loss,
+                "active_stop_loss": active_stop_loss,
+                "initial_stop_loss": initial_stop_loss,
+                "highest_price_since_entry": round(highest_price_since_entry, 4),
+                "peak_gain_pct": peak_gain_pct,
+                "current_gain_pct": current_gain_pct,
+                "diff_pct": current_gain_pct,
+                "entry_status": status,
+                "volume_surge_ratio": vol_ratio,
+                "mrs_score": mrs_c,
+                "sma_30w": s30,
+                "sma_30w_slope": sl4,
+                "prior_resistance_35w": piv,
+                "weekly_close": c,
+                "weekly_volume": curr_vol,
+                "avg_volume_10w": int(avg_v),
+                "stage": "Stage 2 Breakout",
+                "sma_10w": s10,
+                "base_tightness_pct": tight_pct,
+                "atr_14w": atr_c,
+                "market_regime": market_regime,
+                "recommended_shares": sizing["recommended_shares"],
+                "capital_used": sizing["capital_used"],
+                "portfolio_weight_pct": sizing["portfolio_weight_pct"],
+                "actual_dollar_risk": sizing["actual_dollar_risk"],
+                "risk_per_share": sizing["risk_per_share"],
+                "breakout_date": breakout_date,
+                "earnings_warning": None,
+            }
+            qualified_signals.append(signal_record)
 
-            filter_res = evaluate_stage2_filter(
-                close=c,
-                sma_10w=s10,
-                sma_30w=s30,
-                sma_30w_slope=sl4,
-                pivot_35w=piv,
-                tightness_pct=tight_pct,
-                high_52w=h52,
-                vol_surge_ratio=vol_ratio,
-                mrs_score=mrs_c,
-                mrs_score_prev4=mrs_p4,
-            )
-
-            is_qualified = False
-            in_stage2 = (c > s30) and (sl4 >= 0.0) and (mrs_c > 0.0)
-            if filter_res["is_stage2"]:
-                is_qualified = True
-                status = "IN_BUY_ZONE"
-            elif in_stage2 and status in ("IN_BUY_ZONE", "PROFIT_RUN", "TRAILING_WARNING", "EXTENDED"):
-                is_qualified = True
-            elif in_stage2 and status == "BELOW_ENTRY" and risk["diff_pct"] >= -6.0:
-                is_qualified = True
-
-            if is_qualified:
-                meta = meta_lookup.get(ticker, {})
-                signal_record = {
-                    "scan_id": job_id,
-                    "scan_date": effective_scan_date,
-                    "ticker": ticker,
-                    "name": meta.get("name", ticker),
-                    "sector": meta.get("sector", "Unknown"),
-                    "industry": meta.get("industry", "Unknown"),
-                    "market_cap": meta.get("market_cap"),
-                    "entry_price": risk["entry_price"],
-                    "max_buy_price": risk["max_buy_price"],
-                    "current_price": risk["current_price"],
-                    "stop_loss_price": risk["stop_loss_price"],
-                    "diff_pct": risk["diff_pct"],
-                    "entry_status": status,
-                    "volume_surge_ratio": vol_ratio,
-                    "mrs_score": mrs_c,
-                    "sma_30w": s30,
-                    "sma_30w_slope": sl4,
-                    "prior_resistance_35w": piv,
-                    "weekly_close": c,
-                    "weekly_volume": curr_vol,
-                    "avg_volume_10w": int(avg_v),
-                    "stage": "Stage 2 Breakout",
-                    "sma_10w": s10,
-                    "base_tightness_pct": tight_pct,
-                    "atr_14w": atr_c,
-                    "market_regime": market_regime,
-                    "recommended_shares": risk["recommended_shares"],
-                    "risk_per_share": risk["risk_per_share"],
-                }
-                qualified_signals.append(signal_record)
+            active_signals_to_upsert.append({
+                "symbol": ticker,
+                "breakout_date": breakout_date,
+                "entry_price": entry_price,
+                "max_buy_price": max_buy_price,
+                "initial_stop_loss": initial_stop_loss,
+                "active_stop_loss": active_stop_loss,
+                "highest_price_since_entry": round(highest_price_since_entry, 4),
+                "current_price": round(c, 4),
+                "peak_gain_pct": peak_gain_pct,
+                "current_gain_pct": current_gain_pct,
+                "status": status,
+                "recommended_shares": sizing["recommended_shares"],
+                "earnings_warning": None,
+            })
 
             processed_count += 1
         except Exception as e:
@@ -635,10 +812,27 @@ def run_screener(
 
     logger.info(
         f"Screening completed: {processed_count} processed, {failed_count} failed, "
-        f"{len(qualified_signals)} Stage 2 breakout signals discovered."
+        f"{len(qualified_signals)} Stage 2 breakout signals discovered/tracked."
     )
 
-    # 5. Persist signals to PostgreSQL
+    # 4b. Fetch earnings warnings within [0, 14] days for qualified tickers (Bug 5)
+    qualified_tickers = [s["ticker"] for s in qualified_signals]
+    logger.info(f"Checking upcoming earnings dates for {len(qualified_tickers)} signals...")
+    earnings_map = fetch_earnings_warning_map(qualified_tickers)
+    for s in qualified_signals:
+        s["earnings_warning"] = earnings_map.get(s["ticker"])
+    for rec in active_signals_to_upsert:
+        rec["earnings_warning"] = earnings_map.get(rec["symbol"])
+
+    # 5. Persist active_breakout_signals to PostgreSQL
+    if db_persist and active_signals_to_upsert:
+        try:
+            db.upsert_active_breakout_signals(active_signals_to_upsert)
+            logger.info(f"Successfully synced {len(active_signals_to_upsert)} records to active_breakout_signals.")
+        except Exception as e:
+            logger.error(f"Failed to sync active_breakout_signals: {e}")
+
+    # 5b. Persist signals to PostgreSQL screener_signals
     if db_persist and qualified_signals:
         try:
             upsert_screener_signals(qualified_signals)

@@ -74,6 +74,10 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   scan_date: 's.scan_date',
   ticker: 's.ticker',
   market_cap: 'st.market_cap',
+  recommended_shares: 's.recommended_shares',
+  peak_gain_pct: 's.peak_gain_pct',
+  highest_price_since_entry: 's.highest_price_since_entry',
+  earnings_warning: 's.earnings_warning',
 };
 
 // ---------------------------------------------------------------------------
@@ -141,6 +145,11 @@ router.get(
             s.base_tightness_pct,
             s.atr_14w,
             s.market_regime,
+            s.recommended_shares,
+            s.active_stop_loss,
+            s.highest_price_since_entry,
+            s.peak_gain_pct,
+            s.earnings_warning,
             s.created_at,
             COUNT(*) OVER() AS total_count
           FROM screener_signals s

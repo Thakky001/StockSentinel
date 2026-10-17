@@ -637,13 +637,17 @@ def compute_market_regime(
 
     if c >= s30 and sl4 >= 0.0 and c >= s10:
         regime = "BULL_MARKET"
+        multiplier = 1.0
     elif c >= s30:
         regime = "CAUTION_MARKET"
+        multiplier = 0.5
     else:
         regime = "BEAR_MARKET"
+        multiplier = 0.0
 
     return {
         "market_regime": regime,
+        "regime_multiplier": multiplier,
         "spy_close": round(c, 2),
         "spy_sma_30w": round(s30, 2),
         "spy_sma_10w": round(s10, 2),
