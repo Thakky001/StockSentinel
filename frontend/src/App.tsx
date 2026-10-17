@@ -3,7 +3,7 @@
  * React 18 + Vite + Tailwind CSS + TradingView Lightweight Charts
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Navbar from './components/Navbar.tsx';
 import FilterBar from './components/FilterBar.tsx';
 import ScreenerTable from './components/ScreenerTable.tsx';
@@ -80,15 +80,62 @@ const App: React.FC = () => {
   }, [signals]);
 
   // Handle column sort toggle
-  const handleSortChange = (column: string) => {
-    if (sortBy === column) {
-      setOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortBy(column);
+  const handleSortChange = useCallback((column: string) => {
+    setSortBy((prevSort) => {
+      if (prevSort === column) {
+        setOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+        return prevSort;
+      } else {
+        setOrder(column === 'diff_pct' ? 'asc' : 'desc');
+        return column;
+      }
+    });
+    setPage(1);
+  }, []);
+
+  // Handle status filter change + auto-sort for IN_BUY_ZONE
+  const handleStatusChange = useCallback((newStatus: string) => {
+    setStatus(newStatus);
+    setPage(1);
+
+    if (newStatus === 'IN_BUY_ZONE') {
+      // Auto-sort by diff_pct ascending (+0.0%, +0.5%, +1.2%...) so stocks closest to entry pivot appear first
+      setSortBy('diff_pct');
+      setOrder('asc');
+    } else if (!newStatus) {
+      // When resetting to 'All Statuses', default to highest Mansfield RS
+      setSortBy('mrs_score');
       setOrder('desc');
     }
+  }, []);
+
+  // Handle search text change
+  const handleSearchChange = useCallback((newSearch: string) => {
+    setSearch((prev) => {
+      if (prev !== newSearch) {
+        setPage(1);
+        return newSearch;
+      }
+      return prev;
+    });
+  }, []);
+
+  // Handle sector change
+  const handleSectorChange = useCallback((newSector: string) => {
+    setSector(newSector);
     setPage(1);
-  };
+  }, []);
+
+  // Handle date change
+  const handleDateChange = useCallback((newDate: string) => {
+    setSelectedDate(newDate);
+    setPage(1);
+  }, []);
+
+  // Handle page change
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
 
   // Handle adding/removing from watchlist
   const handleToggleWatchlist = (sig: ScreenerSignal) => {
@@ -104,10 +151,7 @@ const App: React.FC = () => {
       {/* Top Navbar */}
       <Navbar
         selectedDate={selectedDate}
-        onDateChange={(d) => {
-          setSelectedDate(d);
-          setPage(1);
-        }}
+        onDateChange={handleDateChange}
         watchlistCount={watchlist.length}
         onWatchlistOpen={() => setShowWatchlist(true)}
         onCalculatorOpen={() => {
@@ -212,20 +256,11 @@ const App: React.FC = () => {
         {/* Filter Bar */}
         <FilterBar
           search={search}
-          onSearchChange={(s) => {
-            setSearch(s);
-            setPage(1);
-          }}
+          onSearchChange={handleSearchChange}
           sector={sector}
-          onSectorChange={(sec) => {
-            setSector(sec);
-            setPage(1);
-          }}
+          onSectorChange={handleSectorChange}
           status={status}
-          onStatusChange={(st) => {
-            setStatus(st);
-            setPage(1);
-          }}
+          onStatusChange={handleStatusChange}
           availableSectors={availableSectors}
         />
 
@@ -311,7 +346,7 @@ const App: React.FC = () => {
             totalPages={totalPages}
             total={total}
             limit={limit}
-            onPageChange={(p) => setPage(p)}
+            onPageChange={handlePageChange}
           />
         )}
       </main>

@@ -175,7 +175,7 @@ router.get(
             AND ($4::text IS NULL
                  OR s.ticker ILIKE '%' || $4 || '%'
                  OR st.name  ILIKE '%' || $4 || '%')
-          ORDER BY ${sortColumn} ${order}
+          ORDER BY ${sortColumn} ${order} NULLS LAST, s.mrs_score DESC
           LIMIT $5 OFFSET $6
         `;
 
@@ -229,9 +229,9 @@ router.get(
             valA = a.entry_status;
             valB = b.entry_status;
           }
-          if (valA === undefined) valA = 0;
-          if (valB === undefined) valB = 0;
-          if (typeof valA === 'string') {
+          if (valA === undefined || valA === null) valA = order === 'ASC' ? Infinity : -Infinity;
+          if (valB === undefined || valB === null) valB = order === 'ASC' ? Infinity : -Infinity;
+          if (typeof valA === 'string' && typeof valB === 'string') {
             return order === 'ASC' ? valA.localeCompare(valB) : valB.localeCompare(valA);
           }
           return order === 'ASC' ? Number(valA) - Number(valB) : Number(valB) - Number(valA);

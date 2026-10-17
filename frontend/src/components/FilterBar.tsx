@@ -2,7 +2,7 @@
  * FilterBar - Search input, Sector dropdown, and Status badge tabs for the screener dashboard.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface FilterBarProps {
   search: string;
@@ -34,19 +34,28 @@ const FilterBar: React.FC<FilterBarProps> = ({
   availableSectors,
 }) => {
   const [localSearch, setLocalSearch] = useState(search);
+  const onSearchChangeRef = useRef(onSearchChange);
 
-  // Debounce search input by 300ms
+  // Keep ref updated without triggering effects
   useEffect(() => {
-    const handler = setTimeout(() => {
-      onSearchChange(localSearch);
-    }, 300);
-    return () => clearTimeout(handler);
-  }, [localSearch, onSearchChange]);
+    onSearchChangeRef.current = onSearchChange;
+  }, [onSearchChange]);
 
   // Sync external search updates back to localSearch
   useEffect(() => {
     setLocalSearch(search);
   }, [search]);
+
+  // Debounce search input by 300ms — only trigger when input actually differs from search prop
+  useEffect(() => {
+    if (localSearch === search) {
+      return;
+    }
+    const handler = setTimeout(() => {
+      onSearchChangeRef.current(localSearch);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, search]);
 
   return (
     <div className="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4 mb-6 shadow-sm flex flex-col gap-4">
@@ -66,7 +75,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
           />
           {localSearch && (
             <button
-              onClick={() => setLocalSearch('')}
+              type="button"
+              onClick={() => {
+                setLocalSearch('');
+                onSearchChangeRef.current('');
+              }}
               className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200 text-xs"
             >
               ✕
@@ -102,6 +115,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => onStatusChange(tab.id)}
               className={`text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-all ${
                 isActive

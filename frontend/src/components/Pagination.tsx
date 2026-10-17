@@ -36,6 +36,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* Navigation Buttons */}
       <div className="flex items-center gap-1.5">
         <button
+          type="button"
           onClick={() => onPageChange(1)}
           disabled={page <= 1}
           className="px-2.5 py-1.5 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 transition-colors"
@@ -45,6 +46,7 @@ const Pagination: React.FC<PaginationProps> = ({
         </button>
 
         <button
+          type="button"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
           className="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 transition-colors"
@@ -57,6 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
         </span>
 
         <button
+          type="button"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
           className="px-3 py-1.5 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 transition-colors"
@@ -65,6 +68,7 @@ const Pagination: React.FC<PaginationProps> = ({
         </button>
 
         <button
+          type="button"
           onClick={() => onPageChange(totalPages)}
           disabled={page >= totalPages}
           className="px-2.5 py-1.5 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 transition-colors"
