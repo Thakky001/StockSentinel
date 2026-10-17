@@ -6,10 +6,15 @@ Features: F17 (Breakout Filter), F18 (Target/Risk Math), F19 (Entry Status), F20
 import logging
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
-from screener.src import config, db, downloader, parquet_cache, universe
+import numpy as np
+from screener.src import config, db, downloader, indicators, parquet_cache, universe
 from screener.src.indicators import (
     align_weekly_bars,
+    calculate_projected_volume_surge,
+    compute_atr,
+    compute_base_tightness,
     compute_mansfield_relative_strength,
+    compute_market_regime,
     compute_prior_resistance_pivot,
     compute_sma,
     compute_sma_slope,
@@ -25,74 +30,121 @@ MINIMUM_REQUIRED_WEEKS = 52
 
 def evaluate_stage2_filter(
     close: float,
+    sma_10w: Optional[float],
     sma_30w: Optional[float],
     sma_30w_slope: Optional[float],
     pivot_35w: Optional[float],
+    tightness_pct: Optional[float],
+    high_52w: Optional[float],
     vol_surge_ratio: Optional[float],
     mrs_score: Optional[float],
+    mrs_score_prev4: Optional[float],
 ) -> Dict[str, Any]:
     """
-    Evaluates Stan Weinstein Stage 2 Breakout multi-factor filter.
-    All 5 conditions must be True simultaneously:
-    1. close > sma_30w (Price above 30w moving average)
-    2. sma_30w_slope >= 0.0 (30w SMA is flat or rising)
-    3. close >= pivot_35w (Price broke out above 35-week base resistance)
-    4. vol_surge_ratio >= 1.50 (Institutional volume surge >= 1.5x 10w avg)
-    5. mrs_score > 0.0 (Mansfield Relative Strength > 0 outperforming SPY)
+    Evaluates Stage 2 Breakout V2 multi-factor filter according to mathematical spec:
+    1. 30-Week SMA & 10-Week SMA:
+       - close > sma_30w
+       - sma_30w_slope >= 0.0% (4-week smoothed slope)
+       - close > sma_10w (confirms short-term momentum)
+    2. 35-Week Prior Resistance Pivot & Base Tightness:
+       - close >= pivot_35w (breakout above prior 35w highs, excluding current week)
+       - tightness_pct <= 20.0% (tight 4w consolidation base before breakout)
+       - close >= high_52w * 0.85 (within 15% of 52-week high)
+    3. Projected Volume Surge:
+       - vol_surge_ratio >= 1.50 (current or projected weekly volume >= 1.5x 10w avg)
+    4. Mansfield Relative Strength:
+       - mrs_score > 0.0 (outperforming SPY)
+       - mrs_score > mrs_score_prev4 (relative strength accelerating vs 4 weeks ago)
     """
-    cond_close_above_sma = (sma_30w is not None) and (close > sma_30w)
-    cond_sma_rising = (sma_30w_slope is not None) and (sma_30w_slope >= 0.0)
-    cond_pivot_breakout = (pivot_35w is not None) and (close >= pivot_35w)
-    cond_volume_surge = (vol_surge_ratio is not None) and (vol_surge_ratio >= 1.50)
-    cond_mrs_positive = (mrs_score is not None) and (mrs_score > 0.0)
+    cond_1_trend = bool(
+        sma_30w is not None
+        and sma_10w is not None
+        and sma_30w_slope is not None
+        and close > sma_30w
+        and sma_30w_slope >= 0.0
+        and close > sma_10w
+    )
+
+    cond_2_breakout = bool(pivot_35w is not None and close >= pivot_35w)
+    cond_2_tight_base = bool(
+        tightness_pct is not None
+        and high_52w is not None
+        and tightness_pct <= 20.0
+        and close >= (high_52w * 0.85)
+    )
+
+    cond_3_volume = bool(vol_surge_ratio is not None and vol_surge_ratio >= 1.50)
+
+    cond_4_mrs = bool(
+        mrs_score is not None
+        and mrs_score > 0.0
+        and (mrs_score_prev4 is None or mrs_score > mrs_score_prev4)
+    )
 
     is_stage2 = (
-        cond_close_above_sma
-        and cond_sma_rising
-        and cond_pivot_breakout
-        and cond_volume_surge
-        and cond_mrs_positive
+        cond_1_trend
+        and cond_2_breakout
+        and cond_2_tight_base
+        and cond_3_volume
+        and cond_4_mrs
     )
 
     return {
         "is_stage2": is_stage2,
-        "cond_close_above_sma": cond_close_above_sma,
-        "cond_sma_rising": cond_sma_rising,
-        "cond_pivot_breakout": cond_pivot_breakout,
-        "cond_volume_surge": cond_volume_surge,
-        "cond_mrs_positive": cond_mrs_positive,
+        "cond_1_trend": cond_1_trend,
+        "cond_2_breakout": cond_2_breakout,
+        "cond_2_tight_base": cond_2_tight_base,
+        "cond_3_volume": cond_3_volume,
+        "cond_4_mrs": cond_4_mrs,
     }
 
 
 def calculate_target_and_risk(
     pivot_35w: float,
     current_price: float,
-    swing_low: Optional[float] = None
-) -> Dict[str, float]:
+    atr_14w: Optional[float] = None,
+    min_low_4w: Optional[float] = None,
+    portfolio_size: float = 10000.0,
+    risk_pct: float = 0.01,
+) -> Dict[str, Any]:
     """
-    Calculates entry target, max buy price (+5%), stop loss, and distance percentage:
+    Calculates V2 ATR-based Risk, Buy Zone & Position Sizing:
     - entry_price = round(pivot_35w, 4)
     - max_buy_price = round(entry_price * 1.05, 4) (+5% chase limit)
-    - stop_loss_price = round(swing_low, 4) if (swing_low and 0 < swing_low < entry_price)
-                        else round(entry_price * 0.92, 4) (-8% default stop)
-    - diff_pct = round(((current_price - entry_price) / entry_price) * 100.0, 4)
+    - stop_loss_price:
+        stop_atr = entry_price - (1.5 * atr_14w)
+        stop_base = min_low_4w * 0.99
+        stop_hard_cap = entry_price * 0.90 (-10% max risk cap)
+        stop_loss = max(stop_hard_cap, min(stop_atr, stop_base))
+    - diff_pct = ((current_price - entry_price) / entry_price) * 100
+    - position sizing:
+        risk_per_share = max(current_price - stop_loss, 0.01)
+        dollar_risk = portfolio_size * risk_pct
+        recommended_shares = floor(dollar_risk / risk_per_share)
     """
     entry_price = round(pivot_35w, 4)
     max_buy_price = round(entry_price * 1.05, 4)
 
-    if swing_low is not None and 0.0 < swing_low < entry_price:
-        stop_loss_price = round(swing_low, 4)
-    else:
-        stop_loss_price = round(entry_price * 0.92, 4)
+    effective_atr = atr_14w if (atr_14w is not None and atr_14w > 0) else (entry_price * 0.05)
+    stop_atr = entry_price - (1.5 * effective_atr)
+    stop_base = (min_low_4w * 0.99) if (min_low_4w is not None and min_low_4w > 0) else stop_atr
+    stop_hard_cap = entry_price * 0.90
 
+    stop_loss = round(max(stop_hard_cap, min(stop_atr, stop_base)), 4)
     diff_pct = round(((current_price - entry_price) / entry_price) * 100.0, 4)
+
+    risk_per_share = max(round(current_price - stop_loss, 4), 0.01)
+    dollar_risk = portfolio_size * risk_pct
+    recommended_shares = int(np.floor(dollar_risk / risk_per_share))
 
     return {
         "entry_price": entry_price,
         "max_buy_price": max_buy_price,
-        "stop_loss_price": stop_loss_price,
+        "stop_loss_price": stop_loss,
         "current_price": round(current_price, 4),
         "diff_pct": diff_pct,
+        "risk_per_share": risk_per_share,
+        "recommended_shares": recommended_shares,
     }
 
 
@@ -100,42 +152,52 @@ def classify_entry_status(
     current_price: float,
     entry_price: float,
     max_buy_price: float,
-    stop_loss_price: float
+    stop_loss_price: float,
+    sma_10w: Optional[float] = None,
+    sma_30w: Optional[float] = None,
 ) -> str:
     """
-    Deterministic entry status categorization (mutually exclusive enum):
-    - current_price < stop_loss_price          => 'STOPPED_OUT'
-    - stop_loss_price <= current_price < entry => 'BELOW_ENTRY' (price == stop_loss is BELOW_ENTRY)
-    - entry_price <= current_price <= max_buy  => 'IN_BUY_ZONE' (both bounds inclusive)
-    - current_price > max_buy_price            => 'EXTENDED'
+    6-Tier Actionable Status for Stage 2 Trend Riding:
+    1. 🔴 STOPPED_OUT: current_price < stop_loss_price or (sma_30w and current_price < sma_30w)
+    2. 🔵 PROFIT_RUN: gain_pct >= 15.0% and (sma_10w and current_price >= sma_10w)
+    3. 🟠 TRAILING_WARNING: gain_pct >= 15.0% and (sma_10w and current_price < sma_10w)
+    4. 🟡 EXTENDED: current_price > max_buy_price and gain_pct < 15.0%
+    5. 🟢 IN_BUY_ZONE: entry_price <= current_price <= max_buy_price (favorable entry point)
+    6. ⚪ BELOW_ENTRY: near pivot (-6% to 0%) or pulled back above stop_loss
     """
-    if current_price < stop_loss_price:
+    gain_pct = ((current_price - entry_price) / entry_price) * 100.0
+
+    if current_price < stop_loss_price or (sma_30w is not None and current_price < sma_30w):
         return "STOPPED_OUT"
-    elif current_price < entry_price:
-        return "BELOW_ENTRY"
-    elif current_price <= max_buy_price:
+    elif gain_pct >= 15.0 and sma_10w is not None and current_price >= sma_10w:
+        return "PROFIT_RUN"
+    elif gain_pct >= 15.0 and sma_10w is not None and current_price < sma_10w:
+        return "TRAILING_WARNING"
+    elif current_price > max_buy_price:
+        return "EXTENDED"
+    elif entry_price <= current_price <= max_buy_price:
         return "IN_BUY_ZONE"
     else:
-        return "EXTENDED"
+        return "BELOW_ENTRY"
 
 
 # =============================================================================
 # Database Persistence Helpers (Feature 20)
 # =============================================================================
 
-def create_scan_job(tickers_total: int, cur=None) -> int:
+def create_scan_job(tickers_total: int, market_regime: Optional[str] = None, cur=None) -> int:
     """Creates a new scan_jobs audit record with status 'RUNNING'."""
     sql = """
-    INSERT INTO scan_jobs (job_type, status, started_at, tickers_total, tickers_processed, tickers_failed, signals_found)
-    VALUES ('WEEKLY_SCREEN', 'RUNNING', CURRENT_TIMESTAMP, %s, 0, 0, 0)
+    INSERT INTO scan_jobs (job_type, status, started_at, tickers_total, tickers_processed, tickers_failed, signals_found, market_regime)
+    VALUES ('WEEKLY_SCREEN', 'RUNNING', CURRENT_TIMESTAMP, %s, 0, 0, 0, %s)
     RETURNING id;
     """
     if cur:
-        cur.execute(sql, (tickers_total,))
+        cur.execute(sql, (tickers_total, market_regime))
         return cur.fetchone()[0]
     else:
         with db.db_cursor(commit=True) as cursor:
-            cursor.execute(sql, (tickers_total,))
+            cursor.execute(sql, (tickers_total, market_regime))
             return cursor.fetchone()[0]
 
 
@@ -147,6 +209,7 @@ def update_scan_job(
     signals_found: int = 0,
     error_message: Optional[str] = None,
     telegram_alert_sent: bool = False,
+    market_regime: Optional[str] = None,
     cur=None
 ) -> None:
     """Updates scan_jobs execution state upon completion or failure."""
@@ -158,10 +221,11 @@ def update_scan_job(
         tickers_failed = %s,
         signals_found = %s,
         error_message = %s,
-        telegram_alert_sent = %s
+        telegram_alert_sent = %s,
+        market_regime = COALESCE(%s, market_regime)
     WHERE id = %s;
     """
-    params = (status, tickers_processed, tickers_failed, signals_found, error_message, telegram_alert_sent, job_id)
+    params = (status, tickers_processed, tickers_failed, signals_found, error_message, telegram_alert_sent, market_regime, job_id)
     if cur:
         cur.execute(sql, params)
     else:
@@ -198,7 +262,7 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         scan_id, scan_date, ticker, entry_price, max_buy_price, current_price,
         stop_loss_price, diff_pct, entry_status, volume_surge_ratio, mrs_score,
         sma_30w, sma_30w_slope, prior_resistance_35w, weekly_close,
-        weekly_volume, avg_volume_10w, stage
+        weekly_volume, avg_volume_10w, stage, sma_10w, base_tightness_pct, atr_14w, market_regime
     )
     VALUES %s
     ON CONFLICT (scan_date, ticker) DO UPDATE SET
@@ -217,7 +281,11 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         weekly_close = EXCLUDED.weekly_close,
         weekly_volume = EXCLUDED.weekly_volume,
         avg_volume_10w = EXCLUDED.avg_volume_10w,
-        stage = EXCLUDED.stage;
+        stage = EXCLUDED.stage,
+        sma_10w = EXCLUDED.sma_10w,
+        base_tightness_pct = EXCLUDED.base_tightness_pct,
+        atr_14w = EXCLUDED.atr_14w,
+        market_regime = EXCLUDED.market_regime;
     """
     values = [
         (
@@ -239,6 +307,10 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
             s["weekly_volume"],
             s["avg_volume_10w"],
             s.get("stage", "Stage 2 Breakout"),
+            s.get("sma_10w"),
+            s.get("base_tightness_pct"),
+            s.get("atr_14w"),
+            s.get("market_regime"),
         )
         for s in deduped_list
     ]
@@ -385,11 +457,21 @@ def run_screener(
 
     logger.info(f"Targeting {len(target_tickers)} tickers for screening (warmup={min_weeks}w)...")
 
+    # 1b. Compute Market Regime Filter (SPY Weekly)
+    spy_closes_full = [b["close"] for b in spy_weekly]
+    regime_info = indicators.compute_market_regime(spy_closes_full, min_weeks=min_weeks)
+    market_regime = regime_info["market_regime"]
+    logger.info(
+        f"SPY Benchmark Market Regime: {market_regime} "
+        f"(SPY Close: {regime_info['spy_close']}, SMA30w: {regime_info['spy_sma_30w']}, "
+        f"SMA10w: {regime_info['spy_sma_10w']}, Slope 4w: {regime_info['spy_slope_4w']}%)"
+    )
+
     # 2. Audit job initiation
     job_id = None
     if db_persist:
         try:
-            job_id = create_scan_job(tickers_total=len(target_tickers))
+            job_id = create_scan_job(tickers_total=len(target_tickers), market_regime=market_regime)
         except Exception as e:
             logger.warning(f"Could not initialize scan_jobs table: {e}")
 
@@ -428,69 +510,91 @@ def run_screener(
 
             closes = [b["close"] for b in stock_w]
             highs = [b["high"] for b in stock_w]
+            lows = [b["low"] for b in stock_w]
             volumes = [b["volume"] for b in stock_w]
             spy_closes = [b["close"] for b in spy_w]
 
-            # Compute Weinstein indicators
-            sma30 = compute_sma(closes, window=30)
-            slope = compute_sma_slope(sma30, lookback=1)
-            avg_vol10, surge = compute_volume_surge(volumes, window=10)
-            pivot35 = compute_prior_resistance_pivot(highs, lookback=35)
-            mrs = compute_mansfield_relative_strength(closes, spy_closes, lookback=52)
+            # Compute Weinstein V2 indicators
+            sma10 = indicators.compute_sma(closes, window=10)
+            sma30 = indicators.compute_sma(closes, window=30)
+            slope4 = indicators.compute_sma_slope(sma30, lookback=4)
+            avg_vol10, _ = indicators.compute_volume_surge(volumes, window=10)
+            pivot35 = indicators.compute_prior_resistance_pivot(highs, lookback=35)
+            tightness = indicators.compute_base_tightness(highs, lows, lookback=4)
+            atr14 = indicators.compute_atr(highs, lows, closes, window=14)
+            mrs = indicators.compute_mansfield_relative_strength(closes, spy_closes, lookback=52)
 
             last_idx = -1
             effective_scan_date = run_scan_date
 
-            filter_res = evaluate_stage2_filter(
-                close=closes[last_idx],
-                sma_30w=sma30[last_idx],
-                sma_30w_slope=slope[last_idx],
-                pivot_35w=pivot35[last_idx],
-                vol_surge_ratio=surge[last_idx],
-                mrs_score=mrs[last_idx],
+            c = closes[last_idx]
+            s10 = sma10[last_idx]
+            s30 = sma30[last_idx]
+            sl4 = slope4[last_idx] if slope4[last_idx] is not None else 0.0
+            piv = pivot35[last_idx]
+            if piv is None or piv <= 0:
+                continue
+
+            tight_pct = tightness[last_idx] if tightness[last_idx] is not None else 15.0
+            h52 = max(highs[max(0, len(highs) - 52):])
+            curr_vol = volumes[last_idx]
+            avg_v = avg_vol10[last_idx] if avg_vol10[last_idx] is not None else 0
+            _, vol_ratio = indicators.calculate_projected_volume_surge(curr_vol, avg_v)
+            mrs_c = mrs[last_idx] if mrs[last_idx] is not None else -999.0
+            mrs_p4 = mrs[last_idx - 4] if len(mrs) >= 5 and mrs[last_idx - 4] is not None else None
+            atr_c = atr14[last_idx] if atr14[last_idx] is not None else (c * 0.05)
+            min_l4 = min(lows[last_idx - 4 : last_idx]) if len(lows) >= 5 else (c * 0.95)
+
+            # Trace initial breakout pivot in recent 16 weeks if in active run
+            entry_pivot = piv
+            for k in range(1, min(17, len(closes))):
+                idx = len(closes) - 1 - k
+                if idx >= 35 and pivot35[idx] and closes[idx] >= pivot35[idx] and closes[idx] < c:
+                    entry_pivot = pivot35[idx]
+                    break
+
+            risk = calculate_target_and_risk(
+                pivot_35w=entry_pivot,
+                current_price=c,
+                atr_14w=atr_c,
+                min_low_4w=min_l4,
+                portfolio_size=10000.0,
+                risk_pct=0.01,
             )
 
-            is_qualified = filter_res["is_stage2"]
+            status = classify_entry_status(
+                current_price=risk["current_price"],
+                entry_price=risk["entry_price"],
+                max_buy_price=risk["max_buy_price"],
+                stop_loss_price=risk["stop_loss_price"],
+                sma_10w=s10,
+                sma_30w=s30,
+            )
 
-            # Stan Weinstein Stage 2 Continuation & Setup Detection:
-            # If the stock didn't break out on the exact current bar, check if it had a Stage 2 breakout
-            # in recent weeks (last 8 weeks) OR is in an active Stage 2 Uptrend in the Buy Zone / Pullback Setup
-            if not is_qualified:
-                c = closes[last_idx]
-                s30 = sma30[last_idx]
-                sl = slope[last_idx]
-                piv = pivot35[last_idx]
-                m = mrs[last_idx]
-                if s30 and c > s30 and sl and sl >= 0 and m and m > 0 and piv:
-                    diff_pct = (c - piv) / piv * 100
-                    had_recent_breakout = False
-                    for b_idx in range(-1, max(-9, -len(stock_w)), -1):
-                        r_b = evaluate_stage2_filter(
-                            close=closes[b_idx],
-                            sma_30w=sma30[b_idx],
-                            sma_30w_slope=slope[b_idx],
-                            pivot_35w=pivot35[b_idx],
-                            vol_surge_ratio=surge[b_idx],
-                            mrs_score=mrs[b_idx],
-                        )
-                        if r_b["is_stage2"]:
-                            had_recent_breakout = True
-                            break
-                    if had_recent_breakout or (-12.0 <= diff_pct <= 20.0):
-                        is_qualified = True
+            filter_res = evaluate_stage2_filter(
+                close=c,
+                sma_10w=s10,
+                sma_30w=s30,
+                sma_30w_slope=sl4,
+                pivot_35w=piv,
+                tightness_pct=tight_pct,
+                high_52w=h52,
+                vol_surge_ratio=vol_ratio,
+                mrs_score=mrs_c,
+                mrs_score_prev4=mrs_p4,
+            )
+
+            is_qualified = False
+            in_stage2 = (c > s30) and (sl4 >= 0.0) and (mrs_c > 0.0)
+            if filter_res["is_stage2"]:
+                is_qualified = True
+                status = "IN_BUY_ZONE"
+            elif in_stage2 and status in ("IN_BUY_ZONE", "PROFIT_RUN", "TRAILING_WARNING", "EXTENDED"):
+                is_qualified = True
+            elif in_stage2 and status == "BELOW_ENTRY" and risk["diff_pct"] >= -6.0:
+                is_qualified = True
 
             if is_qualified:
-                risk = calculate_target_and_risk(
-                    pivot_35w=pivot35[last_idx],
-                    current_price=closes[last_idx]
-                )
-                status = classify_entry_status(
-                    current_price=risk["current_price"],
-                    entry_price=risk["entry_price"],
-                    max_buy_price=risk["max_buy_price"],
-                    stop_loss_price=risk["stop_loss_price"]
-                )
-
                 meta = meta_lookup.get(ticker, {})
                 signal_record = {
                     "scan_id": job_id,
@@ -506,15 +610,21 @@ def run_screener(
                     "stop_loss_price": risk["stop_loss_price"],
                     "diff_pct": risk["diff_pct"],
                     "entry_status": status,
-                    "volume_surge_ratio": surge[last_idx],
-                    "mrs_score": mrs[last_idx],
-                    "sma_30w": sma30[last_idx],
-                    "sma_30w_slope": slope[last_idx],
-                    "prior_resistance_35w": pivot35[last_idx],
-                    "weekly_close": closes[last_idx],
-                    "weekly_volume": volumes[last_idx],
-                    "avg_volume_10w": int(avg_vol10[last_idx]) if avg_vol10[last_idx] is not None else 0,
+                    "volume_surge_ratio": vol_ratio,
+                    "mrs_score": mrs_c,
+                    "sma_30w": s30,
+                    "sma_30w_slope": sl4,
+                    "prior_resistance_35w": piv,
+                    "weekly_close": c,
+                    "weekly_volume": curr_vol,
+                    "avg_volume_10w": int(avg_v),
                     "stage": "Stage 2 Breakout",
+                    "sma_10w": s10,
+                    "base_tightness_pct": tight_pct,
+                    "atr_14w": atr_c,
+                    "market_regime": market_regime,
+                    "recommended_shares": risk["recommended_shares"],
+                    "risk_per_share": risk["risk_per_share"],
                 }
                 qualified_signals.append(signal_record)
 
@@ -546,6 +656,7 @@ def run_screener(
             with open(signals_file, "w", encoding="utf-8") as f:
                 json.dump({
                     "scan_date": final_scan_date,
+                    "market_regime": market_regime,
                     "generated_at": datetime.utcnow().isoformat() + "Z",
                     "signals_found": len(qualified_signals),
                     "signals": qualified_signals,
@@ -563,6 +674,7 @@ def run_screener(
                 tickers_processed=processed_count,
                 tickers_failed=failed_count,
                 signals_found=len(qualified_signals),
+                market_regime=market_regime,
             )
         except Exception as e:
             logger.warning(f"Could not update scan_jobs completion: {e}")

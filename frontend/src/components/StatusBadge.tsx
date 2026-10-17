@@ -18,28 +18,38 @@ interface StatusBadgeProps {
 }
 
 const STATUS_CONFIG: Record<
-  ScreenerSignal['status'],
+  string,
   { label: string; className: string }
 > = {
   IN_BUY_ZONE: {
-    label: 'อยู่ในโซนซื้อ',
+    label: '🟢 โซนซื้อได้เปรียบ',
     className:
-      'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
+      'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-semibold',
   },
   EXTENDED: {
-    label: 'พุ่งเกินโซน (+5%)',
+    label: '🟡 วิ่งเกินโซนซื้อ (+5%)',
     className:
-      'bg-amber-500/15 text-amber-400 border border-amber-500/30',
+      'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold',
+  },
+  PROFIT_RUN: {
+    label: '🔵 รันเทรนด์กำไร (+15%)',
+    className:
+      'bg-sky-500/20 text-sky-300 border border-sky-500/40 font-semibold',
+  },
+  TRAILING_WARNING: {
+    label: '🟠 เตือนล็อกกำไร (หลุด 10w)',
+    className:
+      'bg-orange-500/20 text-orange-300 border border-orange-500/40 font-semibold',
   },
   BELOW_ENTRY: {
-    label: 'ยังไม่ถึงจุดเข้า',
+    label: '⚪ จ่อเบรกแนวต้าน',
     className:
-      'bg-blue-500/15 text-blue-400 border border-blue-500/30',
+      'bg-slate-500/20 text-slate-300 border border-slate-500/40 font-semibold',
   },
   STOPPED_OUT: {
-    label: 'หลุด Stop Loss',
+    label: '🔴 หลุดจุดตัดขาดทุน',
     className:
-      'bg-rose-500/15 text-rose-400 border border-rose-500/30',
+      'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-semibold',
   },
 };
 

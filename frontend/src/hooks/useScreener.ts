@@ -14,6 +14,7 @@ interface UseScreenerResult {
   total: number;
   totalPages: number;
   scanDate: string;
+  marketRegime: string | null;
   refetch: () => void;
 }
 
@@ -29,6 +30,7 @@ export function useScreenerData(filters: ScreenerFilters): UseScreenerResult {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [scanDate, setScanDate] = useState('');
+  const [marketRegime, setMarketRegime] = useState<string | null>(null);
   const [fetchCount, setFetchCount] = useState(0);
 
   const refetch = useCallback(() => {
@@ -48,6 +50,7 @@ export function useScreenerData(filters: ScreenerFilters): UseScreenerResult {
           setTotal(data.total);
           setTotalPages(data.total_pages);
           setScanDate(data.scan_date);
+          setMarketRegime(data.market_regime ?? null);
         }
       } catch (err) {
         if (!cancelled) {
@@ -79,5 +82,5 @@ export function useScreenerData(filters: ScreenerFilters): UseScreenerResult {
     fetchCount,
   ]);
 
-  return { signals, loading, error, total, totalPages, scanDate, refetch };
+  return { signals, loading, error, total, totalPages, scanDate, marketRegime, refetch };
 }

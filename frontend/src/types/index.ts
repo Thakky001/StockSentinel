@@ -3,6 +3,16 @@
  * These types are aligned with the backend API contract defined in PROJECT.md.
  */
 
+export type StatusType =
+  | 'IN_BUY_ZONE'
+  | 'EXTENDED'
+  | 'PROFIT_RUN'
+  | 'TRAILING_WARNING'
+  | 'BELOW_ENTRY'
+  | 'STOPPED_OUT';
+
+export type MarketRegime = 'BULL_MARKET' | 'CAUTION_MARKET' | 'BEAR_MARKET';
+
 /** A single screener signal returned from GET /api/screener/latest */
 export interface ScreenerSignal {
   ticker: string;
@@ -18,13 +28,21 @@ export interface ScreenerSignal {
   max_buy_price: number;
   stop_loss_price: number;
   diff_pct: number;
-  status: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
-  entry_status?: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
+  status: StatusType;
+  entry_status?: StatusType;
   volume_surge_ratio: number;
   mrs_score: number;
   sma_30w: number;
   sma_30w_slope: number;
   prior_resistance_35w: number;
+
+  // V2 Mathematical Enhancements
+  sma_10w?: number | null;
+  base_tightness_pct?: number | null;
+  atr_14w?: number | null;
+  market_regime?: MarketRegime | string | null;
+  recommended_shares?: number | null;
+  risk_per_share?: number | null;
 }
 
 /** OHLCV candlestick data point for TradingView Lightweight Charts */
@@ -71,6 +89,7 @@ export interface ChartData {
 /** Paginated screener response from GET /api/screener/latest */
 export interface ScreenerLatestResponse {
   scan_date: string;
+  market_regime?: MarketRegime | string | null;
   total: number;
   page: number;
   limit: number;

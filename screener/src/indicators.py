@@ -540,3 +540,140 @@ def compute_all_indicators(
         df = df.with_columns(pl.lit(None, dtype=pl.Float64).alias("mrs_score"))
 
     return df
+
+
+def compute_atr(
+    highs: List[float],
+    lows: List[float],
+    closes: List[float],
+    window: int = 14
+) -> List[Optional[float]]:
+    """
+    Computes Average True Range (ATR) over `window` periods on weekly OHLC lists:
+    TR[0] = High[0] - Low[0]
+    TR[t] = max(High[t] - Low[t], abs(High[t] - Close[t-1]), abs(Low[t] - Close[t-1]))
+    ATR = rolling_mean(TR, window)
+    """
+    if len(highs) < window:
+        return [None] * len(highs)
+    tr_list: List[float] = []
+    for i in range(len(highs)):
+        if i == 0:
+            tr = highs[i] - lows[i]
+        else:
+            hl = highs[i] - lows[i]
+            hc = abs(highs[i] - closes[i - 1])
+            lc = abs(lows[i] - closes[i - 1])
+            tr = max(hl, hc, lc)
+        tr_list.append(tr)
+
+    atr_list: List[Optional[float]] = []
+    running_sum = 0.0
+    for i in range(len(tr_list)):
+        running_sum += tr_list[i]
+        if i < window - 1:
+            atr_list.append(None)
+        elif i == window - 1:
+            atr_list.append(round(running_sum / float(window), 4))
+        else:
+            running_sum -= tr_list[i - window]
+            atr_list.append(round(running_sum / float(window), 4))
+    return atr_list
+
+
+def compute_base_tightness(
+    highs: List[float],
+    lows: List[float],
+    lookback: int = 4
+) -> List[Optional[float]]:
+    """
+    Computes Base Tightness percentage over prior `lookback` weeks (strictly excluding current week [t]):
+    Max_High_4w = max(High[t-4 : t])
+    Min_Low_4w = min(Low[t-4 : t])
+    Tightness_Pct = ((Max_High_4w - Min_Low_4w) / Min_Low_4w) * 100.0
+    """
+    tightness: List[Optional[float]] = []
+    for i in range(len(highs)):
+        if i < lookback:
+            tightness.append(None)
+        else:
+            prior_highs = highs[i - lookback : i]
+            prior_lows = lows[i - lookback : i]
+            min_l = min(prior_lows)
+            if min_l <= 0:
+                tightness.append(0.0)
+            else:
+                pct = ((max(prior_highs) - min_l) / min_l) * 100.0
+                tightness.append(round(pct, 2))
+    return tightness
+
+
+def compute_market_regime(
+    spy_closes: List[float],
+    min_weeks: int = 35
+) -> Dict[str, Any]:
+    """
+    Evaluates Market Regime Filter (SPY Weekly):
+    - BULL_MARKET: SPY_Close >= SPY_SMA_30w and SPY_SMA_30w_Slope_4w >= 0 and SPY_Close >= SPY_SMA_10w
+    - CAUTION_MARKET: SPY_Close >= SPY_SMA_30w but (SPY_SMA_30w_Slope_4w < 0 or SPY_Close < SPY_SMA_10w)
+    - BEAR_MARKET: SPY_Close < SPY_SMA_30w
+    """
+    if len(spy_closes) < min_weeks:
+        return {
+            "market_regime": "BULL_MARKET",
+            "spy_close": round(spy_closes[-1], 2) if spy_closes else 0.0,
+            "spy_sma_30w": 0.0,
+            "spy_sma_10w": 0.0,
+            "spy_slope_4w": 0.0,
+        }
+    sma10 = compute_sma(spy_closes, window=10)
+    sma30 = compute_sma(spy_closes, window=30)
+    slope4 = compute_sma_slope(sma30, lookback=4)
+
+    c = spy_closes[-1]
+    s10 = sma10[-1] or c
+    s30 = sma30[-1] or c
+    sl4 = slope4[-1] if slope4[-1] is not None else 0.0
+
+    if c >= s30 and sl4 >= 0.0 and c >= s10:
+        regime = "BULL_MARKET"
+    elif c >= s30:
+        regime = "CAUTION_MARKET"
+    else:
+        regime = "BEAR_MARKET"
+
+    return {
+        "market_regime": regime,
+        "spy_close": round(c, 2),
+        "spy_sma_30w": round(s30, 2),
+        "spy_sma_10w": round(s10, 2),
+        "spy_slope_4w": round(sl4, 2),
+    }
+
+
+def calculate_projected_volume_surge(
+    current_volume: int,
+    avg_vol_10w: float,
+    days_elapsed: Optional[float] = None
+) -> Tuple[float, float]:
+    """
+    Computes Projected Volume Surge (>= 1.5x of prior 10w avg volume).
+    If scanning mid-week, scales up current volume to project full 5-day week:
+    Scale_Factor = 5.0 / max(days_elapsed, 0.5)
+    Projected_Volume = current_volume * Scale_Factor
+    Returns (projected_volume, volume_surge_ratio).
+    """
+    if days_elapsed is None:
+        # Determine based on current UTC day and time
+        now = datetime.utcnow()
+        weekday = now.weekday()  # 0=Monday, 4=Friday, 5=Saturday, 6=Sunday
+        if weekday >= 5 or (weekday == 4 and now.hour >= 21):
+            days_elapsed = 5.0
+        else:
+            days_elapsed = float(weekday + 1)
+
+    scale_factor = 5.0 / max(days_elapsed, 0.5)
+    projected_vol = float(current_volume) * scale_factor
+    ratio = (projected_vol / avg_vol_10w) if avg_vol_10w > 0 else 0.0
+    return round(projected_vol, 2), round(ratio, 4)
+

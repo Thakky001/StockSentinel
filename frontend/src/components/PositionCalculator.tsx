@@ -10,6 +10,8 @@ interface PositionCalculatorProps {
   onClose: () => void;
   initialEntryPrice?: number;
   initialStopLoss?: number;
+  initialAccountSize?: number;
+  initialRiskPct?: number;
 }
 
 const PositionCalculator: React.FC<PositionCalculatorProps> = ({
@@ -17,16 +19,20 @@ const PositionCalculator: React.FC<PositionCalculatorProps> = ({
   onClose,
   initialEntryPrice = 100,
   initialStopLoss = 92,
+  initialAccountSize = 10000,
+  initialRiskPct = 1.0,
 }) => {
-  const [accountSize, setAccountSize] = useState<number>(100000);
-  const [riskPct, setRiskPct] = useState<number>(1.0);
+  const [accountSize, setAccountSize] = useState<number>(initialAccountSize);
+  const [riskPct, setRiskPct] = useState<number>(initialRiskPct);
   const [entryPrice, setEntryPrice] = useState<number>(initialEntryPrice);
   const [stopLoss, setStopLoss] = useState<number>(initialStopLoss);
 
   useEffect(() => {
     if (initialEntryPrice > 0) setEntryPrice(initialEntryPrice);
     if (initialStopLoss > 0) setStopLoss(initialStopLoss);
-  }, [initialEntryPrice, initialStopLoss]);
+    if (initialAccountSize > 0) setAccountSize(initialAccountSize);
+    if (initialRiskPct > 0) setRiskPct(initialRiskPct);
+  }, [initialEntryPrice, initialStopLoss, initialAccountSize, initialRiskPct]);
 
   // Close on Escape key press
   useEffect(() => {

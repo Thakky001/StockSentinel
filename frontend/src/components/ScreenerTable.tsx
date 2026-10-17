@@ -11,8 +11,11 @@ interface ScreenerTableProps {
   loading: boolean;
   sortBy: string;
   order: 'asc' | 'desc';
+  portfolioSize?: number;
+  riskPct?: number;
   onSortChange: (column: string) => void;
   onOpenChart: (ticker: string) => void;
+  onOpenCalculator?: (entry: number, stop: number) => void;
   isWatchlisted: (ticker: string) => boolean;
   onToggleWatchlist: (signal: ScreenerSignal) => void;
 }
@@ -32,12 +35,15 @@ const COLUMNS: ColumnDef[] = [
   { key: 'entry_price', label: 'จุดเข้าซื้อ (Pivot)', align: 'right', sortable: true },
   { key: 'max_buy_price', label: 'เพดานซื้อ (+5%)', align: 'right', sortable: false },
   { key: 'stop_loss_price', label: 'Stop Loss', align: 'right', sortable: false },
+  { key: 'base_tightness_pct', label: 'กรอบฐาน 4w', align: 'right', sortable: true },
+  { key: 'atr_14w', label: 'ATR (14w)', align: 'right', sortable: true },
+  { key: 'recommended_shares', label: 'ไม้ซื้อ (หุ้น)', align: 'right', sortable: false },
   { key: 'diff_pct', label: 'เทียบจุดเข้า %', align: 'right', sortable: true },
   { key: 'status', label: 'สถานะโซนซื้อ', align: 'center', sortable: true },
   { key: 'volume_surge_ratio', label: 'โวลุ่มเข้า (เท่า)', align: 'right', sortable: true },
   { key: 'mrs_score', label: 'Mansfield RS', align: 'right', sortable: true },
   { key: 'sma_30w_slope', label: 'ความชัน 30w', align: 'right', sortable: true },
-  { key: 'actions', label: 'ดูกราฟ', align: 'center', sortable: false },
+  { key: 'actions', label: 'เครื่องมือ', align: 'center', sortable: false },
 ];
 
 const ScreenerTable: React.FC<ScreenerTableProps> = ({
@@ -45,8 +51,11 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
   loading,
   sortBy,
   order,
+  portfolioSize = 10000,
+  riskPct = 1.0,
   onSortChange,
   onOpenChart,
+  onOpenCalculator,
   isWatchlisted,
   onToggleWatchlist,
 }) => {
@@ -182,6 +191,51 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     ${stopLossPrice.toFixed(2)}
                   </td>
 
+                  {/* Base Tightness % (4w) */}
+                  <td className="py-3 px-4 text-right font-mono text-xs">
+                    {sig.base_tightness_pct != null ? (
+                      <span
+                        className={
+                          Number(sig.base_tightness_pct) <= 18
+                            ? 'text-emerald-400 font-semibold'
+                            : Number(sig.base_tightness_pct) <= 20
+                            ? 'text-amber-400 font-medium'
+                            : 'text-slate-400'
+                        }
+                        title={`กรอบบีบตัว 4 สัปดาห์: ${Number(sig.base_tightness_pct).toFixed(2)}%`}
+                      >
+                        {Number(sig.base_tightness_pct).toFixed(1)}%
+                      </span>
+                    ) : (
+                      <span className="text-slate-500">—</span>
+                    )}
+                  </td>
+
+                  {/* ATR (14w) */}
+                  <td className="py-3 px-4 text-right font-mono text-xs text-slate-300">
+                    {sig.atr_14w != null ? `$${Number(sig.atr_14w).toFixed(2)}` : '—'}
+                  </td>
+
+                  {/* Recommended Shares (Position Sizing) */}
+                  <td className="py-3 px-4 text-right font-mono text-xs">
+                    {(() => {
+                      const riskAmount = (portfolioSize * riskPct) / 100;
+                      const riskPerShare = Math.max(0.01, entryPrice - stopLossPrice);
+                      const shares = Math.max(0, Math.floor(riskAmount / riskPerShare));
+                      const capital = shares * closePrice;
+                      return (
+                        <div>
+                          <span className="font-bold text-sky-400">
+                            {shares.toLocaleString()} <span className="text-[10px] text-slate-400 font-normal">หุ้น</span>
+                          </span>
+                          <div className="text-[10px] text-slate-400/80">
+                            ${capital.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </td>
+
                   {/* Distance % */}
                   <td className={`py-3 px-4 text-right font-mono font-semibold text-xs ${
                     diffPositive ? 'text-emerald-400' : 'text-rose-400'
@@ -215,14 +269,25 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     {slopePositive ? '+' : ''}{slope.toFixed(1)}%
                   </td>
 
-                  {/* Action button */}
+                  {/* Actions buttons */}
                   <td className="py-3 px-4 text-center">
-                    <button
-                      onClick={() => onOpenChart(sig.ticker)}
-                      className="bg-blue-600/80 hover:bg-blue-600 text-white text-xs font-medium px-2.5 py-1 rounded-md transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      ดูกราฟ
-                    </button>
+                    <div className="flex items-center justify-center gap-1.5">
+                      <button
+                        onClick={() => onOpenChart(sig.ticker)}
+                        className="bg-blue-600/80 hover:bg-blue-600 text-white text-xs font-medium px-2.5 py-1 rounded-md transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
+                      >
+                        ดูกราฟ
+                      </button>
+                      {onOpenCalculator && (
+                        <button
+                          onClick={() => onOpenCalculator(entryPrice, stopLossPrice)}
+                          title="คำนวณไม้และคุมความเสี่ยง"
+                          className="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs px-2 py-1 rounded-md transition-colors"
+                        >
+                          🧮
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               );

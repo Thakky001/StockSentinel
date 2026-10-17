@@ -16,9 +16,11 @@ interface FilterBarProps {
 
 const STATUS_TABS = [
   { id: '', label: 'ทุกสถานะ' },
-  { id: 'IN_BUY_ZONE', label: '🟢 ในโซนซื้อ', badgeColor: 'text-emerald-400' },
-  { id: 'EXTENDED', label: '🟡 เกินโซน (+5%)', badgeColor: 'text-amber-400' },
-  { id: 'BELOW_ENTRY', label: '⚪ ยังไม่ถึงจุดเข้า', badgeColor: 'text-blue-400' },
+  { id: 'IN_BUY_ZONE', label: '🟢 โซนซื้อได้เปรียบ', badgeColor: 'text-emerald-400' },
+  { id: 'EXTENDED', label: '🟡 วิ่งเกินโซน (+5%)', badgeColor: 'text-amber-400' },
+  { id: 'PROFIT_RUN', label: '🔵 รันเทรนด์กำไร (+15%)', badgeColor: 'text-sky-400' },
+  { id: 'TRAILING_WARNING', label: '🟠 เตือนล็อกกำไร', badgeColor: 'text-orange-400' },
+  { id: 'BELOW_ENTRY', label: '⚪ จ่อเบรกแนวต้าน', badgeColor: 'text-slate-400' },
   { id: 'STOPPED_OUT', label: '🔴 หลุด Stop Loss', badgeColor: 'text-rose-400' },
 ];
 

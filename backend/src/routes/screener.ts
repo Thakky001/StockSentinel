@@ -22,7 +22,7 @@ const router = Router();
  * Loads the latest screened signals from the local JSON persistence file.
  * Used when PostgreSQL is offline or when running in standalone mode.
  */
-function loadLatestSignalsFromFile(): { scan_date: string; signals: ScreenerSignal[] } | null {
+function loadLatestSignalsFromFile(): { scan_date: string; market_regime?: string; signals: ScreenerSignal[] } | null {
   const jsonPaths = [
     path.resolve('/app/screener/data/latest_signals.json'),
     path.resolve(__dirname, '../../../screener/data/latest_signals.json'),
@@ -38,7 +38,8 @@ function loadLatestSignalsFromFile(): { scan_date: string; signals: ScreenerSign
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.signals) && parsed.signals.length > 0) {
           return {
-            scan_date: parsed.scan_date ?? '2026-10-09',
+            scan_date: parsed.scan_date ?? '2026-10-16',
+            market_regime: parsed.market_regime ?? 'CAUTION_MARKET',
             signals: parsed.signals,
           };
         }
@@ -51,7 +52,6 @@ function loadLatestSignalsFromFile(): { scan_date: string; signals: ScreenerSign
 }
 
 // ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
 // Whitelist of columns that are safe to use in ORDER BY to prevent SQL injection
 // ---------------------------------------------------------------------------
 const SORT_COLUMN_MAP: Record<string, string> = {
@@ -63,6 +63,9 @@ const SORT_COLUMN_MAP: Record<string, string> = {
   volume_surge_ratio: 's.volume_surge_ratio',
   sma_30w: 's.sma_30w',
   sma_30w_slope: 's.sma_30w_slope',
+  sma_10w: 's.sma_10w',
+  base_tightness_pct: 's.base_tightness_pct',
+  atr_14w: 's.atr_14w',
   weekly_close: 's.weekly_close',
   close_price: 's.current_price',
   current_price: 's.current_price',
@@ -134,6 +137,10 @@ router.get(
             s.weekly_volume,
             s.avg_volume_10w,
             s.stage,
+            s.sma_10w,
+            s.base_tightness_pct,
+            s.atr_14w,
+            s.market_regime,
             s.created_at,
             COUNT(*) OVER() AS total_count
           FROM screener_signals s
@@ -148,7 +155,7 @@ router.get(
           LIMIT $5 OFFSET $6
         `;
 
-        const result = await query<ScreenerSignal & { total_count: string }>(sql, [
+        const result = await query<ScreenerSignal & { total_count: string; market_regime?: string }>(sql, [
           dateParam,
           sector,
           status,
@@ -168,12 +175,15 @@ router.get(
         }
       }
 
+      let marketRegime: any = signals[0]?.market_regime;
+
       // If database is offline or empty, use local JSON file signals before falling back to MOCK_SIGNALS
       if (signals.length === 0) {
         const fileData = loadLatestSignalsFromFile();
         const baseSignals = fileData ? fileData.signals : MOCK_SIGNALS;
         if (fileData) {
           scanDate = fileData.scan_date;
+          marketRegime = fileData.market_regime ?? marketRegime;
         }
 
         let filtered = [...baseSignals];
@@ -210,6 +220,10 @@ router.get(
         signals = filtered.slice(offset, offset + limit);
       }
 
+      if (!marketRegime) {
+        marketRegime = 'CAUTION_MARKET';
+      }
+
       // Normalize all signals so both close_price & current_price, status & entry_status are always present
       const normalizedSignals = signals.map((s: any) => ({
         ...s,
@@ -217,10 +231,16 @@ router.get(
         current_price: Number(s.current_price ?? s.weekly_close ?? s.close_price ?? 0),
         status: s.status ?? s.entry_status ?? 'IN_BUY_ZONE',
         entry_status: s.entry_status ?? s.status ?? 'IN_BUY_ZONE',
+        sma_10w: s.sma_10w ? Number(s.sma_10w) : null,
+        base_tightness_pct: s.base_tightness_pct ? Number(s.base_tightness_pct) : null,
+        atr_14w: s.atr_14w ? Number(s.atr_14w) : null,
+        market_regime: s.market_regime ?? marketRegime,
+        recommended_shares: s.recommended_shares ? Number(s.recommended_shares) : Math.max(1, Math.floor(100 / Math.max(0.01, (Number(s.current_price) - Number(s.stop_loss_price))))),
       }));
 
       const responseData: ScreenerListData = {
         scan_date: scanDate,
+        market_regime: marketRegime,
         total,
         page,
         limit,

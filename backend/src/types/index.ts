@@ -29,6 +29,16 @@ export interface StockInfo {
   updated_at: string;
 }
 
+export type EntryStatus =
+  | 'IN_BUY_ZONE'
+  | 'EXTENDED'
+  | 'PROFIT_RUN'
+  | 'TRAILING_WARNING'
+  | 'BELOW_ENTRY'
+  | 'STOPPED_OUT';
+
+export type MarketRegime = 'BULL_MARKET' | 'CAUTION_MARKET' | 'BEAR_MARKET';
+
 /** Matches the `scan_jobs` table */
 export interface ScanJob {
   id: number;
@@ -43,6 +53,7 @@ export interface ScanJob {
   signals_found: number;
   error_message: string | null;
   telegram_alert_sent: boolean;
+  market_regime?: MarketRegime | string | null;
   created_at: string;
 }
 
@@ -61,9 +72,9 @@ export interface ScreenerSignal {
   stop_loss_price: number;
   diff_pct: number;
 
-  /** IN_BUY_ZONE | EXTENDED | BELOW_ENTRY | STOPPED_OUT */
-  entry_status: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
-  status?: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT';
+  /** IN_BUY_ZONE | EXTENDED | PROFIT_RUN | TRAILING_WARNING | BELOW_ENTRY | STOPPED_OUT */
+  entry_status: EntryStatus;
+  status?: EntryStatus;
 
   // Weinstein / Volume indicators
   volume_surge_ratio: number;
@@ -75,6 +86,13 @@ export interface ScreenerSignal {
   weekly_volume: number;
   avg_volume_10w: number;
   stage: string;
+
+  // V2 Mathematical Enhancements
+  sma_10w?: number | null;
+  base_tightness_pct?: number | null;
+  atr_14w?: number | null;
+  market_regime?: MarketRegime | string | null;
+  recommended_shares?: number | null;
 
   created_at: string;
 
@@ -178,6 +196,7 @@ export type ApiResponse<T> =
 // ---------------------------------------------------------------------------
 export interface ScreenerListData {
   scan_date: string;
+  market_regime?: MarketRegime | string | null;
   total: number;
   page: number;
   limit: number;
