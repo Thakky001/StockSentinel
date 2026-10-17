@@ -176,8 +176,8 @@ const App: React.FC = () => {
           </div>
 
           {scanDate && (
-            <div className="text-xs bg-slate-800 border border-slate-700/80 px-3 py-1.5 rounded-lg text-slate-300 self-start sm:self-auto font-mono">
-              วันที่สแกน: <b className="text-blue-400">{scanDate.includes('T') ? scanDate.split('T')[0] : scanDate}</b>
+            <div className="text-xs bg-slate-800 border border-slate-700/80 px-3 py-1.5 rounded-lg text-slate-300 self-start sm:self-auto font-mono whitespace-nowrap shrink-0">
+              วันที่สแกน: <b className="text-blue-400 whitespace-nowrap">{scanDate.includes('T') ? scanDate.split('T')[0] : scanDate}</b>
             </div>
           )}
         </div>
