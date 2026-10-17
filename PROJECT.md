@@ -6,7 +6,7 @@ StockSentinel is an end-to-end automated weekly stock screener and web applicati
 ### High-Level Topology & Data Flow
 ```
 [External Sources]
-  ├── Russell 3000 / S&P 1500 Universe Constituents + SPY Benchmark
+  ├── Russell 3000 / S&P 500 / S&P 1500 Universe Constituents + SPY Benchmark
   └── Yahoo Finance (yfinance resilient 50-chunk downloader)
           │
           ▼
@@ -15,34 +15,42 @@ StockSentinel is an end-to-end automated weekly stock screener and web applicati
   └── PostgreSQL 16 `stock_daily_bars` (ON CONFLICT DO UPDATE batch upsert)
           │
           ▼
-[M3: Core Screener Engine & Indicator Math] (Python + Polars)
-  ├── Resample Daily to Weekly (Friday close, Monday-Friday bounds)
-  ├── Indicators: 30w SMA, slope, 10w volume avg, 35w resistance pivot
-  ├── Benchmark Join: SPY 52w RS & Mansfield RS Score
-  ├── Stage 2 Multi-Factor Filter (Weinstein rules)
-  ├── Target & Risk: Entry Pivot, Max Buy (+5%), Stop Loss, Distance %, Entry Status
-  ├── Upsert to `screener_signals` & log to `scan_jobs`
+[M3: Core Screener Engine V2.1 & Indicator Math] (Python + Polars + NumPy)
+  ├── 1. Market Regime Filter (SPY Weekly): BULL_MARKET, CAUTION_MARKET, BEAR_MARKET
+  ├── 2. Resample Daily to Weekly (Friday close, Monday-Friday bounds)
+  ├── 3. Indicator Pipeline: 30w SMA, 4w slope, 10w SMA, 10w volume avg, 35w pivot,
+  │      base tightness (4w <= 18%), ATR(14w), Mansfield RS vs SPY & acceleration
+  ├── 4. Dual-Mode Architecture:
+  │      ├── Mode 1: Discovery Scanner (8 multi-factor criteria + Min Volatility filter)
+  │      └── Mode 2: Active Lifecycle Tracker (`active_breakout_signals` state persistence)
+  ├── 5. Adaptive Stop Loss & Breakeven Auto-Lock (🛡️ Breakeven lock when peak gain >= +15%)
+  ├── 6. Dynamic Position Sizing (Regime-scaled budget, actual buy price risk, 20% cap)
+  ├── 7. 6-Tier Status Classification & Earnings Risk Warning (within 14 days)
+  ├── 8. Upsert to `screener_signals`, sync to `active_breakout_signals` & log to `scan_jobs`
           │
           ├───> [M4: Telegram Alerting System] (HTML format, 4096-char chunker)
           │
           ▼
-[M1: Database & Project Infrastructure] (PostgreSQL 16, Redis 7, Docker Compose)
-  ├── Tables: `stocks`, `stock_daily_bars`, `screener_signals`, `scan_jobs`
+[M1: Database & Project Infrastructure] (PostgreSQL 16, Redis 7, Neon DB)
+  ├── Tables: `stocks`, `stock_daily_bars`, `screener_signals`, `active_breakout_signals`, `scan_jobs`
           │
           ▼
 [M5: Backend REST API Service] (Node.js / Express / TypeScript)
-  ├── GET /api/screener/latest, GET /api/screener/dates, GET /api/screener/status
-  ├── GET /api/stock/:ticker/chart (Lightweight Charts ready OHLCV + SMA30)
+  ├── GET /api/screener/latest (Sort, filter by sector/status/regime, pagination, V2.1 metrics)
+  ├── GET /api/screener/dates, GET /api/screener/status
+  ├── GET /api/stock/:ticker/chart (Lightweight Charts ready OHLCV + SMA 30w)
   ├── GET /api/stock/:ticker/summary
   ├── POST /api/screener/trigger (Child process lock & execution)
   └── POST /api/notifications/telegram-test
           │
           ▼
 [M6: Frontend Web Application] (React 18 + Vite + Tailwind CSS)
-  ├── Dashboard: Sortable/filterable table, buy status badges, search
+  ├── Market Regime Alert Banners (BEAR_MARKET warning, CAUTION_MARKET, BULL_MARKET)
+  ├── Position Sizing Toolbar (Portfolio size $, Risk %, Dollar risk budget)
+  ├── Dashboard Table: 6-tier status badges, Base Tightness %, ATR, Shares, Earnings alerts
   ├── TradingView Lightweight Charts Modal (candlesticks, 30w SMA, volume, 3 price lines)
   ├── LocalStorage Watchlist Drawer
-  └── Risk & Position Sizing Calculator
+  └── Real-Time Risk & Position Sizing Calculator Modal (🧮)
 ```
 
 ---
@@ -99,8 +107,8 @@ Every feature from the original request and survey is assigned to a milestone:
 | M2 | Stock Universe & Ingestion Engine | Russell 3000 + S&P 1500 universe definition, SPY benchmark, resilient yfinance 50-chunk downloader with backoff, Parquet cache, PostgreSQL upsert | M1 | DONE |
 | M3 | Core Screener Engine & Indicator Math | Polars daily-to-weekly resampling, 30w SMA, slope, 10w volume avg, 35w resistance pivot, Mansfield RS vs SPY, Stage 2 Breakout filters, Entry/Stop/Status calculations, signals upsert, job audit logging | M1, M2 | DONE |
 | M4 | Telegram Alerting System | Formatted weekly alert in HTML mode, chunker (<4096 chars, zero tag breaks), HTTP dispatcher with rate limiting & retry, test harness | M1, M3 | DONE |
-| M5 | Backend REST API Service | Node.js Express TypeScript API service, pg connection pool, endpoints (`/api/screener/latest`, `/api/screener/dates`, `/api/stock/:ticker/chart`, `/api/stock/:ticker/summary`, `/api/screener/trigger`, `/api/screener/status`, `/api/notifications/telegram-test`), tests | M1, M3, M4 | IN_PROGRESS |
-| M6 | Frontend Web Application | React 18 + Vite + Tailwind CSS dashboard, ScreenerTable with sorting/filtering/badges, Lightweight Charts Modal (with 3 price lines), WatchlistDrawer, PositionCalculator | M5 | IN_PROGRESS |
+| M5 | Backend REST API Service | Node.js Express TypeScript API service, pg connection pool, endpoints (`/api/screener/latest`, `/api/screener/dates`, `/api/stock/:ticker/chart`, `/api/stock/:ticker/summary`, `/api/screener/trigger`, `/api/screener/status`, `/api/notifications/telegram-test`), tests | M1, M3, M4 | DONE |
+| M6 | Frontend Web Application | React 18 + Vite + Tailwind CSS dashboard, Market Regime warning banners, Position Sizing toolbar, ScreenerTable (6-tier badges, Base Tightness, ATR, Shares, Earnings alerts), TradingView Lightweight Charts Modal, WatchlistDrawer, PositionCalculator | M5 | DONE |
 | M7 | Final Milestone: E2E Verification & Adversarial Hardening | Phase 1: 100% pass on E2E test suite (Tiers 1-4). Phase 2: Adversarial coverage hardening (Tier 5). | M1-M6, TEST_READY.md | PLANNED |
 
 ---
@@ -113,9 +121,11 @@ Every feature from the original request and survey is assigned to a milestone:
 - `stock_daily_bars`:
   - `ticker` VARCHAR(16) REFERENCES stocks(ticker), `trade_date` DATE, `open` NUMERIC(12,4), `high` NUMERIC(12,4), `low` NUMERIC(12,4), `close` NUMERIC(12,4), `adj_close` NUMERIC(12,4), `volume` BIGINT, PRIMARY KEY (ticker, trade_date)
 - `scan_jobs`:
-  - `id` BIGSERIAL PRIMARY KEY, `job_type` VARCHAR(64), `status` VARCHAR(32) CHECK (status IN ('PENDING', 'RUNNING', 'COMPLETED', 'FAILED')), `started_at` TIMESTAMPTZ, `completed_at` TIMESTAMPTZ, `tickers_total` INT, `tickers_processed` INT, `tickers_failed` INT, `signals_found` INT, `error_message` TEXT, `telegram_alert_sent` BOOLEAN
+  - `id` BIGSERIAL PRIMARY KEY, `job_type` VARCHAR(64), `status` VARCHAR(32) CHECK (status IN ('PENDING', 'RUNNING', 'COMPLETED', 'FAILED')), `started_at` TIMESTAMPTZ, `completed_at` TIMESTAMPTZ, `tickers_total` INT, `tickers_processed` INT, `tickers_failed` INT, `signals_found` INT, `error_message` TEXT, `telegram_alert_sent` BOOLEAN, `market_regime` VARCHAR(32)
 - `screener_signals`:
-  - `id` BIGSERIAL PRIMARY KEY, `scan_id` BIGINT REFERENCES scan_jobs(id), `scan_date` DATE, `ticker` VARCHAR(16) REFERENCES stocks(ticker), `entry_price` NUMERIC(12,4), `max_buy_price` NUMERIC(12,4), `current_price` NUMERIC(12,4), `stop_loss_price` NUMERIC(12,4), `diff_pct` NUMERIC(8,4), `entry_status` VARCHAR(32) CHECK (entry_status IN ('IN_BUY_ZONE', 'EXTENDED', 'BELOW_ENTRY', 'STOPPED_OUT')), `volume_surge_ratio` NUMERIC(8,4), `mrs_score` NUMERIC(10,4), `sma_30w` NUMERIC(12,4), `sma_30w_slope` NUMERIC(8,4), `prior_resistance_35w` NUMERIC(12,4), `weekly_close` NUMERIC(12,4), `weekly_volume` BIGINT, `avg_volume_10w` BIGINT, `stage` VARCHAR(32), UNIQUE (scan_date, ticker)
+  - `id` BIGSERIAL PRIMARY KEY, `scan_id` BIGINT REFERENCES scan_jobs(id), `scan_date` DATE, `ticker` VARCHAR(16) REFERENCES stocks(ticker), `entry_price` NUMERIC(12,4), `max_buy_price` NUMERIC(12,4), `current_price` NUMERIC(12,4), `stop_loss_price` NUMERIC(12,4), `diff_pct` NUMERIC(8,4), `entry_status` VARCHAR(32) CHECK (entry_status IN ('IN_BUY_ZONE', 'EXTENDED', 'PROFIT_RUN', 'TRAILING_WARNING', 'BELOW_ENTRY', 'STOPPED_OUT')), `volume_surge_ratio` NUMERIC(8,4), `mrs_score` NUMERIC(10,4), `sma_30w` NUMERIC(12,4), `sma_30w_slope` NUMERIC(8,4), `prior_resistance_35w` NUMERIC(12,4), `weekly_close` NUMERIC(12,4), `weekly_volume` BIGINT, `avg_volume_10w` BIGINT, `stage` VARCHAR(32), `sma_10w` NUMERIC(12,4), `base_tightness_pct` NUMERIC(8,4), `atr_14w` NUMERIC(12,4), `market_regime` VARCHAR(32), `recommended_shares` INT, `risk_per_share` NUMERIC(12,4), `active_stop_loss` NUMERIC(12,4), `highest_price_since_entry` NUMERIC(12,4), `peak_gain_pct` NUMERIC(8,2), `earnings_warning` VARCHAR(64), UNIQUE (scan_date, ticker)
+- `active_breakout_signals`:
+  - `symbol` VARCHAR(16) PRIMARY KEY, `breakout_date` DATE NOT NULL, `entry_price` NUMERIC(12,4) NOT NULL, `max_buy_price` NUMERIC(12,4) NOT NULL, `initial_stop_loss` NUMERIC(12,4) NOT NULL, `active_stop_loss` NUMERIC(12,4) NOT NULL, `highest_price_since_entry` NUMERIC(12,4) NOT NULL, `current_price` NUMERIC(12,4) NOT NULL, `peak_gain_pct` NUMERIC(8,2) NOT NULL, `current_gain_pct` NUMERIC(8,2) NOT NULL, `status` VARCHAR(32) NOT NULL, `recommended_shares` INT NOT NULL, `earnings_warning` VARCHAR(64), `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 ### 2. Screener Engine ↔ Telegram Alerting System
 - `send_weekly_alert(signals: List[Dict], scan_date: str, universe_count: int) -> bool`
@@ -128,16 +138,17 @@ Every feature from the original request and survey is assigned to a milestone:
   - `max_buy_price`: float
   - `stop_loss_price`: float
   - `diff_pct`: float
-  - `entry_status`: 'IN_BUY_ZONE' | 'EXTENDED' | 'BELOW_ENTRY' | 'STOPPED_OUT'
+  - `entry_status`: 'IN_BUY_ZONE' | 'EXTENDED' | 'PROFIT_RUN' | 'TRAILING_WARNING' | 'BELOW_ENTRY' | 'STOPPED_OUT'
   - `volume_surge_ratio`: float
   - `mrs_score`: float
   - `sma_30w`: float
   - `sma_30w_slope`: float
+  - `earnings_warning`: Optional[str]
 
 ### 3. Backend REST API ↔ Frontend Web Application
 - `GET /api/screener/latest`:
   - Query: `date`, `sector`, `status`, `search`, `sort_by`, `order`, `page`, `limit`
-  - Response: `{ success: true, data: { scan_date: string, total: number, page: number, limit: number, total_pages: number, signals: ScreenerSignal[] } }`
+  - Response: `{ success: true, data: { scan_date: string, market_regime: string, total: number, page: number, limit: number, total_pages: number, signals: ScreenerSignal[] } }`
 - `GET /api/screener/dates`:
   - Response: `{ success: true, data: { dates: string[] } }`
 - `GET /api/stock/:ticker/chart`:

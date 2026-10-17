@@ -2,42 +2,52 @@
 
 **ระบบสแกนและวิเคราะห์หุ้นระยะยาวตามทฤษฎี Stan Weinstein Stage 2 Breakout + จุดเข้าซื้อ (Entry Point) & Telegram Alerting**
 
-StockSentinel เป็น Web Application และ Automated Batch Screener สำหรับคัดกรองหุ้นสหรัฐฯ กว่า 3,500–4,000 ตัว (Russell 3000 + S&P 1500) โดยคำนวณสัญญาณทางเทคนิคตามกลยุทธ์ **Stan Weinstein Stage 2 Breakout**:
-- เส้นค่าเฉลี่ย 30 สัปดาห์ (SMA 30w) และความชัน (Slope)
-- ปริมาณการซื้อขายระเบิดตัว (Volume Surge $\ge 1.5\times$ เทียบค่าเฉลี่ย 10 สัปดาห์)
-- ทะลุแนวต้าน 35 สัปดาห์ (35-Week Resistance Pivot Breakout)
-- ดัชนีความแข็งแกร่งเปรียบเทียบ Mansfield Relative Strength (MRS) เทียบกับ $SPY > 0
-- คำนวณจุดเข้าซื้อที่เหมาะสม (Entry Pivot), เพดานราคาซื้อสูงสุด (Max Buy Price +5%), ราคาปัจจุบัน, และจัดกลุ่มสถานะโซนราคา (`IN_BUY_ZONE`, `EXTENDED`, `BELOW_ENTRY`, `STOPPED_OUT`)
-- ส่งรายงานสรุปแจ้งเตือนอัตโนมัติเข้า Telegram Bot
-- แสดงผลบน Dashboard ตารางคัดกรอง และกราฟแท่งเทียนสัปดาห์ด้วย TradingView Lightweight Charts
+StockSentinel เป็น Web Application และ Automated Batch Screener สำหรับคัดกรองหุ้นสหรัฐฯ (ดัชนี S&P 500 / S&P 1500 / Russell 3000) โดยคำนวณสัญญาณทางเทคนิคและบริหารความเสี่ยงขั้นสูงตามกลยุทธ์ **Stan Weinstein Stage 2 Breakout (เวอร์ชัน V2.1)**:
+- **0. ตรวจสอบสภาวะตลาดรวม (Market Regime Filter - SPY):** เช็กดัชนี S&P 500 (SPY) ใน Timeframe Weekly แยกสถานะ `BULL_MARKET`, `CAUTION_MARKET` และ `BEAR_MARKET` (พร้อมป้ายเตือนหัวเว็บ)
+- **1. เส้นค่าเฉลี่ย 30 สัปดาห์ & Smoothed Slope:** `Close > SMA_30w`, ความชันลด Noise 4 สัปดาห์ $\ge 0.0\%$, และ `Close > SMA_10w` ยืนยันโมเมนตัม
+- **2. จุดเบรกเอาต์ 35 สัปดาห์ & กรองฐานบีบตัว (Base Tightness):** ทะลุแนวต้าน `Pivot_35w`, ฐานราคา 4 สัปดาห์บีบตัวแคบ $\le 18\%$ ป้องกัน V-Shape, และอยู่ใกล้ 52w High ไม่เกิน 15%
+- **3. โวลุ่มระเบิดตัวแบบคาดการณ์ (Projected Volume Surge $\ge 1.5\times$):** รองรับการสแกนระหว่างสัปดาห์ (จันทร์-ศุกร์) โดยคูณเกลี่ยจำนวนวันทำการ
+- **4. ดัชนีความแข็งแกร่ง Mansfield RS ขาขึ้น (Acceleration):** $\text{MRS} > 0.0$ และเร่งตัวขึ้นเมื่อเทียบกับ 4 สัปดาห์ก่อนหน้า ($\text{MRS}[t] > \text{MRS}[t-4]$)
+- **5. กรองหุ้นเต่า (Minimum Volatility Filter):** อัตราส่วนความผันผวน $\frac{\text{ATR\_14w}}{\text{Close}} \times 100 \ge 2.5\%$ ตัดหุ้น Defensive เชิงรับที่แกว่งตัวแคบออก
+- **6. แยกระบบ Discovery และ Active Lifecycle Tracker:** บันทึกและล็อก State ลงในตาราง `active_breakout_signals` เพื่อติดตามหุ้นที่เบรกเอาต์ไปแล้วอย่างต่อเนื่อง ไม่ให้หลุดหายจากหน้าเว็บเมื่อย่อตัวหรือรันเทรนด์
+- **7. จุดตัดขาดทุน Adaptive Stop Loss & Breakeven Auto-Lock (🛡️ บังทุน):** ปรับระยะ Stop Loss ตามความผันผวนจริง $1.5\times \text{ATR}$ และ Low สัปดาห์ก่อนหน้า พร้อมยกบังหน้าทุนอัตโนมัติเมื่อทำกำไรแตะ $+15\%$
+- **8. คำนวณขนาดไม้ Dynamic Position Sizing:** ปรับขนาดไม้ตามสภาวะตลาด (`regime_multiplier`), ความเสี่ยงจากราคาซื้อจริง, และคุมเพดานเงินลงทุนไม่เกิน 20% ต่อหุ้น
+- **9. แจ้งเตือนความเสี่ยงวันประกาศงบ (Earnings Warning):** แสดง Badge เตือนหุ้นที่กำลังจะประกาศผลประกอบการใน 14 วัน (`⚠️ งบออกใน X วัน`)
+- **10. จัดหมวดหมู่สถานะ 6 ระดับ (6-Tier Actionable Statuses):** `IN_BUY_ZONE`, `EXTENDED`, `PROFIT_RUN`, `TRAILING_WARNING`, `BELOW_ENTRY`, `STOPPED_OUT`
+- **11. ส่งรายงานแจ้งเตือน Telegram Bot & แสดงกราฟ TradingView Lightweight Charts**
 
 ---
 
-## 🏗️ สถาปัตยกรรมระบบ (Architecture)
+## 🏗️ สถาปัตยกรรมระบบ (Architecture V2.1)
 
 ```
 [External Sources]
-  ├── Russell 3000 / S&P 1500 Universe + SPY Benchmark
-  └── Yahoo Finance API (yfinance batch downloader with chunking & backoff)
+  ├── S&P 500 / Russell 3000 Universe + SPY Benchmark
+  └── Yahoo Finance API (yfinance resilient downloader & calendar)
           │
           ▼
-[Screener Engine (Python + Polars)]
+[Screener Engine V2.1 (Python + Polars + NumPy)]
   ├── Ingestion & Caching: Snappy Parquet Cache (<ticker>.parquet)
   ├── Weekly Bar Resampling (Friday close / Holiday anchoring)
-  ├── Indicator Math: SMA 30w, Volume Surge, Pivot 35w, Mansfield RS vs SPY
-  ├── Weinstein Stage 2 Breakout Filtering & Entry/Stop Risk Math
-  └── Database Batch Upsert: `stocks`, `stock_daily_bars`, `screener_signals`, `scan_jobs`
+  ├── Market Regime Analysis: SPY SMA 30w / 10w / 4w Slope
+  ├── Dual-Mode Screening Architecture:
+  │     ├── Mode 1: Discovery Scanner (8 Multi-Factor Filters)
+  │     └── Mode 2: Active Lifecycle Tracker (`active_breakout_signals`)
+  ├── Adaptive Stop Loss & Breakeven Auto-Lock (🛡️ Peak Gain >= 15%)
+  ├── Dynamic Position Sizing (Regime Multiplier + 20% Portfolio Cap)
+  ├── 6-Tier Status Classification & Earnings Risk Check (0-14 days)
+  └── Database Upsert: `stocks`, `stock_daily_bars`, `screener_signals`, `active_breakout_signals`, `scan_jobs`
           │
           ├───> [Telegram Alert Dispatcher] (HTML card formatting & chunker)
           │
           ▼
-[Database Layer (PostgreSQL 16 + Redis 7)]
-  ├── DDL Schema: db/init.sql
+[Database Layer (PostgreSQL 16 / Neon DB + Redis 7)]
+  ├── Tables: `stocks`, `stock_daily_bars`, `screener_signals`, `active_breakout_signals`, `scan_jobs`
   └── High-throughput indexes for sub-20ms queries
           │
           ▼
 [Backend REST API (Node.js / Express / TypeScript)]
-  ├── GET /api/screener/latest   (Sort, filter by sector/status, pagination)
+  ├── GET /api/screener/latest   (Sort, filter by sector/status, V2.1 metrics, pagination)
   ├── GET /api/screener/dates    (Historical scan dates)
   ├── GET /api/stock/:ticker/chart (Weekly OHLCV + SMA 30w for Lightweight Charts)
   ├── GET /api/stock/:ticker/summary (Company info, latest signal, daily bar)
@@ -46,10 +56,12 @@ StockSentinel เป็น Web Application และ Automated Batch Screener �
           │
           ▼
 [Frontend Web App (React 18 + Vite + Tailwind CSS)]
-  ├── Screener Table with interactive sorting, search, and status badges
+  ├── Market Regime Alert Banners (BEAR_MARKET warning, CAUTION_MARKET, BULL_MARKET)
+  ├── Position Sizing & Risk Management Toolbar (Account Size, Risk %, Budget)
+  ├── Screener Table with 6 status badges, Base Tightness, ATR, Shares, Earnings alerts
   ├── TradingView Lightweight Charts Modal (Weekly bars, SMA 30w, Volume, Entry & Stop lines)
   ├── LocalStorage Watchlist Drawer
-  └── Real-Time Position Sizing & Risk Calculator
+  └── Real-Time Position Sizing & Risk Calculator Modal (🧮)
 ```
 
 ---
@@ -125,11 +137,85 @@ cd frontend && npm.cmd run build
 
 ---
 
-## 📊 สถานะโซนราคา (Entry Status)
-- 🟢 **`IN_BUY_ZONE`**: ราคาอยู่ระหว่างจุดเข้าซื้อ (Entry Pivot) ถึง $+5\%$ (เข้าซื้อได้ ไม่เสียเปรียบ)
-- ⚠️ **`EXTENDED`**: ราคาพุ่งเกิน $+5\%$ จากจุดเข้าแล้ว (เตือนห้ามไล่ราคา ให้รอจังหวะย่อตัว)
-- 🟡 **`BELOW_ENTRY`**: ราคาย่อตัวลงมาต่ำกว่าจุดเบรก แต่ยังยืนเหนือ Stop Loss (โซนรับของ)
-- 🔴 **`STOPPED_OUT`**: ราคาหลุดจุดตัดขาดทุน (Stop Loss)
+## 📐 กลยุทธ์และสูตรคำนวณทางคณิตศาสตร์ (Strategy & Mathematical Models V2.1)
+
+ระบบ StockSentinel V2.1 ใช้การคัดกรองแบบหลายปัจจัย (Multi-Factor Quantitative Model) ร่วมกับระบบบริหารความเสี่ยงระดับสถาบัน:
+
+### 0. สภาวะตลาดรวม (Market Regime Filter - SPY)
+วิเคราะห์ดัชนี S&P 500 (SPY) บน Timeframe Weekly ก่อนประมวลผลหุ้นรายตัว เพื่อกำหนด `regime_multiplier`:
+- **`BULL_MARKET`**: $\text{Close} > \text{SMA}_{30w}$ และ $\text{Slope}_{4w} \ge 0.0\%$ $\rightarrow$ `regime_multiplier = 1.0` (เปิดสถานะเต็มขนาดไม้)
+- **`CAUTION_MARKET`**: $\text{Close} > \text{SMA}_{30w}$ แต่ $\text{Slope}_{4w} < 0.0\%$ หรือ $\text{Close} < \text{SMA}_{10w}$ $\rightarrow$ `regime_multiplier = 0.5` (ลดขนาดไม้ลง 50%)
+- **`BEAR_MARKET`**: $\text{Close} < \text{SMA}_{30w}$ $\rightarrow$ `regime_multiplier = 0.0` (งดเปิดสถานะซื้อใหม่เด็ดขาด พร้อมขึ้นแบนเนอร์แจ้งเตือนสีแดง)
+
+---
+
+### 1. เกณฑ์คัดกรองรอบเบรกเอาต์ใหม่ (Discovery Mode - 9 เกณฑ์)
+สำหรับหุ้นใหม่ที่เพิ่งเบรกเอาต์ ต้องผ่านเกณฑ์ทั้งหมด 9 ข้อพร้อมกัน:
+1. **เหนือเส้น 30 สัปดาห์**: $\text{Close} > \text{SMA}_{30w}$
+2. **ความชันเส้น 30 สัปดาห์เป็นบวก (Smoothed Slope)**: $\text{SMA\_30w\_Slope} = \frac{\text{SMA}_{30w}[t] - \text{SMA}_{30w}[t-4]}{\text{SMA}_{30w}[t-4]} \times 100 \ge 0.0\%$
+3. **เหนือเส้น 10 สัปดาห์ (โมเมนตัมระยะสั้น)**: $\text{Close} > \text{SMA}_{10w}$
+4. **เบรกเอาต์แนวต้าน 35 สัปดาห์**: $\text{Close} \ge \text{Pivot}_{35w}$ โดย $\text{Pivot}_{35w} = \max(\text{High}[t-35 : t-1])$
+5. **กรอบฐานราคาก่อนเบรกบีบตัวแคบ (Base Tightness $\le 18\%$)**: ป้องกันหุ้นทรง V-Shape  
+   $$\text{Tightness\_Pct} = \frac{\max(\text{High}[t-4 : t-1]) - \min(\text{Low}[t-4 : t-1])}{\min(\text{Low}[t-4 : t-1])} \times 100 \le 18.0\%$$
+6. **ใกล้เคียงจุดสูงสุด 52 สัปดาห์**: $\text{Close} \ge \text{High}_{52w} \times 0.85$ (อยู่ห่างจาก 52w High ไม่เกิน 15%)
+7. **ปริมาณการซื้อขายระเบิดตัวแบบคาดการณ์ (Projected Volume Surge $\ge 1.5\times$)**:  
+   คำนวณปรับเกลี่ยตามจำนวนวันทำการในสัปดาห์ (1-5 วัน) เพื่อให้สแกนเจอตลอดสัปดาห์โดยไม่ต้องรอแท่งปิดวันศุกร์
+8. **ความแข็งแกร่งเชิงเปรียบเทียบเร่งตัว (Mansfield RS Acceleration)**:  
+   $$\text{MRS}[t] = \left( \frac{\text{Stock}[t] / \text{SPY}[t]}{\text{SMA}_{52w}(\text{Stock} / \text{SPY})} - 1 \right) \times 10 \quad \text{โดย} \quad \text{MRS}[t] > 0.0 \quad \text{และ} \quad \text{MRS}[t] > \text{MRS}[t-4]$$
+9. **กรองหุ้นเต่า (Minimum Volatility Filter)**:  
+   $$\frac{\text{ATR}_{14w}}{\text{Close}} \times 100 \ge 2.5\% \quad \text{คัดหุ้น Defensive เชิงรับที่ราคาไม่วิ่งออก}$$
+
+---
+
+### 2. สถาปัตยกรรม 2 โหมด: Discovery vs Active Lifecycle Tracker
+แก้ปัญหาหุ้นหายจากตารางเมื่อราคาย่อตัวหรือวิ่งไปไกล:
+- **Mode 1 (Discovery Scanner)**: สแกนหาหุ้นที่เพิ่งผ่านเกณฑ์ทั้ง 9 ข้อในรอบสัปดาห์ และล็อก State ลงตาราง `active_breakout_signals`:
+  - `entry_price` = $\text{Pivot}_{35w}$ ณ วันที่เบรก
+  - `max_buy_price` = $\text{entry\_price} \times 1.05$
+  - `initial_stop_loss` = Stop Loss ที่คำนวณได้ ณ สัปดาห์แรก
+  - `highest_price_since_entry` = $\max(\text{High}, \text{Close})$
+- **Mode 2 (Active Lifecycle Tracker)**: นำหุ้นที่เคยผ่านเบรกเอาต์ใน Watchlist/Database มาอัปเดตสถานะและราคาล่าสุดโดยตรง **ไม่นำกลับไปเข้าตัวกรอง 9 ข้อซ้ำ** ทำให้หุ้นที่ย่อตัวลงมาเทสฐานหรือกำลังรันเทรนด์ยังคงอยู่ในระบบต่อเนื่อง
+
+---
+
+### 3. จุดตัดขาดทุน Adaptive Stop Loss & Breakeven Auto-Lock (🛡️ บังทุน)
+- **สูตรคำนวณ Stop Loss เริ่มต้น (ณ จุดเบรกเอาต์)**:  
+  $$\text{raw\_stop} = \max(\text{entry\_price} \times 0.90, \; \text{entry\_price} - 1.5 \times \text{ATR}_{14w}, \; \text{Low}_{\text{prev}} \times 0.99)$$
+  $$\text{stop\_loss} = \min(\text{entry\_price} \times 0.98, \; \text{raw\_stop})$$
+  *(จำกัดความเสี่ยงไม่เกิน -10% และไม่ตื้นกว่า -2%)*
+- **🛡️ Breakeven Auto-Lock (ยกบังหน้าทุน)**:  
+  เมื่อหุ้นทำผลตอบแทนสูงสุดแตะ $+15\%$ ($\text{peak\_gain\_pct} \ge 15.0\%$) ระบบจะขยับ Stop Loss ขึ้นมาที่ระดับหน้าทุนทันที:
+  $$\text{active\_stop\_loss} = \max(\text{initial\_stop\_loss}, \; \text{entry\_price})$$
+  ป้องกันไม่ให้กำไรก้อนใหญ่พลิกกลับมาขาดทุนเด็ดขาด!
+
+---
+
+### 4. คำนวณขนาดไม้ลงทุน Dynamic Position Sizing
+คำนวณจำนวนหุ้นที่แนะนำให้ซื้อตามหลักการจำกัดความเสี่ยง:
+$$\text{effective\_buy} = \max(\text{current\_price}, \; \text{entry\_price})$$
+$$\text{risk\_per\_share} = \text{effective\_buy} - \text{stop\_loss}$$
+$$\text{shares\_risk} = \left\lfloor \frac{\text{portfolio\_size} \times \text{risk\_pct} \times \text{regime\_multiplier}}{\text{risk\_per\_share}} \right\rfloor$$
+$$\text{shares\_cap} = \left\lfloor \frac{\text{portfolio\_size} \times 0.20 \times \text{regime\_multiplier}}{\text{effective\_buy}} \right\rfloor$$
+$$\text{recommended\_shares} = \min(\text{shares\_risk}, \; \text{shares\_cap})$$
+*(ควบคุมสัดส่วนไม่ให้หุ้นตัวใดตัวหนึ่งกินเงินเกิน 20% ของพอร์ต และปรับลดตาม `regime_multiplier`)*
+
+---
+
+## 📊 สถานะโซนราคา 6 ระดับ (6-Tier Actionable Statuses)
+- 🟢 **`IN_BUY_ZONE`**: ราคาปัจจุบันอยู่ระหว่างจุดเบรกเอาต์ ($\text{Entry}$) ถึง $+5\%$ ($\text{Entry} \times 1.05$) เป็นโซนเข้าซื้อที่ได้เปรียบต้นทุน
+- ⚠️ **`EXTENDED`**: ราคาพุ่งเกิน $+5\%$ จากจุดเบรกเอาต์ ($> \text{Entry} \times 1.05$) เตือนห้ามไล่ราคาเด็ดขาด ให้รอจังหวะย่อตัวเข้าโซน
+- 🚀 **`PROFIT_RUN`**: ราคาทำกำไรเกิน $+5\%$ จากจุดเบรก และยังคงรักษาโมเมนตัมขาขึ้น ไม่หลุดเกณฑ์ Trailing Stop (ปล่อยให้กำไรวิ่งต่อ)
+- 🔔 **`TRAILING_WARNING`**: หุ้นที่เคยทำกำไรขึ้นไปสูง ($\text{peak\_gain\_pct} \ge 8\%$) แล้วย่อตัวลงมาเกิน $8\%$ จากจุดสูงสุดเดิม ($\text{Close} \le \text{Peak} \times 0.92$) เตือนให้พิจารณาทยอยแบ่งขายล็อคกำไร
+- 🟡 **`BELOW_ENTRY`**: ราคาย่อตัวลงมาต่ำกว่าจุดเบรกเอาต์ ($\text{Close} < \text{Entry}$) แต่ราคายังยืนเหนือ Stop Loss ($\text{Close} > \text{Stop Loss}$) ยังไม่เสียทรงหลัก เป็นจุดรอซื้อดักจังหวะย่อเทสฐาน
+- 🔴 **`STOPPED_OUT`**: ราคาหลุดจุด Stop Loss ($\text{Close} \le \text{Stop Loss}$) ต้องตัดขาดทุนทันทีตามวินัยบริหารความเสี่ยง
+
+---
+
+## ⚠️ การแจ้งเตือนวันประกาศงบการเงิน (Earnings Risk Warning)
+ระบบดึงปฏิทินวันรายงานผลประกอบการจาก Yahoo Finance Calendar แบบคู่ขนาน:
+- หากบริษัทมีกำหนดการประกาศงบภายใน 14 วัน ระบบจะแสดง Badge เตือน:  
+  `⚠️ งบออกใน X วัน`
+- ป้องกันความเสี่ยงจากการเปิดสถานะก่อนงบการเงินออก (Earnings Gap Risk)
 
 ---
 
