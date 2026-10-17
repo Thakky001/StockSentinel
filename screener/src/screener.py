@@ -422,13 +422,15 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
     except Exception as e:
         logger.debug(f"Could not check/ensure stocks foreign key: {e}")
 
+    db.ensure_quality_columns_exist(cur=cur)
     sql = """
     INSERT INTO screener_signals (
         scan_id, scan_date, ticker, entry_price, max_buy_price, current_price,
         stop_loss_price, diff_pct, entry_status, volume_surge_ratio, mrs_score,
         sma_30w, sma_30w_slope, prior_resistance_35w, weekly_close,
         weekly_volume, avg_volume_10w, stage, sma_10w, base_tightness_pct, atr_14w, market_regime,
-        active_stop_loss, peak_gain_pct, highest_price_since_entry, earnings_warning
+        active_stop_loss, peak_gain_pct, highest_price_since_entry, earnings_warning,
+        quality_score, quality_grade
     )
     VALUES %s
     ON CONFLICT (scan_date, ticker) DO UPDATE SET
@@ -455,7 +457,9 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         active_stop_loss = EXCLUDED.active_stop_loss,
         peak_gain_pct = EXCLUDED.peak_gain_pct,
         highest_price_since_entry = EXCLUDED.highest_price_since_entry,
-        earnings_warning = EXCLUDED.earnings_warning;
+        earnings_warning = EXCLUDED.earnings_warning,
+        quality_score = EXCLUDED.quality_score,
+        quality_grade = EXCLUDED.quality_grade;
     """
     values = [
         (
@@ -485,6 +489,8 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
             s.get("peak_gain_pct", 0.0),
             s.get("highest_price_since_entry", s["current_price"]),
             s.get("earnings_warning"),
+            s.get("quality_score", 0.0),
+            s.get("quality_grade", "B"),
         )
         for s in deduped_list
     ]
@@ -847,6 +853,14 @@ def run_screener(
                 max_alloc_pct=0.20,
             )
 
+            # Step 4b: Compute Breakout Quality Score & Grade
+            q_score, q_grade = indicators.compute_quality_score(
+                mrs_score=mrs_c,
+                volume_surge_ratio=vol_ratio,
+                diff_pct=current_gain_pct,
+                base_tightness_pct=tight_pct,
+            )
+
             meta = meta_lookup.get(ticker, {})
             signal_record = {
                 "scan_id": job_id,
@@ -887,6 +901,8 @@ def run_screener(
                 "risk_per_share": sizing["risk_per_share"],
                 "breakout_date": breakout_date,
                 "earnings_warning": None,
+                "quality_score": q_score,
+                "quality_grade": q_grade,
             }
             qualified_signals.append(signal_record)
 
@@ -904,6 +920,8 @@ def run_screener(
                 "status": status,
                 "recommended_shares": sizing["recommended_shares"],
                 "earnings_warning": None,
+                "quality_score": q_score,
+                "quality_grade": q_grade,
             })
 
             processed_count += 1

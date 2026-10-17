@@ -37,6 +37,8 @@ export interface ScreenerSignal {
   prior_resistance_35w: number;
 
   // V2 & V2.1 Mathematical Enhancements
+  quality_score?: number | null;
+  quality_grade?: string | null;
   sma_10w?: number | null;
   base_tightness_pct?: number | null;
   atr_14w?: number | null;

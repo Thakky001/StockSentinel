@@ -273,11 +273,11 @@ def format_smart_weekly_report(
         elif st == "STOPPED_OUT":
             stopped_out.append(s)
 
-    # 3. Top Picks in Buy Zone (Sort by Mansfield RS descending, tiebreak by diff_pct ascending)
+    # 3. Top Picks in Buy Zone (Sort by Quality Score descending, tiebreak by Mansfield RS)
     in_buy_zone.sort(
         key=lambda x: (
+            float(x.get("quality_score") or 0.0),
             float(x.get("mrs_score") or -999.0),
-            -abs(float(x.get("diff_pct") or 0.0)),
         ),
         reverse=True,
     )
@@ -300,6 +300,10 @@ def format_smart_weekly_report(
         shares = int(s.get("recommended_shares") or 0)
         capital = shares * c_price
         earnings_warn = s.get("earnings_warning")
+        q_score = float(s.get("quality_score") or 0.0)
+        q_grade = str(s.get("quality_grade") or ("A+" if q_score >= 90 else "A" if q_score >= 80 else "B" if q_score >= 65 else "C"))
+        grade_icon = "💎" if q_grade == "A+" else "🟢" if q_grade == "A" else "🟡" if q_grade == "B" else "⚪"
+        grade_badge = f"[{grade_icon} {q_score:.0f} {q_grade}]"
 
         breakeven_badge = " [🛡️ บังทุน]" if s_loss >= e_price and e_price > 0 else ""
         if earnings_warn:
@@ -311,7 +315,7 @@ def format_smart_weekly_report(
             earnings_line = ""
 
         card_lines = [
-            f"<b>{idx}. 💎 {ticker}</b> — {name} ({sector})",
+            f"<b>{idx}. {ticker}</b> — {name} ({sector}) <b>{grade_badge}</b>",
             f"   • <b>ราคาปิด:</b> ${c_price:.2f} | <b>จุดเข้า (Pivot):</b> ${e_price:.2f} ({diff_str})",
             f"   • <b>Stop Loss:</b> ${s_loss:.2f} (เสี่ยง {risk_pct:.1f}%){breakeven_badge}",
             f"   • <b>Mansfield RS:</b> {mrs_str} vs SPY | <b>โวลุ่มเข้า:</b> {vol_surge:.1f}x",

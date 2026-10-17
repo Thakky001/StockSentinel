@@ -70,6 +70,8 @@ function loadLatestSignalsFromFile(): { scan_date: string; market_regime?: strin
 // Whitelist of columns that are safe to use in ORDER BY to prevent SQL injection
 // ---------------------------------------------------------------------------
 const SORT_COLUMN_MAP: Record<string, string> = {
+  quality_score: 's.quality_score',
+  quality_grade: 's.quality_grade',
   mrs_score: 's.mrs_score',
   diff_pct: 's.diff_pct',
   entry_price: 's.entry_price',
@@ -108,9 +110,9 @@ router.get(
       const status = (req.query.status as string) || null;
       const search = (req.query.search as string) || null;
 
-      // Sort validation — default mrs_score DESC
-      const sortByRaw = (req.query.sort_by as string) || 'mrs_score';
-      const sortColumn = SORT_COLUMN_MAP[sortByRaw] ?? 's.mrs_score';
+      // Sort validation — default quality_score DESC
+      const sortByRaw = (req.query.sort_by as string) || 'quality_score';
+      const sortColumn = SORT_COLUMN_MAP[sortByRaw] ?? 's.quality_score';
 
       const orderRaw = ((req.query.order as string) || 'DESC').toUpperCase();
       const order = orderRaw === 'ASC' ? 'ASC' : 'DESC';
@@ -149,6 +151,8 @@ router.get(
             s.entry_status AS status,
             s.volume_surge_ratio,
             s.mrs_score,
+            COALESCE(s.quality_score, 0.0) AS quality_score,
+            COALESCE(s.quality_grade, 'B') AS quality_grade,
             s.sma_30w,
             s.sma_30w_slope,
             s.prior_resistance_35w,
@@ -175,7 +179,7 @@ router.get(
             AND ($4::text IS NULL
                  OR s.ticker ILIKE '%' || $4 || '%'
                  OR st.name  ILIKE '%' || $4 || '%')
-          ORDER BY ${sortColumn} ${order} NULLS LAST, s.mrs_score DESC
+          ORDER BY ${sortColumn} ${order} NULLS LAST, s.quality_score DESC NULLS LAST, s.mrs_score DESC
           LIMIT $5 OFFSET $6
         `;
 
@@ -259,6 +263,8 @@ router.get(
         sma_10w: s.sma_10w ? Number(s.sma_10w) : null,
         base_tightness_pct: s.base_tightness_pct ? Number(s.base_tightness_pct) : null,
         atr_14w: s.atr_14w ? Number(s.atr_14w) : null,
+        quality_score: s.quality_score !== undefined && s.quality_score !== null ? Number(s.quality_score) : 0,
+        quality_grade: s.quality_grade ?? 'B',
         market_regime: s.market_regime ?? marketRegime,
         recommended_shares: s.recommended_shares ? Number(s.recommended_shares) : Math.max(1, Math.floor(100 / Math.max(0.01, (Number(s.current_price) - Number(s.stop_loss_price))))),
       }));

@@ -268,14 +268,33 @@ def prune_database_records(
     return deleted_counts
 
 
+def ensure_quality_columns_exist(cur=None) -> None:
+    """Ensures quality_score and quality_grade columns exist in screener tables."""
+    ddl = """
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_score NUMERIC(5, 1);
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_grade VARCHAR(10);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS quality_score NUMERIC(5, 1);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS quality_grade VARCHAR(10);
+    """
+    try:
+        if cur:
+            cur.execute(ddl)
+        else:
+            with db_cursor(commit=True) as cursor:
+                cursor.execute(ddl)
+    except Exception as e:
+        logger.debug(f"ensure_quality_columns_exist notice (non-fatal): {e}")
+
+
 def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
     """
     Loads all active breakout signals from 'active_breakout_signals' keyed by symbol.
     """
+    ensure_quality_columns_exist(cur=cur)
     sql = """
     SELECT symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
            highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
-           recommended_shares, earnings_warning
+           recommended_shares, earnings_warning, COALESCE(quality_score, 0.0), COALESCE(quality_grade, 'B')
     FROM active_breakout_signals;
     """
     results: Dict[str, Dict[str, Any]] = {}
@@ -298,6 +317,8 @@ def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
                     "status": r[10],
                     "recommended_shares": int(r[11]),
                     "earnings_warning": r[12],
+                    "quality_score": float(r[13]) if len(r) > 13 else 0.0,
+                    "quality_grade": str(r[14]) if len(r) > 14 else "B",
                 }
 
         if cur:
@@ -318,11 +339,12 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
     if not signals:
         return 0
 
+    ensure_quality_columns_exist(cur=cur)
     sql = """
     INSERT INTO active_breakout_signals (
         symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
         highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
-        recommended_shares, earnings_warning
+        recommended_shares, earnings_warning, quality_score, quality_grade
     )
     VALUES %s
     ON CONFLICT (symbol) DO UPDATE SET
@@ -337,6 +359,8 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
         status = EXCLUDED.status,
         recommended_shares = EXCLUDED.recommended_shares,
         earnings_warning = EXCLUDED.earnings_warning,
+        quality_score = EXCLUDED.quality_score,
+        quality_grade = EXCLUDED.quality_grade,
         updated_at = CURRENT_TIMESTAMP;
     """
     values = [
@@ -354,6 +378,8 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
             s["status"],
             s.get("recommended_shares", 0),
             s.get("earnings_warning"),
+            s.get("quality_score", 0.0),
+            s.get("quality_grade", "B"),
         )
         for s in signals
     ]

@@ -681,3 +681,111 @@ def calculate_projected_volume_surge(
     ratio = (projected_vol / avg_vol_10w) if avg_vol_10w > 0 else 0.0
     return round(projected_vol, 2), round(ratio, 4)
 
+
+def compute_quality_score(
+    mrs_score: float,
+    volume_surge_ratio: float,
+    diff_pct: float,
+    base_tightness_pct: Optional[float] = None,
+) -> Tuple[float, str]:
+    """
+    Computes the composite Breakout Quality Score (0-100) & Grade (A+, A, B, C).
+
+    Base Weight Distribution (100 pts):
+    1. Mansfield RS vs SPY: max 35 pts (Relative strength outperformance)
+    2. Volume Surge Ratio: max 25 pts (Institutional accumulation power)
+    3. Entry Distance (diff_pct): max 25 pts (Sweet spot close to breakout pivot)
+    4. Base Tightness (4w): max 15 pts (Volatility contraction before breakout)
+
+    Strict Penalty Rules:
+    - Dry Volume (< 1.0x): -25 pts penalty (prevents low-volume pullbacks from earning Grade A/A+)
+    - Late Entry (> +3.5%): -20 pts penalty (prevents stretched setups with wide stop loss)
+    - Loose Base (> 20.0%): -10 pts penalty
+
+    Grades:
+    - 90 - 100: A+ (💎 Prime Leader)
+    - 80 - 89.9: A (🟢 Strong Breakout)
+    - 65 - 79.9: B (🟡 Moderate / Watch)
+    - < 65:      C (⚪ Weak / Late Stage / Low Volume)
+
+    Returns:
+        (score: float, grade: str)
+    """
+    score: float = 0.0
+
+    # 1. Mansfield RS (max 35 pts)
+    mrs = float(mrs_score or 0.0)
+    if mrs >= 30.0:
+        score += 35.0
+    elif mrs >= 20.0:
+        score += 30.0
+    elif mrs >= 10.0:
+        score += 24.0
+    elif mrs >= 0.0:
+        score += 15.0
+    else:
+        score += 5.0
+
+    # 2. Volume Surge (max 25 pts)
+    vol = float(volume_surge_ratio or 0.0)
+    if vol >= 2.5:
+        score += 25.0
+    elif vol >= 2.0:
+        score += 22.0
+    elif vol >= 1.5:
+        score += 18.0
+    elif vol >= 1.0:
+        score += 10.0
+    else:
+        score += 0.0  # Dry volume
+
+    # 3. Entry Price Sweet Spot (max 25 pts)
+    diff = float(diff_pct or 0.0)
+    if 0.0 <= diff <= 1.5:
+        score += 25.0  # Perfect entry pivot sweet spot
+    elif 1.5 < diff <= 2.5:
+        score += 20.0
+    elif 2.5 < diff <= 3.5:
+        score += 12.0
+    elif 3.5 < diff <= 5.0:
+        score += 5.0   # Late entry
+    elif -2.0 <= diff < 0.0:
+        score += 15.0  # Healthy retest right below pivot
+    else:
+        score += 0.0   # Extended or deep drawdown
+
+    # 4. Base Tightness (max 15 pts)
+    tightness = float(base_tightness_pct) if base_tightness_pct is not None else 18.0
+    if tightness <= 12.0:
+        score += 15.0
+    elif tightness <= 15.0:
+        score += 12.0
+    elif tightness <= 18.0:
+        score += 9.0
+    elif tightness <= 22.0:
+        score += 4.0
+    else:
+        score += 0.0
+
+    # Apply Strict Penalties
+    if vol < 1.0:
+        score -= 25.0  # Volume is dry
+    if diff > 3.5:
+        score -= 20.0  # Late edge of buy zone
+    if tightness > 20.0:
+        score -= 10.0  # Base is loose and volatile
+
+    score = max(0.0, min(100.0, score))
+    score = round(score, 1)
+
+    if score >= 90.0:
+        grade = "A+"
+    elif score >= 80.0:
+        grade = "A"
+    elif score >= 65.0:
+        grade = "B"
+    else:
+        grade = "C"
+
+    return score, grade
+

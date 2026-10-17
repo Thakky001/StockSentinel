@@ -30,6 +30,7 @@ interface ColumnDef {
 const COLUMNS: ColumnDef[] = [
   { key: 'watchlist', label: '⭐', align: 'center', sortable: false },
   { key: 'ticker', label: 'หุ้น / ชื่อบริษัท', align: 'left', sortable: true },
+  { key: 'quality_score', label: 'คุณภาพ (Score)', align: 'center', sortable: true },
   { key: 'sector', label: 'กลุ่มอุตสาหกรรม', align: 'left', sortable: false },
   { key: 'close_price', label: 'ราคาปิด', align: 'right', sortable: true },
   { key: 'entry_price', label: 'จุดเข้าซื้อ (Pivot)', align: 'right', sortable: true },
@@ -170,6 +171,38 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     <div className="text-xs text-slate-400 truncate max-w-[180px]" title={sig.name}>
                       {sig.name}
                     </div>
+                  </td>
+
+                  {/* Quality Score & Grade Badge */}
+                  <td className="py-3 px-4 text-center">
+                    {(() => {
+                      const score = Math.round(Number(sig.quality_score ?? 0));
+                      const grade = sig.quality_grade || (score >= 90 ? 'A+' : score >= 80 ? 'A' : score >= 65 ? 'B' : 'C');
+                      let badgeStyle = 'bg-slate-700/50 text-slate-400 border border-slate-600/50';
+                      let icon = '⚪';
+                      if (grade === 'A+') {
+                        badgeStyle = 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold shadow-sm shadow-purple-500/20';
+                        icon = '💎';
+                      } else if (grade === 'A') {
+                        badgeStyle = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold';
+                        icon = '🟢';
+                      } else if (grade === 'B') {
+                        badgeStyle = 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium';
+                        icon = '🟡';
+                      }
+                      return (
+                        <div className="inline-flex items-center justify-center">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap inline-flex items-center gap-1 font-mono ${badgeStyle}`}
+                            title={`คะแนนคุณภาพ Breakout: ${score}/100 (เกรด ${grade})`}
+                          >
+                            <span>{icon}</span>
+                            <span>{score}</span>
+                            <span className="font-sans font-bold">{grade}</span>
+                          </span>
+                        </div>
+                      );
+                    })()}
                   </td>
 
                   {/* Sector */}

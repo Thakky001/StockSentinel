@@ -98,6 +98,8 @@ export interface ScreenerSignal {
   peak_gain_pct?: number | null;
   current_gain_pct?: number | null;
   earnings_warning?: string | null;
+  quality_score?: number | null;
+  quality_grade?: string | null;
 
   created_at: string;
 

@@ -27,7 +27,7 @@ const App: React.FC = () => {
   const [search, setSearch] = useState<string>('');
   const [sector, setSector] = useState<string>('');
   const [status, setStatus] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('mrs_score');
+  const [sortBy, setSortBy] = useState<string>('quality_score');
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState<number>(1);
   const limit = 50;
@@ -93,18 +93,16 @@ const App: React.FC = () => {
     setPage(1);
   }, []);
 
-  // Handle status filter change + auto-sort for IN_BUY_ZONE
+  // Handle status filter change + auto-sort
   const handleStatusChange = useCallback((newStatus: string) => {
     setStatus(newStatus);
     setPage(1);
 
     if (newStatus === 'IN_BUY_ZONE') {
-      // Auto-sort by diff_pct ascending (+0.0%, +0.5%, +1.2%...) so stocks closest to entry pivot appear first
-      setSortBy('diff_pct');
-      setOrder('asc');
+      setSortBy('quality_score');
+      setOrder('desc');
     } else if (!newStatus) {
-      // When resetting to 'All Statuses', default to highest Mansfield RS
-      setSortBy('mrs_score');
+      setSortBy('quality_score');
       setOrder('desc');
     }
   }, []);
