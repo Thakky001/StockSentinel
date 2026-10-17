@@ -76,7 +76,7 @@ export async function runScreener(options: RunScreenerOptions = {}): Promise<Run
     status: 'RUNNING',
     started_at: startedAt,
     completed_at: null,
-    tickers_total: 142,
+    tickers_total: 514,
     tickers_processed: 0,
     tickers_failed: 0,
     signals_found: 0,

@@ -1,10 +1,10 @@
 name: Weekly Stage 2 Stock Screener
 
 on:
-  # Run every Saturday at 08:00 AM Thailand Time (UTC+7 -> 01:00 UTC)
-  # (Triggers right after Friday US market close and weekly bar finalization)
+  # Run every Saturday at 08:15 AM Thailand Time (UTC+7 -> 01:15 UTC)
+  # (Offset 15 minutes to avoid top-of-the-hour GitHub Actions high-load delays)
   schedule:
-    - cron: '0 1 * * 6'
+    - cron: '15 1 * * 6'
 
   # Allow manual execution via the "Run workflow" button in GitHub Actions tab
   workflow_dispatch:
