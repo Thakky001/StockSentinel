@@ -269,12 +269,21 @@ def prune_database_records(
 
 
 def ensure_quality_columns_exist(cur=None) -> None:
-    """Ensures quality_score and quality_grade columns exist in screener tables."""
+    """Ensures quality_score, quality_grade, and V2 breakout score columns exist in screener tables."""
     ddl = """
     ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_score NUMERIC(5, 1);
     ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_grade VARCHAR(10);
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS initial_breakout_score NUMERIC(5, 1);
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS current_action_score NUMERIC(5, 1);
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS score_badge VARCHAR(32);
+    ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS score_breakdown JSONB;
+
     ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS quality_score NUMERIC(5, 1);
     ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS quality_grade VARCHAR(10);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS initial_breakout_score NUMERIC(5, 1);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS current_action_score NUMERIC(5, 1);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS score_badge VARCHAR(32);
+    ALTER TABLE active_breakout_signals ADD COLUMN IF NOT EXISTS score_breakdown JSONB;
     """
     try:
         if cur:
@@ -294,7 +303,9 @@ def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
     sql = """
     SELECT symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
            highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
-           recommended_shares, earnings_warning, COALESCE(quality_score, 0.0), COALESCE(quality_grade, 'B')
+           recommended_shares, earnings_warning, COALESCE(quality_score, 0.0), COALESCE(quality_grade, 'B'),
+           COALESCE(initial_breakout_score, quality_score, 0.0), COALESCE(current_action_score, quality_score, 0.0),
+           COALESCE(score_badge, '')
     FROM active_breakout_signals;
     """
     results: Dict[str, Dict[str, Any]] = {}
@@ -319,6 +330,9 @@ def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
                     "earnings_warning": r[12],
                     "quality_score": float(r[13]) if len(r) > 13 else 0.0,
                     "quality_grade": str(r[14]) if len(r) > 14 else "B",
+                    "initial_breakout_score": float(r[15]) if len(r) > 15 and r[15] is not None else (float(r[13]) if len(r) > 13 else 0.0),
+                    "current_action_score": float(r[16]) if len(r) > 16 and r[16] is not None else (float(r[13]) if len(r) > 13 else 0.0),
+                    "score_badge": str(r[17]) if len(r) > 17 and r[17] is not None else "",
                 }
 
         if cur:
@@ -328,7 +342,6 @@ def load_active_breakout_signals(cur=None) -> Dict[str, Dict[str, Any]]:
                 _fetch(cursor)
     except Exception as e:
         logger.warning(f"Could not load active_breakout_signals from database: {e}")
-
     return results
 
 
@@ -339,12 +352,14 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
     if not signals:
         return 0
 
+    import json
     ensure_quality_columns_exist(cur=cur)
     sql = """
     INSERT INTO active_breakout_signals (
         symbol, breakout_date, entry_price, max_buy_price, initial_stop_loss, active_stop_loss,
         highest_price_since_entry, current_price, peak_gain_pct, current_gain_pct, status,
-        recommended_shares, earnings_warning, quality_score, quality_grade
+        recommended_shares, earnings_warning, quality_score, quality_grade,
+        initial_breakout_score, current_action_score, score_badge, score_breakdown
     )
     VALUES %s
     ON CONFLICT (symbol) DO UPDATE SET
@@ -361,6 +376,10 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
         earnings_warning = EXCLUDED.earnings_warning,
         quality_score = EXCLUDED.quality_score,
         quality_grade = EXCLUDED.quality_grade,
+        initial_breakout_score = EXCLUDED.initial_breakout_score,
+        current_action_score = EXCLUDED.current_action_score,
+        score_badge = EXCLUDED.score_badge,
+        score_breakdown = EXCLUDED.score_breakdown,
         updated_at = CURRENT_TIMESTAMP;
     """
     values = [
@@ -380,6 +399,10 @@ def upsert_active_breakout_signals(signals: List[Dict[str, Any]], cur=None) -> i
             s.get("earnings_warning"),
             s.get("quality_score", 0.0),
             s.get("quality_grade", "B"),
+            s.get("initial_breakout_score", s.get("quality_score", 0.0)),
+            s.get("current_action_score", s.get("quality_score", 0.0)),
+            s.get("score_badge", ""),
+            json.dumps(s.get("score_breakdown")) if s.get("score_breakdown") else None,
         )
         for s in signals
     ]

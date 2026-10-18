@@ -44,7 +44,23 @@
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
       "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 33.9,
+        "vol_pts": 0.0,
+        "entry_pts": 6.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 47.3,
+        "penalty_pts": -40.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -85,8 +101,23 @@
       "risk_per_share": 53.9236,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 17.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 17.5,
+      "current_action_score": 17.5,
+      "score_breakdown": {
+        "mrs_pts": 27.4,
+        "vol_pts": 3.7,
+        "entry_pts": 1.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 66.8,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -126,9 +157,23 @@
       "actual_dollar_risk": 36.03,
       "risk_per_share": 36.0265,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 29.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 47.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 47.8,
+      "current_action_score": 47.8,
+      "score_breakdown": {
+        "mrs_pts": 29.1,
+        "vol_pts": 12.2,
+        "entry_pts": 6.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 46.8,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -169,8 +214,23 @@
       "risk_per_share": 24.07,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 11.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 11.1,
+      "current_action_score": 11.1,
+      "score_breakdown": {
+        "mrs_pts": 30.5,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 10.6,
+        "closing_range_pct": 63.3,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -211,8 +271,22 @@
       "risk_per_share": 19.488,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 15.0,
-      "quality_grade": "C"
+      "quality_score": 8.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 8.5,
+      "current_action_score": 8.5,
+      "score_breakdown": {
+        "mrs_pts": 14.2,
+        "vol_pts": 4.3,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 21.8,
+        "penalty_pts": -10.0,
+        "penalty_reasons": [
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -253,8 +327,20 @@
       "risk_per_share": 7.1,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "quality_score": 35.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 35.7,
+      "current_action_score": 35.7,
+      "score_breakdown": {
+        "mrs_pts": 22.3,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 13.4,
+        "closing_range_pct": 22.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -294,9 +380,23 @@
       "actual_dollar_risk": 33.16,
       "risk_per_share": 33.1596,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 25.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 47.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 47.2,
+      "current_action_score": 47.2,
+      "score_breakdown": {
+        "mrs_pts": 25.3,
+        "vol_pts": 0.0,
+        "entry_pts": 21.9,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 61.7,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -337,8 +437,23 @@
       "risk_per_share": 34.2954,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 15.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 15.9,
+      "current_action_score": 15.9,
+      "score_breakdown": {
+        "mrs_pts": 22.6,
+        "vol_pts": 2.0,
+        "entry_pts": 6.3,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 82.3,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -380,7 +495,22 @@
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
       "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 15.9,
+        "vol_pts": 0.0,
+        "entry_pts": 3.9,
+        "tightness_pts": 9.1,
+        "closing_range_pct": 78.6,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -421,8 +551,20 @@
       "risk_per_share": 26.116,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 31.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 31.4,
+      "current_action_score": 31.4,
+      "score_breakdown": {
+        "mrs_pts": 16.4,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 27.8,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -463,8 +605,23 @@
       "risk_per_share": 76.82,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 14.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 14.7,
+      "current_action_score": 14.7,
+      "score_breakdown": {
+        "mrs_pts": 26.9,
+        "vol_pts": 4.0,
+        "entry_pts": 0.7,
+        "tightness_pts": 13.1,
+        "closing_range_pct": 56.3,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -505,8 +662,22 @@
       "risk_per_share": 5.034,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 44.0,
-      "quality_grade": "C"
+      "quality_score": 54.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 54.8,
+      "current_action_score": 54.8,
+      "score_breakdown": {
+        "mrs_pts": 32.9,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 11.9,
+        "closing_range_pct": 52.3,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -547,8 +718,20 @@
       "risk_per_share": 5.4632,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 37.0,
-      "quality_grade": "C"
+      "quality_score": 32.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 32.8,
+      "current_action_score": 32.8,
+      "score_breakdown": {
+        "mrs_pts": 13.2,
+        "vol_pts": 5.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 14.6,
+        "closing_range_pct": 20.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -589,8 +772,22 @@
       "risk_per_share": 12.637,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 42.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 42.7,
+      "current_action_score": 42.7,
+      "score_breakdown": {
+        "mrs_pts": 33.4,
+        "vol_pts": 0.0,
+        "entry_pts": 12.7,
+        "tightness_pts": 11.6,
+        "closing_range_pct": 54.9,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -631,8 +828,20 @@
       "risk_per_share": 19.1171,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 29.0,
-      "quality_grade": "C"
+      "quality_score": 75.7,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 75.7,
+      "current_action_score": 75.7,
+      "score_breakdown": {
+        "mrs_pts": 24.5,
+        "vol_pts": 20.4,
+        "entry_pts": 15.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 43.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -672,9 +881,21 @@
       "actual_dollar_risk": 30.48,
       "risk_per_share": 30.4839,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 34.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 71.1,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 71.1,
+      "current_action_score": 71.1,
+      "score_breakdown": {
+        "mrs_pts": 29.2,
+        "vol_pts": 16.0,
+        "entry_pts": 10.9,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 46.0,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -715,8 +936,23 @@
       "risk_per_share": 44.1268,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 9.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 9.6,
+      "current_action_score": 9.6,
+      "score_breakdown": {
+        "mrs_pts": 23.8,
+        "vol_pts": 0.0,
+        "entry_pts": 0.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 90.3,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -756,9 +992,21 @@
       "actual_dollar_risk": 36.59,
       "risk_per_share": 36.591,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 29.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 29.5,
+      "current_action_score": 29.5,
+      "score_breakdown": {
+        "mrs_pts": 14.5,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 39.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -799,8 +1047,22 @@
       "risk_per_share": 15.805,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 12.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 12.6,
+      "current_action_score": 12.6,
+      "score_breakdown": {
+        "mrs_pts": 19.2,
+        "vol_pts": 1.8,
+        "entry_pts": 0.0,
+        "tightness_pts": 1.6,
+        "closing_range_pct": 30.8,
+        "penalty_pts": -10.0,
+        "penalty_reasons": [
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -840,9 +1102,21 @@
       "actual_dollar_risk": 42.42,
       "risk_per_share": 8.4832,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 31.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 31.1,
+      "current_action_score": 31.1,
+      "score_breakdown": {
+        "mrs_pts": 14.0,
+        "vol_pts": 2.1,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 43.1,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -883,8 +1157,20 @@
       "risk_per_share": 30.544,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 20.0,
-      "quality_grade": "C"
+      "quality_score": 62.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 62.2,
+      "current_action_score": 62.2,
+      "score_breakdown": {
+        "mrs_pts": 12.8,
+        "vol_pts": 20.0,
+        "entry_pts": 14.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 58.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -924,9 +1210,23 @@
       "actual_dollar_risk": 47.87,
       "risk_per_share": 9.575,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 41.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 41.2,
+      "current_action_score": 41.2,
+      "score_breakdown": {
+        "mrs_pts": 34.1,
+        "vol_pts": 1.8,
+        "entry_pts": 10.4,
+        "tightness_pts": 9.9,
+        "closing_range_pct": 44.4,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -967,8 +1267,22 @@
       "risk_per_share": 17.522,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 31.0,
-      "quality_grade": "C"
+      "quality_score": 50.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 50.4,
+      "current_action_score": 50.4,
+      "score_breakdown": {
+        "mrs_pts": 31.2,
+        "vol_pts": 1.3,
+        "entry_pts": 20.6,
+        "tightness_pts": 12.3,
+        "closing_range_pct": 100.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1009,8 +1323,24 @@
       "risk_per_share": 55.4594,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 2.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 2.6,
+      "current_action_score": 2.6,
+      "score_breakdown": {
+        "mrs_pts": 25.4,
+        "vol_pts": 2.7,
+        "entry_pts": 4.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 39.1,
+        "penalty_pts": -45.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 39%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1051,8 +1381,24 @@
       "risk_per_share": 41.447,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 5.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 5.4,
+      "current_action_score": 5.4,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 10.4,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 37.9,
+        "penalty_pts": -40.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 38%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1093,8 +1439,20 @@
       "risk_per_share": 21.917,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 34.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 34.2,
+      "current_action_score": 34.2,
+      "score_breakdown": {
+        "mrs_pts": 18.5,
+        "vol_pts": 0.7,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 40.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1134,9 +1492,23 @@
       "actual_dollar_risk": 48.22,
       "risk_per_share": 24.1078,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 34.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 49.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 49.7,
+      "current_action_score": 49.7,
+      "score_breakdown": {
+        "mrs_pts": 27.5,
+        "vol_pts": 1.4,
+        "entry_pts": 20.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 88.5,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1176,9 +1548,24 @@
       "actual_dollar_risk": 35.0,
       "risk_per_share": 34.9996,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 5 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 5 \u0e27\u0e31\u0e19",
+      "quality_score": 12.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 12.8,
+      "current_action_score": 12.8,
+      "score_breakdown": {
+        "mrs_pts": 22.4,
+        "vol_pts": 1.8,
+        "entry_pts": 3.6,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 44.7,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1218,9 +1605,21 @@
       "actual_dollar_risk": 48.88,
       "risk_per_share": 24.438,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 62.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 64.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 64.2,
+      "current_action_score": 64.2,
+      "score_breakdown": {
+        "mrs_pts": 18.2,
+        "vol_pts": 8.7,
+        "entry_pts": 25.0,
+        "tightness_pts": 12.3,
+        "closing_range_pct": 60.2,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1261,8 +1660,20 @@
       "risk_per_share": 18.3808,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "quality_score": 25.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 25.5,
+      "current_action_score": 25.5,
+      "score_breakdown": {
+        "mrs_pts": 12.5,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 13.0,
+        "closing_range_pct": 24.6,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1303,8 +1714,20 @@
       "risk_per_share": 5.271,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "quality_score": 34.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 34.2,
+      "current_action_score": 34.2,
+      "score_breakdown": {
+        "mrs_pts": 20.7,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 13.5,
+        "closing_range_pct": 25.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1344,9 +1767,23 @@
       "actual_dollar_risk": 43.57,
       "risk_per_share": 10.8925,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 26.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 46.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 46.4,
+      "current_action_score": 46.4,
+      "score_breakdown": {
+        "mrs_pts": 28.6,
+        "vol_pts": 0.0,
+        "entry_pts": 17.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 49.9,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1386,9 +1823,23 @@
       "actual_dollar_risk": 42.66,
       "risk_per_share": 14.221,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 34.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 54.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 54.2,
+      "current_action_score": 54.2,
+      "score_breakdown": {
+        "mrs_pts": 29.4,
+        "vol_pts": 1.9,
+        "entry_pts": 22.9,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 44.9,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1428,9 +1879,23 @@
       "actual_dollar_risk": 31.1,
       "risk_per_share": 31.0994,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 25.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 41.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 41.8,
+      "current_action_score": 41.8,
+      "score_breakdown": {
+        "mrs_pts": 18.4,
+        "vol_pts": 0.0,
+        "entry_pts": 23.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 86.4,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1470,9 +1935,21 @@
       "actual_dollar_risk": 43.62,
       "risk_per_share": 43.624,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 61.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 65.0,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 65.0,
+      "current_action_score": 65.0,
+      "score_breakdown": {
+        "mrs_pts": 26.1,
+        "vol_pts": 12.7,
+        "entry_pts": 12.9,
+        "tightness_pts": 13.3,
+        "closing_range_pct": 52.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1513,8 +1990,20 @@
       "risk_per_share": 16.635,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "quality_score": 34.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 34.0,
+      "current_action_score": 34.0,
+      "score_breakdown": {
+        "mrs_pts": 19.9,
+        "vol_pts": 1.5,
+        "entry_pts": 0.0,
+        "tightness_pts": 12.6,
+        "closing_range_pct": 42.2,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1555,8 +2044,22 @@
       "risk_per_share": 19.257,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 23.0,
-      "quality_grade": "C"
+      "quality_score": 45.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 45.7,
+      "current_action_score": 45.7,
+      "score_breakdown": {
+        "mrs_pts": 27.0,
+        "vol_pts": 0.0,
+        "entry_pts": 18.9,
+        "tightness_pts": 14.8,
+        "closing_range_pct": 98.1,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1597,8 +2100,22 @@
       "risk_per_share": 17.8821,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 34.0,
-      "quality_grade": "C"
+      "quality_score": 55.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 55.7,
+      "current_action_score": 55.7,
+      "score_breakdown": {
+        "mrs_pts": 29.5,
+        "vol_pts": 3.0,
+        "entry_pts": 23.2,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 44.9,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1639,8 +2156,20 @@
       "risk_per_share": 4.8753,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 48.0,
-      "quality_grade": "C"
+      "quality_score": 42.3,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 42.3,
+      "current_action_score": 42.3,
+      "score_breakdown": {
+        "mrs_pts": 17.2,
+        "vol_pts": 10.1,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 30.8,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1681,8 +2210,20 @@
       "risk_per_share": 25.6384,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 35.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 35.7,
+      "current_action_score": 35.7,
+      "score_breakdown": {
+        "mrs_pts": 24.9,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 10.8,
+        "closing_range_pct": 22.1,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1722,9 +2263,24 @@
       "actual_dollar_risk": 47.6,
       "risk_per_share": 47.601,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 34.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 37.3,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 37.3,
+      "current_action_score": 37.3,
+      "score_breakdown": {
+        "mrs_pts": 34.2,
+        "vol_pts": 1.7,
+        "entry_pts": 25.0,
+        "tightness_pts": 6.4,
+        "closing_range_pct": 18.2,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 18%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1764,9 +2320,26 @@
       "actual_dollar_risk": 34.39,
       "risk_per_share": 17.1932,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.5,
+        "closing_range_pct": 11.1,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 11%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1806,9 +2379,21 @@
       "actual_dollar_risk": 47.19,
       "risk_per_share": 15.729,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 20.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 71.4,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 71.4,
+      "current_action_score": 71.4,
+      "score_breakdown": {
+        "mrs_pts": 21.2,
+        "vol_pts": 17.8,
+        "entry_pts": 17.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 42.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1849,8 +2434,20 @@
       "risk_per_share": 113.5928,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 40.0,
-      "quality_grade": "C"
+      "quality_score": 40.3,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 40.3,
+      "current_action_score": 40.3,
+      "score_breakdown": {
+        "mrs_pts": 20.7,
+        "vol_pts": 4.6,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 23.3,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1890,9 +2487,21 @@
       "actual_dollar_risk": 35.8,
       "risk_per_share": 35.8,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 33.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 33.5,
+      "current_action_score": 33.5,
+      "score_breakdown": {
+        "mrs_pts": 18.5,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 41.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -1933,8 +2542,23 @@
       "risk_per_share": 3.291,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 33.0,
-      "quality_grade": "C"
+      "quality_score": 37.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 37.2,
+      "current_action_score": 37.2,
+      "score_breakdown": {
+        "mrs_pts": 32.9,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 9.3,
+        "closing_range_pct": 37.3,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 37%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -1975,8 +2599,20 @@
       "risk_per_share": 9.218,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "quality_score": 30.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 30.8,
+      "current_action_score": 30.8,
+      "score_breakdown": {
+        "mrs_pts": 16.1,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 14.7,
+        "closing_range_pct": 24.9,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2017,8 +2653,20 @@
       "risk_per_share": 2.571,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 14.0,
-      "quality_grade": "C"
+      "quality_score": 40.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 40.7,
+      "current_action_score": 40.7,
+      "score_breakdown": {
+        "mrs_pts": 25.6,
+        "vol_pts": 0.1,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 31.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2059,8 +2707,24 @@
       "risk_per_share": 70.684,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 15.0,
-      "quality_grade": "C"
+      "quality_score": 0.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.9,
+      "current_action_score": 0.9,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 4.2,
+        "entry_pts": 1.7,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 24.8,
+        "penalty_pts": -40.0,
+        "penalty_reasons": [
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 25%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2100,9 +2764,21 @@
       "actual_dollar_risk": 48.76,
       "risk_per_share": 24.38,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 40.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 41.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 41.6,
+      "current_action_score": 41.6,
+      "score_breakdown": {
+        "mrs_pts": 22.4,
+        "vol_pts": 4.2,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 39.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2143,8 +2819,22 @@
       "risk_per_share": 13.3429,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 29.0,
-      "quality_grade": "C"
+      "quality_score": 40.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 40.4,
+      "current_action_score": 40.4,
+      "score_breakdown": {
+        "mrs_pts": 27.0,
+        "vol_pts": 9.9,
+        "entry_pts": 3.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 57.9,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2184,9 +2874,26 @@
       "actual_dollar_risk": 28.34,
       "risk_per_share": 28.34,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
       "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 22.6,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 23%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2226,9 +2933,23 @@
       "actual_dollar_risk": 33.34,
       "risk_per_share": 33.3375,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 26.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 52.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 52.2,
+      "current_action_score": 52.2,
+      "score_breakdown": {
+        "mrs_pts": 34.1,
+        "vol_pts": 0.0,
+        "entry_pts": 18.1,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 50.6,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2269,8 +2990,22 @@
       "risk_per_share": 21.679,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 24.0,
-      "quality_grade": "C"
+      "quality_score": 39.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 39.0,
+      "current_action_score": 39.0,
+      "score_breakdown": {
+        "mrs_pts": 18.1,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 10.9,
+        "closing_range_pct": 41.1,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2311,8 +3046,22 @@
       "risk_per_share": 5.2843,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 20.0,
-      "quality_grade": "C"
+      "quality_score": 37.3,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 37.3,
+      "current_action_score": 37.3,
+      "score_breakdown": {
+        "mrs_pts": 24.0,
+        "vol_pts": 8.9,
+        "entry_pts": 4.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 78.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2352,9 +3101,21 @@
       "actual_dollar_risk": 47.34,
       "risk_per_share": 2.7848,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 5 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 5 \u0e27\u0e31\u0e19",
+      "quality_score": 31.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 31.2,
+      "current_action_score": 31.2,
+      "score_breakdown": {
+        "mrs_pts": 14.0,
+        "vol_pts": 2.2,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 37.6,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2394,9 +3155,23 @@
       "actual_dollar_risk": 44.96,
       "risk_per_share": 8.9913,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 26.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 51.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 51.0,
+      "current_action_score": 51.0,
+      "score_breakdown": {
+        "mrs_pts": 24.5,
+        "vol_pts": 7.0,
+        "entry_pts": 19.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 69.2,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2436,9 +3211,23 @@
       "actual_dollar_risk": 31.22,
       "risk_per_share": 31.221,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 30.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 46.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 46.9,
+      "current_action_score": 46.9,
+      "score_breakdown": {
+        "mrs_pts": 21.9,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 49.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2478,9 +3267,23 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 136.14,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 39.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 54.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 54.4,
+      "current_action_score": 54.4,
+      "score_breakdown": {
+        "mrs_pts": 25.5,
+        "vol_pts": 3.9,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 62.3,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2520,9 +3323,21 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 77.3491,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 25.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 56.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 56.1,
+      "current_action_score": 56.1,
+      "score_breakdown": {
+        "mrs_pts": 21.3,
+        "vol_pts": 10.6,
+        "entry_pts": 9.2,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 70.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2563,8 +3378,20 @@
       "risk_per_share": 41.098,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 36.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 36.6,
+      "current_action_score": 36.6,
+      "score_breakdown": {
+        "mrs_pts": 21.6,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 29.7,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2605,8 +3432,22 @@
       "risk_per_share": 83.09,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 30.0,
-      "quality_grade": "C"
+      "quality_score": 47.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 47.5,
+      "current_action_score": 47.5,
+      "score_breakdown": {
+        "mrs_pts": 22.5,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 61.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2646,9 +3487,21 @@
       "actual_dollar_risk": 46.66,
       "risk_per_share": 6.665,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 29.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 29.8,
+      "current_action_score": 29.8,
+      "score_breakdown": {
+        "mrs_pts": 13.2,
+        "vol_pts": 1.6,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 33.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2689,8 +3542,23 @@
       "risk_per_share": 13.2598,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 18.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 18.8,
+      "current_action_score": 18.8,
+      "score_breakdown": {
+        "mrs_pts": 29.9,
+        "vol_pts": 1.0,
+        "entry_pts": 2.9,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 84.1,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2730,9 +3598,23 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 62.3856,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 5 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 5 \u0e27\u0e31\u0e19",
+      "quality_score": 17.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 17.7,
+      "current_action_score": 17.7,
+      "score_breakdown": {
+        "mrs_pts": 20.6,
+        "vol_pts": 2.9,
+        "entry_pts": 0.0,
+        "tightness_pts": 4.2,
+        "closing_range_pct": 19.4,
+        "penalty_pts": -10.0,
+        "penalty_reasons": [
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2772,9 +3654,21 @@
       "actual_dollar_risk": 46.24,
       "risk_per_share": 7.706,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 33.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 33.9,
+      "current_action_score": 33.9,
+      "score_breakdown": {
+        "mrs_pts": 18.4,
+        "vol_pts": 0.5,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 38.5,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -2816,7 +3710,23 @@
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
       "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 51.2,
+        "penalty_pts": -40.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2856,9 +3766,25 @@
       "actual_dollar_risk": 25.07,
       "risk_per_share": 25.0721,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 2.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 2.5,
+      "current_action_score": 2.5,
+      "score_breakdown": {
+        "mrs_pts": 29.7,
+        "vol_pts": 1.5,
+        "entry_pts": 1.3,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 34.6,
+        "penalty_pts": -45.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 35%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2899,8 +3825,25 @@
       "risk_per_share": 36.335,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 12.7,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 13%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2940,9 +3883,25 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 79.1027,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 0.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.2,
+      "current_action_score": 0.2,
+      "score_breakdown": {
+        "mrs_pts": 26.2,
+        "vol_pts": 0.5,
+        "entry_pts": 3.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 32.5,
+        "penalty_pts": -45.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 32%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -2983,8 +3942,20 @@
       "risk_per_share": 39.588,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 29.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 29.0,
+      "current_action_score": 29.0,
+      "score_breakdown": {
+        "mrs_pts": 14.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 23.1,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3025,8 +3996,23 @@
       "risk_per_share": 303.9441,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 4.0,
-      "quality_grade": "C"
+      "quality_score": 12.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 12.9,
+      "current_action_score": 12.9,
+      "score_breakdown": {
+        "mrs_pts": 28.3,
+        "vol_pts": 9.6,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 52.9,
+        "penalty_pts": -25.0,
+        "penalty_reasons": [
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3067,8 +4053,23 @@
       "risk_per_share": 38.8139,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 14.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 14.9,
+      "current_action_score": 14.9,
+      "score_breakdown": {
+        "mrs_pts": 23.1,
+        "vol_pts": 0.0,
+        "entry_pts": 6.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 45.6,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3108,9 +4109,21 @@
       "actual_dollar_risk": 44.88,
       "risk_per_share": 14.96,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 31.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 31.1,
+      "current_action_score": 31.1,
+      "score_breakdown": {
+        "mrs_pts": 19.3,
+        "vol_pts": 1.2,
+        "entry_pts": 0.0,
+        "tightness_pts": 10.6,
+        "closing_range_pct": 17.3,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3151,8 +4164,25 @@
       "risk_per_share": 11.81,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 2.2,
+        "entry_pts": 5.9,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 11.1,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 11%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3192,9 +4222,21 @@
       "actual_dollar_risk": 44.82,
       "risk_per_share": 22.4088,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 8.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 43.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 43.4,
+      "current_action_score": 43.4,
+      "score_breakdown": {
+        "mrs_pts": 33.4,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 10.0,
+        "closing_range_pct": 20.8,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3235,8 +4277,22 @@
       "risk_per_share": 4.0216,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 29.9,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 29.9,
+      "current_action_score": 29.9,
+      "score_breakdown": {
+        "mrs_pts": 16.4,
+        "vol_pts": 0.0,
+        "entry_pts": 13.5,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 61.7,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3277,8 +4333,23 @@
       "risk_per_share": 4.9094,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 7.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 7.7,
+      "current_action_score": 7.7,
+      "score_breakdown": {
+        "mrs_pts": 21.3,
+        "vol_pts": 0.0,
+        "entry_pts": 1.4,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 63.1,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3318,9 +4389,21 @@
       "actual_dollar_risk": 47.93,
       "risk_per_share": 7.988,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 23.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 23.6,
+      "current_action_score": 23.6,
+      "score_breakdown": {
+        "mrs_pts": 14.3,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 9.3,
+        "closing_range_pct": 19.3,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3361,8 +4444,25 @@
       "risk_per_share": 7.735,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 5.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 7.6,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 8%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3403,8 +4503,25 @@
       "risk_per_share": 39.71,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.7,
+        "entry_pts": 0.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 8.0,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 8%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3445,8 +4562,22 @@
       "risk_per_share": 2.7262,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 30.0,
-      "quality_grade": "C"
+      "quality_score": 43.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 43.0,
+      "current_action_score": 43.0,
+      "score_breakdown": {
+        "mrs_pts": 18.0,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 66.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3486,9 +4617,21 @@
       "actual_dollar_risk": 41.55,
       "risk_per_share": 20.776,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 55.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 67.5,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 67.5,
+      "current_action_score": 67.5,
+      "score_breakdown": {
+        "mrs_pts": 23.0,
+        "vol_pts": 16.9,
+        "entry_pts": 12.6,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 38.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3528,9 +4671,24 @@
       "actual_dollar_risk": 41.8,
       "risk_per_share": 41.7971,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 24.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 24.1,
+      "current_action_score": 24.1,
+      "score_breakdown": {
+        "mrs_pts": 34.6,
+        "vol_pts": 0.0,
+        "entry_pts": 7.8,
+        "tightness_pts": 11.7,
+        "closing_range_pct": 48.4,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3571,8 +4729,22 @@
       "risk_per_share": 19.605,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 39.0,
-      "quality_grade": "C"
+      "quality_score": 46.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 46.1,
+      "current_action_score": 46.1,
+      "score_breakdown": {
+        "mrs_pts": 30.3,
+        "vol_pts": 11.8,
+        "entry_pts": 14.0,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 56.7,
+        "penalty_pts": -10.0,
+        "penalty_reasons": [
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3612,9 +4784,21 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 68.7472,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 29.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 29.5,
+      "current_action_score": 29.5,
+      "score_breakdown": {
+        "mrs_pts": 13.4,
+        "vol_pts": 1.8,
+        "entry_pts": 0.0,
+        "tightness_pts": 14.3,
+        "closing_range_pct": 19.8,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3655,8 +4839,20 @@
       "risk_per_share": 20.56,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 34.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 34.0,
+      "current_action_score": 34.0,
+      "score_breakdown": {
+        "mrs_pts": 19.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 19.4,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3697,8 +4893,23 @@
       "risk_per_share": 19.032,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 12.0,
-      "quality_grade": "C"
+      "quality_score": 28.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 28.6,
+      "current_action_score": 28.6,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 18.6,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 41.1,
+        "penalty_pts": -25.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3739,8 +4950,20 @@
       "risk_per_share": 10.8712,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "quality_score": 38.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 38.6,
+      "current_action_score": 38.6,
+      "score_breakdown": {
+        "mrs_pts": 23.6,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 23.2,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3781,8 +5004,22 @@
       "risk_per_share": 1.0067,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 30.0,
-      "quality_grade": "C"
+      "quality_score": 49.4,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 49.4,
+      "current_action_score": 49.4,
+      "score_breakdown": {
+        "mrs_pts": 24.4,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 90.3,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3823,8 +5060,22 @@
       "risk_per_share": 19.651,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 44.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 44.0,
+      "current_action_score": 44.0,
+      "score_breakdown": {
+        "mrs_pts": 32.7,
+        "vol_pts": 0.0,
+        "entry_pts": 11.3,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 49.3,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3864,9 +5115,21 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 85.4615,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 58.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 64.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 64.5,
+      "current_action_score": 64.5,
+      "score_breakdown": {
+        "mrs_pts": 31.2,
+        "vol_pts": 5.3,
+        "entry_pts": 15.6,
+        "tightness_pts": 12.4,
+        "closing_range_pct": 42.0,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -3907,8 +5170,22 @@
       "risk_per_share": 33.9732,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 26.0,
-      "quality_grade": "C"
+      "quality_score": 45.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 45.1,
+      "current_action_score": 45.1,
+      "score_breakdown": {
+        "mrs_pts": 28.3,
+        "vol_pts": 0.0,
+        "entry_pts": 16.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 41.0,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3949,8 +5226,23 @@
       "risk_per_share": 66.0418,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 16.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 16.6,
+      "current_action_score": 16.6,
+      "score_breakdown": {
+        "mrs_pts": 28.9,
+        "vol_pts": 2.7,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 65.8,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -3990,9 +5282,25 @@
       "actual_dollar_risk": 40.64,
       "risk_per_share": 5.08,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 20.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 16.9,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 21.9,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 8.9,
+        "penalty_pts": -40.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 9%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4032,9 +5340,23 @@
       "actual_dollar_risk": 25.22,
       "risk_per_share": 25.2192,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 5 วัน",
-      "quality_score": 25.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 5 \u0e27\u0e31\u0e19",
+      "quality_score": 43.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 43.8,
+      "current_action_score": 43.8,
+      "score_breakdown": {
+        "mrs_pts": 17.3,
+        "vol_pts": 2.9,
+        "entry_pts": 23.6,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 59.1,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4074,9 +5396,23 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 50.3159,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 11 วัน",
-      "quality_score": 29.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 11 \u0e27\u0e31\u0e19",
+      "quality_score": 37.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 37.0,
+      "current_action_score": 37.0,
+      "score_breakdown": {
+        "mrs_pts": 25.8,
+        "vol_pts": 8.5,
+        "entry_pts": 2.7,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 79.2,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4117,8 +5453,23 @@
       "risk_per_share": 57.3291,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_score": 90.0,
+      "quality_grade": "A+",
+      "score_badge": "\ud83c\udfc6 Trend Leader",
+      "initial_breakout_score": 90.0,
+      "current_action_score": 19.4,
+      "score_breakdown": {
+        "mrs_pts": 34.6,
+        "vol_pts": 3.1,
+        "entry_pts": 0.0,
+        "tightness_pts": 11.7,
+        "closing_range_pct": 40.5,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4158,9 +5509,26 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 68.439,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 5 วัน",
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 5 \u0e27\u0e31\u0e19",
       "quality_score": 0.0,
-      "quality_grade": "C"
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 0.0,
+      "current_action_score": 0.0,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 5.3,
+        "tightness_pts": 0.0,
+        "closing_range_pct": 35.9,
+        "penalty_pts": -55.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e17\u0e34\u0e49\u0e07\u0e44\u0e2a\u0e49\u0e1a\u0e19 (Close Range 36%)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)",
+          "\u0e10\u0e32\u0e19\u0e23\u0e32\u0e04\u0e32\u0e01\u0e27\u0e49\u0e32\u0e07 (>20%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4200,9 +5568,21 @@
       "actual_dollar_risk": 31.25,
       "risk_per_share": 31.248,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 6 วัน",
-      "quality_score": 2.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 6 \u0e27\u0e31\u0e19",
+      "quality_score": 36.8,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 36.8,
+      "current_action_score": 36.8,
+      "score_breakdown": {
+        "mrs_pts": 21.2,
+        "vol_pts": 1.2,
+        "entry_pts": 0.0,
+        "tightness_pts": 14.4,
+        "closing_range_pct": 33.2,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -4243,8 +5623,22 @@
       "risk_per_share": 1.898,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 36.0,
-      "quality_grade": "C"
+      "quality_score": 57.1,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 57.1,
+      "current_action_score": 57.1,
+      "score_breakdown": {
+        "mrs_pts": 32.6,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 14.5,
+        "closing_range_pct": 89.1,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4284,9 +5678,21 @@
       "actual_dollar_risk": 49.06,
       "risk_per_share": 24.5312,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 4 วัน",
-      "quality_score": 5.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 4 \u0e27\u0e31\u0e19",
+      "quality_score": 39.0,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 39.0,
+      "current_action_score": 39.0,
+      "score_breakdown": {
+        "mrs_pts": 20.5,
+        "vol_pts": 3.5,
+        "entry_pts": 0.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 22.9,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -4327,8 +5733,20 @@
       "risk_per_share": 43.5295,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 71.0,
-      "quality_grade": "B"
+      "quality_score": 70.6,
+      "quality_grade": "B",
+      "score_badge": "\ud83d\udfe1 Moderate / Watch",
+      "initial_breakout_score": 70.6,
+      "current_action_score": 70.6,
+      "score_breakdown": {
+        "mrs_pts": 26.9,
+        "vol_pts": 4.7,
+        "entry_pts": 25.0,
+        "tightness_pts": 14.0,
+        "closing_range_pct": 41.9,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     },
     {
       "scan_id": 37,
@@ -4368,9 +5786,24 @@
       "actual_dollar_risk": 31.08,
       "risk_per_share": 31.0786,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 10 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 10 \u0e27\u0e31\u0e19",
+      "quality_score": 11.2,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 11.2,
+      "current_action_score": 11.2,
+      "score_breakdown": {
+        "mrs_pts": 18.2,
+        "vol_pts": 2.9,
+        "entry_pts": 5.1,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 67.6,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4411,8 +5844,22 @@
       "risk_per_share": 32.56,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 23.0,
-      "quality_grade": "C"
+      "quality_score": 49.7,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 49.7,
+      "current_action_score": 49.7,
+      "score_breakdown": {
+        "mrs_pts": 29.3,
+        "vol_pts": 7.0,
+        "entry_pts": 15.1,
+        "tightness_pts": 13.3,
+        "closing_range_pct": 66.2,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4452,9 +5899,24 @@
       "actual_dollar_risk": 0.0,
       "risk_per_share": 63.5507,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 12 วัน",
-      "quality_score": 0.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 12 \u0e27\u0e31\u0e19",
+      "quality_score": 19.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 19.5,
+      "current_action_score": 19.5,
+      "score_breakdown": {
+        "mrs_pts": 33.7,
+        "vol_pts": 0.0,
+        "entry_pts": 0.8,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 82.2,
+        "penalty_pts": -30.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)",
+          "\u0e23\u0e32\u0e04\u0e32\u0e40\u0e01\u0e34\u0e19\u0e42\u0e0b\u0e19\u0e0b\u0e37\u0e49\u0e2d (+5%)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4494,9 +5956,23 @@
       "actual_dollar_risk": 35.9,
       "risk_per_share": 17.951,
       "breakout_date": "2026-10-16",
-      "earnings_warning": "⚠️ งบออกใน 13 วัน",
-      "quality_score": 39.0,
-      "quality_grade": "C"
+      "earnings_warning": "\u26a0\ufe0f \u0e07\u0e1a\u0e2d\u0e2d\u0e01\u0e43\u0e19 13 \u0e27\u0e31\u0e19",
+      "quality_score": 52.5,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 52.5,
+      "current_action_score": 52.5,
+      "score_breakdown": {
+        "mrs_pts": 27.5,
+        "vol_pts": 0.0,
+        "entry_pts": 25.0,
+        "tightness_pts": 15.0,
+        "closing_range_pct": 64.2,
+        "penalty_pts": -15.0,
+        "penalty_reasons": [
+          "Volume \u0e41\u0e2b\u0e49\u0e07 (<1.0x)"
+        ]
+      }
     },
     {
       "scan_id": 37,
@@ -4537,8 +6013,20 @@
       "risk_per_share": 39.08,
       "breakout_date": "2026-10-16",
       "earnings_warning": null,
-      "quality_score": 14.0,
-      "quality_grade": "C"
+      "quality_score": 46.6,
+      "quality_grade": "C",
+      "score_badge": "\u26aa Weak / Extended",
+      "initial_breakout_score": 46.6,
+      "current_action_score": 46.6,
+      "score_breakdown": {
+        "mrs_pts": 35.0,
+        "vol_pts": 0.0,
+        "entry_pts": 0.0,
+        "tightness_pts": 11.6,
+        "closing_range_pct": 31.1,
+        "penalty_pts": -0.0,
+        "penalty_reasons": []
+      }
     }
   ]
 }

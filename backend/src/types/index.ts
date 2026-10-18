@@ -57,6 +57,16 @@ export interface ScanJob {
   created_at: string;
 }
 
+export interface ScoreBreakdown {
+  mrs_pts: number;
+  vol_pts: number;
+  entry_pts: number;
+  tightness_pts: number;
+  closing_range_pct: number;
+  penalty_pts: number;
+  penalty_reasons: string[];
+}
+
 /** Matches the `screener_signals` table */
 export interface ScreenerSignal {
   id: number;
@@ -100,6 +110,10 @@ export interface ScreenerSignal {
   earnings_warning?: string | null;
   quality_score?: number | null;
   quality_grade?: string | null;
+  initial_breakout_score?: number | null;
+  current_action_score?: number | null;
+  score_badge?: string | null;
+  score_breakdown?: ScoreBreakdown | null;
 
   created_at: string;
 

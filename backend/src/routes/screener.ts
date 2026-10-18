@@ -265,6 +265,10 @@ router.get(
         atr_14w: s.atr_14w ? Number(s.atr_14w) : null,
         quality_score: s.quality_score !== undefined && s.quality_score !== null ? Number(s.quality_score) : 0,
         quality_grade: s.quality_grade ?? 'B',
+        initial_breakout_score: s.initial_breakout_score !== undefined && s.initial_breakout_score !== null ? Number(s.initial_breakout_score) : null,
+        current_action_score: s.current_action_score !== undefined && s.current_action_score !== null ? Number(s.current_action_score) : null,
+        score_badge: s.score_badge ?? null,
+        score_breakdown: typeof s.score_breakdown === 'string' ? (() => { try { return JSON.parse(s.score_breakdown); } catch (_) { return null; } })() : (s.score_breakdown ?? null),
         market_regime: s.market_regime ?? marketRegime,
         recommended_shares: s.recommended_shares ? Number(s.recommended_shares) : Math.max(1, Math.floor(100 / Math.max(0.01, (Number(s.current_price) - Number(s.stop_loss_price))))),
       }));

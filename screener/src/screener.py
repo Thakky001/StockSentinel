@@ -422,6 +422,7 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
     except Exception as e:
         logger.debug(f"Could not check/ensure stocks foreign key: {e}")
 
+    import json
     db.ensure_quality_columns_exist(cur=cur)
     sql = """
     INSERT INTO screener_signals (
@@ -430,7 +431,7 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         sma_30w, sma_30w_slope, prior_resistance_35w, weekly_close,
         weekly_volume, avg_volume_10w, stage, sma_10w, base_tightness_pct, atr_14w, market_regime,
         active_stop_loss, peak_gain_pct, highest_price_since_entry, earnings_warning,
-        quality_score, quality_grade
+        quality_score, quality_grade, initial_breakout_score, current_action_score, score_badge, score_breakdown
     )
     VALUES %s
     ON CONFLICT (scan_date, ticker) DO UPDATE SET
@@ -459,7 +460,11 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
         highest_price_since_entry = EXCLUDED.highest_price_since_entry,
         earnings_warning = EXCLUDED.earnings_warning,
         quality_score = EXCLUDED.quality_score,
-        quality_grade = EXCLUDED.quality_grade;
+        quality_grade = EXCLUDED.quality_grade,
+        initial_breakout_score = EXCLUDED.initial_breakout_score,
+        current_action_score = EXCLUDED.current_action_score,
+        score_badge = EXCLUDED.score_badge,
+        score_breakdown = EXCLUDED.score_breakdown;
     """
     values = [
         (
@@ -491,6 +496,10 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
             s.get("earnings_warning"),
             s.get("quality_score", 0.0),
             s.get("quality_grade", "B"),
+            s.get("initial_breakout_score", s.get("quality_score", 0.0)),
+            s.get("current_action_score", s.get("quality_score", 0.0)),
+            s.get("score_badge", ""),
+            json.dumps(s.get("score_breakdown")) if s.get("score_breakdown") else None,
         )
         for s in deduped_list
     ]
@@ -853,13 +862,49 @@ def run_screener(
                 max_alloc_pct=0.20,
             )
 
-            # Step 4b: Compute Breakout Quality Score & Grade
-            q_score, q_grade = indicators.compute_quality_score(
+            # Step 4b: Compute Breakout Quality Score & Grade V2.0
+            mrs_slope_4w = round(mrs_c - mrs_p4, 2) if mrs_p4 is not None else 0.0
+            score_res = indicators.calculate_breakout_score_v2(
                 mrs_score=mrs_c,
-                volume_surge_ratio=vol_ratio,
+                mrs_slope_4w=mrs_slope_4w,
+                vol_surge_ratio=vol_ratio,
                 diff_pct=current_gain_pct,
-                base_tightness_pct=tight_pct,
+                tightness_pct=tight_pct,
+                weekly_high=highs[last_idx],
+                weekly_low=lows[last_idx],
+                weekly_close=c,
+                is_retest_mode=bool(-2.0 <= current_gain_pct < 0.0),
             )
+            current_action_score = score_res["final_score"]
+            current_action_grade = score_res["grade"]
+            score_badge = score_res["badge"]
+            score_breakdown = score_res["breakdown"]
+
+            # Handle initial breakout score vs current action score (Requirement 3: PROFIT_RUN)
+            if existing_signal is None:
+                initial_breakout_score = current_action_score
+                initial_breakout_grade = current_action_grade
+            else:
+                initial_breakout_score = float(
+                    existing_signal.get("initial_breakout_score")
+                    or existing_signal.get("quality_score")
+                    or current_action_score
+                )
+                initial_breakout_grade = (
+                    existing_signal.get("initial_breakout_grade")
+                    or existing_signal.get("quality_grade")
+                    or current_action_grade
+                )
+
+            # If stock is in PROFIT_RUN or TRAILING_WARNING (peak gain >= 20%),
+            # display Trend Leader badge and keep initial breakout score for ranking
+            if status in ["PROFIT_RUN", "TRAILING_WARNING"] or peak_gain_pct >= 20.0:
+                q_score = initial_breakout_score
+                q_grade = initial_breakout_grade if initial_breakout_grade in ["A+", "A"] else "A+"
+                score_badge = "🏆 Trend Leader"
+            else:
+                q_score = current_action_score
+                q_grade = current_action_grade
 
             meta = meta_lookup.get(ticker, {})
             signal_record = {
@@ -903,6 +948,10 @@ def run_screener(
                 "earnings_warning": None,
                 "quality_score": q_score,
                 "quality_grade": q_grade,
+                "initial_breakout_score": initial_breakout_score,
+                "current_action_score": current_action_score,
+                "score_badge": score_badge,
+                "score_breakdown": score_breakdown,
             }
             qualified_signals.append(signal_record)
 
@@ -922,6 +971,10 @@ def run_screener(
                 "earnings_warning": None,
                 "quality_score": q_score,
                 "quality_grade": q_grade,
+                "initial_breakout_score": initial_breakout_score,
+                "current_action_score": current_action_score,
+                "score_badge": score_badge,
+                "score_breakdown": score_breakdown,
             })
 
             processed_count += 1

@@ -13,6 +13,16 @@ export type StatusType =
 
 export type MarketRegime = 'BULL_MARKET' | 'CAUTION_MARKET' | 'BEAR_MARKET';
 
+export interface ScoreBreakdown {
+  mrs_pts: number;
+  vol_pts: number;
+  entry_pts: number;
+  tightness_pts: number;
+  closing_range_pct: number;
+  penalty_pts: number;
+  penalty_reasons: string[];
+}
+
 /** A single screener signal returned from GET /api/screener/latest */
 export interface ScreenerSignal {
   ticker: string;
@@ -39,6 +49,10 @@ export interface ScreenerSignal {
   // V2 & V2.1 Mathematical Enhancements
   quality_score?: number | null;
   quality_grade?: string | null;
+  initial_breakout_score?: number | null;
+  current_action_score?: number | null;
+  score_badge?: string | null;
+  score_breakdown?: ScoreBreakdown | null;
   sma_10w?: number | null;
   base_tightness_pct?: number | null;
   atr_14w?: number | null;

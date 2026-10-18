@@ -682,110 +682,180 @@ def calculate_projected_volume_surge(
     return round(projected_vol, 2), round(ratio, 4)
 
 
+def calculate_breakout_score_v2(
+    mrs_score: float,
+    mrs_slope_4w: float,
+    vol_surge_ratio: float,
+    diff_pct: float,
+    tightness_pct: float,
+    weekly_high: float,
+    weekly_low: float,
+    weekly_close: float,
+    is_retest_mode: bool = False,
+) -> Dict[str, Any]:
+    """
+    ระบบคำนวณคะแนน Stage 2 Breakout Score V2.0 (0 - 100 คะแนน)
+    - ใช้ Continuous Linear Interpolation (np.interp) ป้องกันปัญหาคะแนนกระโดด (Cliff Effect)
+    - ตรวจสอบ Weekly Closing Range (CR%) ป้องกันแท่งเทียนทิ้งไส้บนหลอกตา (Shooting Star Trap)
+    - ยกเลิกการหักคะแนนซ้ำซ้อน (Double Penalty) ที่ทำให้โซน +3.5% ถึง +5% พัง
+    """
+    import numpy as np
+
+    # 0. คำนวณตำแหน่งราคาปิดในแท่งเทียนสัปดาห์ (Weekly Closing Range: 0% - 100%)
+    candle_range = max(float(weekly_high) - float(weekly_low), 0.0001)
+    closing_range_pct = ((float(weekly_close) - float(weekly_low)) / candle_range) * 100.0
+
+    # =========================================================================
+    # ① Mansfield RS Score + Momentum Acceleration (เต็ม 35 คะแนน)
+    # ปรับเพดานให้เหมาะกับหุ้น S&P 500 ที่เพิ่งออกจากฐาน 35 สัปดาห์ (MRS 18+ ได้เต็ม)
+    # =========================================================================
+    mrs = float(mrs_score or 0.0)
+    if mrs < 0:
+        score_mrs_base = max(0.0, 10.0 + (mrs * 1.0))  # 0 ถึง 10 คะแนน
+    else:
+        # เทียบสัดส่วนต่อเนื่อง: MRS 0 ได้ 12 คะแนน -> MRS >= 18.0 ได้ 30 คะแนน
+        score_mrs_base = float(np.interp(mrs, [0.0, 5.0, 12.0, 18.0], [12.0, 18.0, 25.0, 30.0]))
+
+    # โบนัสความเร่งของ RS (MRS Slope 4 สัปดาห์): สูงสุด +5 คะแนน
+    slope = float(mrs_slope_4w or 0.0)
+    score_mrs_accel = float(np.interp(slope, [0.0, 3.0, 8.0], [0.0, 2.5, 5.0]))
+    score_1_mrs = round(min(35.0, score_mrs_base + score_mrs_accel), 1)
+
+    # =========================================================================
+    # ② Volume Surge Ratio & Weekly Closing Range (เต็ม 25 คะแนน)
+    # =========================================================================
+    vol = float(vol_surge_ratio or 0.0)
+    diff = float(diff_pct or 0.0)
+
+    if is_retest_mode and -2.0 <= diff < 0.0:
+        # กรณีพักตัวทดสอบแนวรับ (Healthy Pullback) โวลุ่มลดลง (< 1.0x) ถือว่าดี
+        score_2_vol = float(np.interp(vol, [0.4, 0.8, 1.2, 1.5], [22.0, 20.0, 14.0, 8.0]))
+    else:
+        # กรณีเบรกเอาต์ปกติ: ยิ่งโวลุ่มเยอะยิ่งได้คะแนนสูงแบบต่อเนื่อง
+        score_2_vol = float(np.interp(vol, [0.8, 1.0, 1.5, 2.0, 2.5], [0.0, 8.0, 18.0, 22.0, 25.0]))
+
+    # ถ้าโวลุ่มสูงแต่แท่งเทียนโดนตบลงมาปิดครึ่งล่าง (Closing Range < 45%) แปลว่ามีแรงเทขายสวน
+    if not is_retest_mode and closing_range_pct < 45.0:
+        score_2_vol = score_2_vol * 0.5  # ลดคะแนนโวลุ่มลงครึ่งหนึ่งทันที
+
+    score_2_vol = round(score_2_vol, 1)
+
+    # =========================================================================
+    # ③ Entry Price Sweet Spot (เต็ม 25 คะแนน)
+    # ใช้กราฟต่อเนื่อง ไม่ให้ราคาขยับ 0.01% แล้วคะแนนหาย 27 แต้ม
+    # =========================================================================
+    if 0.0 <= diff <= 5.0:
+        # 0% ถึง +1.5% ได้ 25 -> ค่อยๆ ลดลงจนถึง +5.0% ได้ 8 คะแนน
+        score_3_entry = float(np.interp(diff, [0.0, 1.5, 2.5, 3.5, 5.0], [25.0, 25.0, 20.0, 14.0, 8.0]))
+    elif -2.0 <= diff < 0.0:
+        # โซนจ่อเบรกหรือย่อทดสอบแนวรับตื้นๆ
+        score_3_entry = float(np.interp(diff, [-2.0, -0.5, 0.0], [12.0, 18.0, 22.0]))
+    elif 5.0 < diff <= 10.0:
+        # เลยโซนซื้อ (+5% ถึง +10%) ค่อยๆ ลดจาก 8 เหลือ 0
+        score_3_entry = float(np.interp(diff, [5.0, 8.0, 10.0], [8.0, 2.0, 0.0]))
+    else:
+        score_3_entry = 0.0
+
+    score_3_entry = round(score_3_entry, 1)
+
+    # =========================================================================
+    # ④ Base Tightness 4w (เต็ม 15 คะแนน)
+    # =========================================================================
+    tight = float(tightness_pct if tightness_pct is not None else 18.0)
+    score_4_tightness = round(float(np.interp(tight, [8.0, 12.0, 15.0, 18.0, 22.0], [15.0, 15.0, 12.0, 9.0, 0.0])), 1)
+
+    # คะแนนรวมพื้นฐาน (0 - 100)
+    base_score = score_1_mrs + score_2_vol + score_3_entry + score_4_tightness
+
+    # =========================================================================
+    # กฎหักคะแนนเฉพาะความเสี่ยงจริง (ไม่หักซ้ำซ้อนกับตารางหลัก)
+    # =========================================================================
+    penalty = 0.0
+    penalty_reasons = []
+
+    # 1. เบรกเอาต์แต่โวลุ่มแห้ง (< 1.0x) หัก 15 คะแนน (เฉพาะตอนราคาเหนือจุดเบรก)
+    if diff >= 0.0 and vol < 1.0:
+        penalty += 15.0
+        penalty_reasons.append("Volume แห้ง (<1.0x)")
+
+    # 2. แท่งเทียนทิ้งไส้บนยาว (โดนทุบกลับลงมาปิดต่ำกว่า 40% ของแท่ง) หัก 15 คะแนน
+    if diff >= 0.0 and closing_range_pct < 40.0:
+        penalty += 15.0
+        penalty_reasons.append(f"ทิ้งไส้บน (Close Range {closing_range_pct:.0f}%)")
+
+    # 3. ราคาลอยพ้นเพดานซื้อสูงสุดเกิน +5.0% หัก 15 คะแนนเพื่อเตือนห้ามไล่ราคา
+    if diff > 5.0:
+        penalty += 15.0
+        penalty_reasons.append("ราคาเกินโซนซื้อ (+5%)")
+
+    # 4. ฐานราคากว้างเกินเกณฑ์มาตรฐาน (> 20%) หัก 10 คะแนน
+    if tight > 20.0:
+        penalty += 10.0
+        penalty_reasons.append("ฐานราคากว้าง (>20%)")
+
+    final_score = round(max(0.0, min(100.0, base_score - penalty)), 1)
+
+    # การตัดเกรด V2.0
+    if final_score >= 88.0:
+        grade = "A+"
+        badge = "💎 Prime Leader"
+    elif final_score >= 78.0:
+        grade = "A"
+        badge = "🟢 Strong Breakout"
+    elif final_score >= 65.0:
+        grade = "B"
+        badge = "🟡 Moderate / Watch"
+    else:
+        grade = "C"
+        badge = "⚪ Weak / Extended"
+
+    return {
+        "final_score": final_score,
+        "grade": grade,
+        "badge": badge,
+        "breakdown": {
+            "mrs_pts": score_1_mrs,
+            "vol_pts": score_2_vol,
+            "entry_pts": score_3_entry,
+            "tightness_pts": score_4_tightness,
+            "closing_range_pct": round(closing_range_pct, 1),
+            "penalty_pts": -penalty,
+            "penalty_reasons": penalty_reasons,
+        },
+    }
+
+
 def compute_quality_score(
     mrs_score: float,
     volume_surge_ratio: float,
     diff_pct: float,
     base_tightness_pct: Optional[float] = None,
+    weekly_high: Optional[float] = None,
+    weekly_low: Optional[float] = None,
+    weekly_close: Optional[float] = None,
+    mrs_slope_4w: Optional[float] = None,
+    is_retest_mode: bool = False,
 ) -> Tuple[float, str]:
     """
-    Computes the composite Breakout Quality Score (0-100) & Grade (A+, A, B, C).
-
-    Base Weight Distribution (100 pts):
-    1. Mansfield RS vs SPY: max 35 pts (Relative strength outperformance)
-    2. Volume Surge Ratio: max 25 pts (Institutional accumulation power)
-    3. Entry Distance (diff_pct): max 25 pts (Sweet spot close to breakout pivot)
-    4. Base Tightness (4w): max 15 pts (Volatility contraction before breakout)
-
-    Strict Penalty Rules:
-    - Dry Volume (< 1.0x): -25 pts penalty (prevents low-volume pullbacks from earning Grade A/A+)
-    - Late Entry (> +3.5%): -20 pts penalty (prevents stretched setups with wide stop loss)
-    - Loose Base (> 20.0%): -10 pts penalty
-
-    Grades:
-    - 90 - 100: A+ (💎 Prime Leader)
-    - 80 - 89.9: A (🟢 Strong Breakout)
-    - 65 - 79.9: B (🟡 Moderate / Watch)
-    - < 65:      C (⚪ Weak / Late Stage / Low Volume)
-
-    Returns:
-        (score: float, grade: str)
+    Backwards-compatible wrapper around calculate_breakout_score_v2.
+    Returns (final_score: float, grade: str).
     """
-    score: float = 0.0
+    close_v = float(weekly_close) if weekly_close is not None else 100.0
+    high_v = float(weekly_high) if weekly_high is not None else (close_v * 1.02)
+    low_v = float(weekly_low) if weekly_low is not None else (close_v * 0.98)
+    mrs_slope = float(mrs_slope_4w) if mrs_slope_4w is not None else 0.0
+    tight_v = float(base_tightness_pct) if base_tightness_pct is not None else 18.0
 
-    # 1. Mansfield RS (max 35 pts)
-    mrs = float(mrs_score or 0.0)
-    if mrs >= 30.0:
-        score += 35.0
-    elif mrs >= 20.0:
-        score += 30.0
-    elif mrs >= 10.0:
-        score += 24.0
-    elif mrs >= 0.0:
-        score += 15.0
-    else:
-        score += 5.0
-
-    # 2. Volume Surge (max 25 pts)
-    vol = float(volume_surge_ratio or 0.0)
-    if vol >= 2.5:
-        score += 25.0
-    elif vol >= 2.0:
-        score += 22.0
-    elif vol >= 1.5:
-        score += 18.0
-    elif vol >= 1.0:
-        score += 10.0
-    else:
-        score += 0.0  # Dry volume
-
-    # 3. Entry Price Sweet Spot (max 25 pts)
-    diff = float(diff_pct or 0.0)
-    if 0.0 <= diff <= 1.5:
-        score += 25.0  # Perfect entry pivot sweet spot
-    elif 1.5 < diff <= 2.5:
-        score += 20.0
-    elif 2.5 < diff <= 3.5:
-        score += 12.0
-    elif 3.5 < diff <= 5.0:
-        score += 5.0   # Late entry
-    elif -2.0 <= diff < 0.0:
-        score += 15.0  # Healthy retest right below pivot
-    else:
-        score += 0.0   # Extended or deep drawdown
-
-    # 4. Base Tightness (max 15 pts)
-    tightness = float(base_tightness_pct) if base_tightness_pct is not None else 18.0
-    if tightness <= 12.0:
-        score += 15.0
-    elif tightness <= 15.0:
-        score += 12.0
-    elif tightness <= 18.0:
-        score += 9.0
-    elif tightness <= 22.0:
-        score += 4.0
-    else:
-        score += 0.0
-
-    # Apply Strict Penalties
-    if vol < 1.0:
-        score -= 25.0  # Volume is dry
-    if diff > 3.5:
-        score -= 20.0  # Late edge of buy zone
-    if tightness > 20.0:
-        score -= 10.0  # Base is loose and volatile
-
-    score = max(0.0, min(100.0, score))
-    score = round(score, 1)
-
-    if score >= 90.0:
-        grade = "A+"
-    elif score >= 80.0:
-        grade = "A"
-    elif score >= 65.0:
-        grade = "B"
-    else:
-        grade = "C"
-
-    return score, grade
+    res = calculate_breakout_score_v2(
+        mrs_score=mrs_score,
+        mrs_slope_4w=mrs_slope,
+        vol_surge_ratio=volume_surge_ratio,
+        diff_pct=diff_pct,
+        tightness_pct=tight_v,
+        weekly_high=high_v,
+        weekly_low=low_v,
+        weekly_close=close_v,
+        is_retest_mode=is_retest_mode,
+    )
+    return res["final_score"], res["grade"]
 

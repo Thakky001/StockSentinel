@@ -301,7 +301,7 @@ def format_smart_weekly_report(
         capital = shares * c_price
         earnings_warn = s.get("earnings_warning")
         q_score = float(s.get("quality_score") or 0.0)
-        q_grade = str(s.get("quality_grade") or ("A+" if q_score >= 90 else "A" if q_score >= 80 else "B" if q_score >= 65 else "C"))
+        q_grade = str(s.get("quality_grade") or ("A+" if q_score >= 88 else "A" if q_score >= 78 else "B" if q_score >= 65 else "C"))
         grade_icon = "💎" if q_grade == "A+" else "🟢" if q_grade == "A" else "🟡" if q_grade == "B" else "⚪"
         grade_badge = f"[{grade_icon} {q_score:.0f} {q_grade}]"
 

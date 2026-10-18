@@ -176,30 +176,119 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                   {/* Quality Score & Grade Badge */}
                   <td className="py-3 px-4 text-center">
                     {(() => {
-                      const score = Math.round(Number(sig.quality_score ?? 0));
-                      const grade = sig.quality_grade || (score >= 90 ? 'A+' : score >= 80 ? 'A' : score >= 65 ? 'B' : 'C');
+                      const score = Number(sig.quality_score ?? 0);
+                      const displayScore = Math.round(score);
+                      const isTrendLeader = sig.score_badge?.includes('Trend Leader') || sig.status === 'PROFIT_RUN';
+
+                      let grade = sig.quality_grade || (score >= 88 ? 'A+' : score >= 78 ? 'A' : score >= 65 ? 'B' : 'C');
+                      if (isTrendLeader) {
+                        grade = sig.quality_grade && ['A+', 'A'].includes(sig.quality_grade) ? sig.quality_grade : 'A+';
+                      }
+
                       let badgeStyle = 'bg-slate-700/50 text-slate-400 border border-slate-600/50';
                       let icon = '⚪';
-                      if (grade === 'A+') {
+                      let badgeTitle = 'Weak / Extended';
+
+                      if (isTrendLeader) {
+                        badgeStyle = 'bg-amber-500/20 text-amber-300 border border-amber-400/60 font-bold shadow-sm shadow-amber-500/20';
+                        icon = '🏆';
+                        badgeTitle = 'Trend Leader';
+                      } else if (grade === 'A+') {
                         badgeStyle = 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold shadow-sm shadow-purple-500/20';
                         icon = '💎';
+                        badgeTitle = 'Prime Leader';
                       } else if (grade === 'A') {
                         badgeStyle = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold';
                         icon = '🟢';
+                        badgeTitle = 'Strong Breakout';
                       } else if (grade === 'B') {
                         badgeStyle = 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium';
                         icon = '🟡';
+                        badgeTitle = 'Moderate / Watch';
                       }
+
+                      const bd = sig.score_breakdown;
+
                       return (
-                        <div className="inline-flex items-center justify-center">
+                        <div className="relative group inline-flex items-center justify-center">
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap inline-flex items-center gap-1 font-mono ${badgeStyle}`}
-                            title={`คะแนนคุณภาพ Breakout: ${score}/100 (เกรด ${grade})`}
+                            className={`px-2.5 py-0.5 rounded-full text-xs whitespace-nowrap inline-flex items-center gap-1 font-mono cursor-help transition-all duration-150 hover:scale-105 ${badgeStyle}`}
                           >
                             <span>{icon}</span>
-                            <span>{score}</span>
-                            <span className="font-sans font-bold">{grade}</span>
+                            <span>{displayScore}</span>
+                            <span className="font-sans font-bold">{isTrendLeader ? 'RUNNER' : grade}</span>
                           </span>
+
+                          {/* Hover Tooltip (Detailed 4 Pillars & Penalties) */}
+                          <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:flex flex-col z-50 w-72 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-3 shadow-2xl text-left pointer-events-none animate-fadeIn">
+                            <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
+                              <span className="text-xs font-bold text-slate-200 flex items-center gap-1">
+                                <span>{icon}</span>
+                                <span>{isTrendLeader ? '🏆 Trend Leader' : `${badgeTitle} (${grade})`}</span>
+                              </span>
+                              <span className="text-xs font-mono font-bold text-emerald-400">
+                                {score.toFixed(1)} / 100
+                              </span>
+                            </div>
+
+                            {/* 4 Pillars Grid */}
+                            <div className="space-y-1 text-xs">
+                              <div className="flex justify-between items-center text-slate-300">
+                                <span className="text-slate-400">📊 Mansfield RS:</span>
+                                <span className="font-mono font-medium">
+                                  {bd ? `${bd.mrs_pts} / 35` : `MRS ${sig.mrs_score?.toFixed(1) ?? '—'}`}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center text-slate-300">
+                                <span className="text-slate-400">🔊 Volume Surge:</span>
+                                <span className="font-mono font-medium">
+                                  {bd ? `${bd.vol_pts} / 25` : `${sig.volume_surge_ratio?.toFixed(2)}x`}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center text-slate-300">
+                                <span className="text-slate-400">🎯 Entry Sweet Spot:</span>
+                                <span className="font-mono font-medium">
+                                  {bd ? `${bd.entry_pts} / 25` : `${sig.diff_pct?.toFixed(1)}%`}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center text-slate-300">
+                                <span className="text-slate-400">🧱 Base Tightness:</span>
+                                <span className="font-mono font-medium">
+                                  {bd ? `${bd.tightness_pts} / 15` : `${sig.base_tightness_pct?.toFixed(1)}%`}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center text-slate-300 pt-0.5 border-t border-slate-800">
+                                <span className="text-slate-400">🕯️ Closing Range (CR%):</span>
+                                <span className="font-mono font-medium text-sky-400">
+                                  {bd?.closing_range_pct !== undefined ? `${bd.closing_range_pct}%` : '—'}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Profit Run Special Indicator */}
+                            {isTrendLeader && (
+                              <div className="mt-2 pt-1.5 border-t border-slate-800 text-[11px] text-amber-300">
+                                <span>🏆 รันเทรนด์กำไรพีค +{sig.peak_gain_pct?.toFixed(1)}% (คะแนนต้นทุนเบรก: {sig.initial_breakout_score ?? score})</span>
+                              </div>
+                            )}
+
+                            {/* Penalties */}
+                            {bd && bd.penalty_reasons && bd.penalty_reasons.length > 0 && (
+                              <div className="mt-2 pt-1.5 border-t border-rose-900/50 space-y-1">
+                                <span className="text-[10px] uppercase font-bold tracking-wider text-rose-400 block">
+                                  รายการหักคะแนน ({bd.penalty_pts} pts):
+                                </span>
+                                {bd.penalty_reasons.map((r, i) => (
+                                  <div key={i} className="text-[11px] text-rose-300 flex items-center gap-1">
+                                    <span>⚠️</span>
+                                    <span>{r}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            <div className="absolute left-1/2 -bottom-1.5 -translate-x-1/2 w-3 h-3 bg-slate-900 border-r border-b border-slate-700 rotate-45" />
+                          </div>
                         </div>
                       );
                     })()}
