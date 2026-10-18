@@ -135,14 +135,34 @@ const ChartModal: React.FC<ChartModalProps> = ({ ticker, onClose }) => {
           )}
 
           {error && (
-            <div className="h-[450px] flex flex-col items-center justify-center bg-slate-950/50 rounded-lg border border-rose-900/50 p-6 text-center">
-              <span className="text-3xl mb-2">⚠️</span>
-              <p className="text-rose-400 font-medium mb-1">ไม่สามารถโหลดข้อมูลกราฟได้</p>
-              <p className="text-xs text-slate-400 max-w-md">{error}</p>
+            <div className="h-[450px] flex flex-col items-center justify-center bg-slate-950/60 rounded-xl border border-amber-500/30 p-8 text-center space-y-3">
+              <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-2xl">
+                📊
+              </div>
+              <h3 className="text-lg font-semibold text-slate-200">
+                {error.includes('ไม่พบประวัติราคา') ? 'ไม่พบประวัติราคา กรุณาซิงก์ข้อมูล' : 'ไม่สามารถโหลดข้อมูลกราฟได้'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400 max-w-md">
+                {error.includes('ไม่พบประวัติราคา')
+                  ? `ระบบยังไม่มีข้อมูลแท่งเทียนราคาจริงสำหรับหุ้น ${ticker} ในฐานข้อมูล กรุณารันซิงก์ข้อมูล (Daily Sync) เพื่อดาวน์โหลดประวัติราคาจริง`
+                  : error}
+              </p>
             </div>
           )}
 
-          {!loading && !error && chartData && (
+          {!loading && !error && (!chartData || !chartData.candlesticks || chartData.candlesticks.length === 0) && (
+            <div className="h-[450px] flex flex-col items-center justify-center bg-slate-950/60 rounded-xl border border-amber-500/30 p-8 text-center space-y-3">
+              <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-2xl">
+                📊
+              </div>
+              <h3 className="text-lg font-semibold text-slate-200">ไม่พบประวัติราคา กรุณาซิงก์ข้อมูล</h3>
+              <p className="text-xs sm:text-sm text-slate-400 max-w-md">
+                ระบบยังไม่มีข้อมูลแท่งเทียนราคาจริงสำหรับหุ้น {ticker} ในฐานข้อมูล กรุณารันซิงก์ข้อมูล (Daily Sync) เพื่อดาวน์โหลดประวัติราคาจริง
+              </p>
+            </div>
+          )}
+
+          {!loading && !error && chartData && chartData.candlesticks.length > 0 && (
             <TradingViewChart data={chartData} height={460} />
           )}
         </div>

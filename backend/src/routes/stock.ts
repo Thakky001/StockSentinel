@@ -19,7 +19,7 @@ import {
   DailyBar,
   ApiResponse,
 } from '../types';
-import { generateMockChartData, MOCK_SIGNALS } from '../db/mockDb';
+import { MOCK_SIGNALS } from '../db/mockDb';
 
 const router = Router();
 
@@ -169,12 +169,18 @@ router.get(
           return;
         }
       } catch (dbErr) {
-        console.warn(`[Stock /chart] DB query failed for ${ticker}. Serving fallback chart.`, (dbErr as Error).message);
+        console.warn(`[Stock /chart] DB query failed for ${ticker}:`, (dbErr as Error).message);
       }
 
-      // Fallback: Generate realistic chart data using actual company name and metrics
-      const fallbackData = generateMockChartData(ticker, weeks, metrics, companyName);
-      res.json({ success: true, data: fallbackData });
+      // If database has no real price bars, do NOT generate fake mock data!
+      // Return 404 with explicit message instructing user to sync real data.
+      res.status(404).json({
+        success: false,
+        error: {
+          code: 'NO_HISTORICAL_DATA',
+          message: 'ไม่พบประวัติราคา กรุณาซิงก์ข้อมูล',
+        },
+      });
     } catch (err) {
       next(err);
     }

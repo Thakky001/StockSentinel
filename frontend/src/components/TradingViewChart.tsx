@@ -24,6 +24,20 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
 
+  if (!data || !data.candlesticks || data.candlesticks.length === 0) {
+    return (
+      <div className="h-[450px] flex flex-col items-center justify-center bg-slate-950/60 rounded-xl border border-amber-500/30 p-8 text-center space-y-3">
+        <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-2xl">
+          📊
+        </div>
+        <h3 className="text-lg font-semibold text-slate-200">ไม่พบประวัติราคา กรุณาซิงก์ข้อมูล</h3>
+        <p className="text-xs sm:text-sm text-slate-400 max-w-md">
+          ไม่มีข้อมูลแท่งเทียนราคาจริงในฐานข้อมูล กรุณาซิงก์ข้อมูลแท่งราคาก่อนเปิดดูกราฟ
+        </p>
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (!containerRef.current) return;
 
