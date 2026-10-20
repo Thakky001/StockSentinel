@@ -198,7 +198,25 @@ router.get(
         if (result.rows.length > 0) {
           total = parseInt(result.rows[0].total_count, 10);
           scanDate = toDateOnlyString(result.rows[0].scan_date ?? scanDate);
-          signals = result.rows.map(({ total_count: _, ...row }) => row);
+          signals = result.rows.map(({ total_count: _, ...row }) => ({
+            ...row,
+            quality_score: row.quality_score != null ? Number(row.quality_score) : null,
+            initial_breakout_score: row.initial_breakout_score != null ? Number(row.initial_breakout_score) : null,
+            current_action_score: row.current_action_score != null ? Number(row.current_action_score) : null,
+            entry_price: Number(row.entry_price),
+            max_buy_price: Number(row.max_buy_price),
+            current_price: Number(row.current_price ?? row.weekly_close),
+            stop_loss_price: Number(row.stop_loss_price),
+            diff_pct: Number(row.diff_pct),
+            volume_surge_ratio: Number(row.volume_surge_ratio),
+            mrs_score: Number(row.mrs_score),
+            sma_30w: Number(row.sma_30w),
+            sma_30w_slope: Number(row.sma_30w_slope),
+            weekly_close: Number(row.weekly_close),
+            peak_gain_pct: row.peak_gain_pct != null ? Number(row.peak_gain_pct) : null,
+            base_tightness_pct: row.base_tightness_pct != null ? Number(row.base_tightness_pct) : null,
+            atr_14w: row.atr_14w != null ? Number(row.atr_14w) : null,
+          }));
         }
       } catch (dbErr: any) {
         if (!dbErr?.message?.includes('Database offline')) {

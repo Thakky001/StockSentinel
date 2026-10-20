@@ -125,38 +125,38 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
     const { metrics } = data;
     if (metrics) {
       // Green line: Entry Pivot
-      if (metrics.entry_price > 0) {
+      if (Number(metrics.entry_price) > 0) {
         candleSeries.createPriceLine({
-          price: metrics.entry_price,
+          price: Number(metrics.entry_price),
           color: '#22c55e',
           lineWidth: 2,
           lineStyle: LineStyle.Dashed,
           axisLabelVisible: true,
-          title: `จุดเข้า: $${metrics.entry_price.toFixed(2)}`,
+          title: `จุดเข้า: $${Number(metrics.entry_price).toFixed(2)}`,
         });
       }
 
       // Amber/Orange line: Max Buy (+5%)
-      if (metrics.max_buy_price > 0) {
+      if (Number(metrics.max_buy_price) > 0) {
         candleSeries.createPriceLine({
-          price: metrics.max_buy_price,
+          price: Number(metrics.max_buy_price),
           color: '#f59e0b',
           lineWidth: 2,
           lineStyle: LineStyle.Dashed,
           axisLabelVisible: true,
-          title: `เพดานซื้อ (+5%): $${metrics.max_buy_price.toFixed(2)}`,
+          title: `เพดานซื้อ (+5%): $${Number(metrics.max_buy_price).toFixed(2)}`,
         });
       }
 
       // Red line: Stop Loss (-8%)
-      if (metrics.stop_loss_price > 0) {
+      if (Number(metrics.stop_loss_price) > 0) {
         candleSeries.createPriceLine({
-          price: metrics.stop_loss_price,
+          price: Number(metrics.stop_loss_price),
           color: '#ef4444',
           lineWidth: 2,
           lineStyle: LineStyle.Dashed,
           axisLabelVisible: true,
-          title: `Stop Loss: $${metrics.stop_loss_price.toFixed(2)}`,
+          title: `Stop Loss: $${Number(metrics.stop_loss_price).toFixed(2)}`,
         });
       }
     }

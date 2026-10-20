@@ -236,25 +236,25 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                               <div className="flex justify-between items-center text-slate-300">
                                 <span className="text-slate-400">📊 Mansfield RS:</span>
                                 <span className="font-mono font-medium">
-                                  {bd ? `${bd.mrs_pts} / 35` : `MRS ${sig.mrs_score?.toFixed(1) ?? '—'}`}
+                                  {bd ? `${bd.mrs_pts} / 35` : `MRS ${mrsScore.toFixed(1)}`}
                                 </span>
                               </div>
                               <div className="flex justify-between items-center text-slate-300">
                                 <span className="text-slate-400">🔊 Volume Surge:</span>
                                 <span className="font-mono font-medium">
-                                  {bd ? `${bd.vol_pts} / 25` : `${sig.volume_surge_ratio?.toFixed(2)}x`}
+                                  {bd ? `${bd.vol_pts} / 25` : `${volSurge.toFixed(2)}x`}
                                 </span>
                               </div>
                               <div className="flex justify-between items-center text-slate-300">
                                 <span className="text-slate-400">🎯 Entry Sweet Spot:</span>
                                 <span className="font-mono font-medium">
-                                  {bd ? `${bd.entry_pts} / 25` : `${sig.diff_pct?.toFixed(1)}%`}
+                                  {bd ? `${bd.entry_pts} / 25` : `${diffPct.toFixed(1)}%`}
                                 </span>
                               </div>
                               <div className="flex justify-between items-center text-slate-300">
                                 <span className="text-slate-400">🧱 Base Tightness:</span>
                                 <span className="font-mono font-medium">
-                                  {bd ? `${bd.tightness_pts} / 15` : `${sig.base_tightness_pct?.toFixed(1)}%`}
+                                  {bd ? `${bd.tightness_pts} / 15` : `${sig.base_tightness_pct != null ? Number(sig.base_tightness_pct).toFixed(1) : '—'}%`}
                                 </span>
                               </div>
                               <div className="flex justify-between items-center text-slate-300 pt-0.5 border-t border-slate-800">
@@ -268,7 +268,7 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                             {/* Profit Run Special Indicator */}
                             {isTrendLeader && (
                               <div className="mt-2 pt-1.5 border-t border-slate-800 text-[11px] text-amber-300">
-                                <span>🏆 รันเทรนด์กำไรพีค +{sig.peak_gain_pct?.toFixed(1)}% (คะแนนต้นทุนเบรก: {sig.initial_breakout_score ?? score})</span>
+                                <span>🏆 รันเทรนด์กำไรพีค +{sig.peak_gain_pct != null ? Number(sig.peak_gain_pct).toFixed(1) : '0.0'}% (คะแนนต้นทุนเบรก: {sig.initial_breakout_score ?? score})</span>
                               </div>
                             )}
 

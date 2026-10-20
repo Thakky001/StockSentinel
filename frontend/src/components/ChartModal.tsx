@@ -99,28 +99,28 @@ const ChartModal: React.FC<ChartModalProps> = ({ ticker, onClose }) => {
               <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
                 <span className="text-xs text-slate-400 block mb-0.5">จุดเข้าซื้อ (Pivot)</span>
                 <span className="text-base sm:text-lg font-mono font-bold text-emerald-400">
-                  ${chartData.metrics.entry_price.toFixed(2)}
+                  ${Number(chartData.metrics.entry_price || 0).toFixed(2)}
                 </span>
               </div>
 
               <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
                 <span className="text-xs text-slate-400 block mb-0.5">เพดานซื้อ (+5%)</span>
                 <span className="text-base sm:text-lg font-mono font-bold text-amber-400">
-                  ${chartData.metrics.max_buy_price.toFixed(2)}
+                  ${Number(chartData.metrics.max_buy_price || 0).toFixed(2)}
                 </span>
               </div>
 
               <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
                 <span className="text-xs text-slate-400 block mb-0.5">จุดตัดขาดทุน (SL)</span>
                 <span className="text-base sm:text-lg font-mono font-bold text-rose-400">
-                  ${chartData.metrics.stop_loss_price.toFixed(2)}
+                  ${Number(chartData.metrics.stop_loss_price || 0).toFixed(2)}
                 </span>
               </div>
 
               <div className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
                 <span className="text-xs text-slate-400 block mb-0.5">ราคาปิดล่าสุด</span>
                 <span className="text-base sm:text-lg font-mono font-bold text-slate-100">
-                  ${chartData.metrics.close_price.toFixed(2)}
+                  ${Number(chartData.metrics.close_price || 0).toFixed(2)}
                 </span>
               </div>
             </div>
