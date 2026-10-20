@@ -355,8 +355,18 @@ const ScreenerTable: React.FC<ScreenerTableProps> = ({
                   <td className="py-3 px-4 text-right font-mono text-xs">
                     {(() => {
                       const riskAmount = (portfolioSize * riskPct) / 100;
-                      const riskPerShare = Math.max(0.01, entryPrice - stopLossPrice);
-                      const shares = Math.max(0, Math.floor(riskAmount / riskPerShare));
+                      const actualRiskPerShare = entryPrice - stopLossPrice;
+                      const maxCapitalAllowed = portfolioSize * 0.20;
+                      let shares = 0;
+
+                      if (actualRiskPerShare > 0) {
+                        const sharesByRisk = Math.floor(riskAmount / actualRiskPerShare);
+                        const sharesByCap = Math.floor(maxCapitalAllowed / Math.max(closePrice, 0.01));
+                        shares = Math.max(0, Math.min(sharesByRisk, sharesByCap));
+                      } else {
+                        // Breakeven or trailing stop: risk is covered, cap at 20% portfolio allocation
+                        shares = Math.max(0, Math.floor(maxCapitalAllowed / Math.max(closePrice, 0.01)));
+                      }
                       const capital = shares * closePrice;
                       return (
                         <div>

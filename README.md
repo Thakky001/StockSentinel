@@ -122,12 +122,6 @@ npm.cmd run dev
 # รันชุดทดสอบ E2E ทั้งหมด (424 tests)
 python tests/run_e2e.py
 
-# รันชุดทดสอบ Milestone 2 (Universe & Ingestion)
-python screener/verify_m2.py
-
-# รันชุดทดสอบ Milestone 3 (Indicators & Screener Engine)
-python screener/verify_m3.py
-
 # Build Backend TypeScript
 cd backend && npm.cmd run build
 

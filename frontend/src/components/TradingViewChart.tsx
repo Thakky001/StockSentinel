@@ -43,16 +43,16 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
 
     // Deduplicate and ensure strictly ascending chronological ordering
     const sortedCandles = [...data.candlesticks]
-      .filter((c, idx, arr) => idx === 0 || c.time > arr[idx - 1].time)
-      .sort((a, b) => a.time.localeCompare(b.time));
+      .sort((a, b) => a.time.localeCompare(b.time))
+      .filter((c, idx, arr) => idx === 0 || c.time > arr[idx - 1].time);
 
     const sortedSma = [...data.sma30]
-      .filter((s, idx, arr) => idx === 0 || s.time > arr[idx - 1].time)
-      .sort((a, b) => a.time.localeCompare(b.time));
+      .sort((a, b) => a.time.localeCompare(b.time))
+      .filter((s, idx, arr) => idx === 0 || s.time > arr[idx - 1].time);
 
     const sortedVolume = [...data.volume]
-      .filter((v, idx, arr) => idx === 0 || v.time > arr[idx - 1].time)
-      .sort((a, b) => a.time.localeCompare(b.time));
+      .sort((a, b) => a.time.localeCompare(b.time))
+      .filter((v, idx, arr) => idx === 0 || v.time > arr[idx - 1].time);
 
     // Create Lightweight Chart instance
     const chart = createChart(containerRef.current, {

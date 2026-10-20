@@ -50,7 +50,8 @@ export async function fetchScreenerDates(): Promise<string[]> {
  * Maps to: GET /api/screener/status
  */
 export async function fetchScreenerStatus(): Promise<ScanJob | null> {
-  return apiFetch<ScanJob | null>('/screener/status');
+  const res = await apiFetch<{ latest_job: ScanJob | null }>('/screener/status');
+  return res?.latest_job ?? null;
 }
 
 /**

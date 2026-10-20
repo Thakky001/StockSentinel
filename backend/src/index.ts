@@ -7,9 +7,21 @@
  */
 
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
 
-// Load env vars before importing anything that reads them (app, pool, etc.)
-dotenv.config({ path: '../.env' });
+// Load env vars robustly before importing anything that reads them (app, pool, etc.)
+const envCandidates = [
+  path.resolve(__dirname, '../../.env'),
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), '../.env'),
+];
+for (const envP of envCandidates) {
+  if (fs.existsSync(envP)) {
+    dotenv.config({ path: envP });
+    break;
+  }
+}
 
 import http from 'http';
 import app from './app';

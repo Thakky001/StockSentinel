@@ -398,7 +398,7 @@ def update_scan_job(
             cursor.execute(sql, params)
 
 
-def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
+def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None, prune_unmatched: bool = False) -> int:
     """
     Batch upserts qualified Stage 2 breakout signals into 'screener_signals'.
     Uses ON CONFLICT (scan_date, ticker) DO UPDATE to ensure idempotency.
@@ -508,15 +508,16 @@ def upsert_screener_signals(signals: List[Dict[str, Any]], cur=None) -> int:
 
     def _execute(cursor):
         execute_values(cursor, sql, values, page_size=1000)
-        # Prune stale records for this scan date that are no longer qualified/tracked
-        target_dates = list({str(s["scan_date"]) for s in deduped_list})
-        for s_date in target_dates:
-            valid_tickers = [s["ticker"] for s in deduped_list if str(s["scan_date"]) == s_date]
-            if valid_tickers:
-                cursor.execute(
-                    "DELETE FROM screener_signals WHERE scan_date = %s AND NOT (ticker = ANY(%s));",
-                    (s_date, valid_tickers),
-                )
+        # Prune stale records for this scan date that are no longer qualified/tracked only when requested
+        if prune_unmatched:
+            target_dates = list({str(s["scan_date"]) for s in deduped_list})
+            for s_date in target_dates:
+                valid_tickers = [s["ticker"] for s in deduped_list if str(s["scan_date"]) == s_date]
+                if valid_tickers:
+                    cursor.execute(
+                        "DELETE FROM screener_signals WHERE scan_date = %s AND NOT (ticker = ANY(%s));",
+                        (s_date, valid_tickers),
+                    )
 
     if cur:
         _execute(cur)
@@ -1007,7 +1008,7 @@ def run_screener(
     # 5b. Persist signals to PostgreSQL screener_signals
     if db_persist and qualified_signals:
         try:
-            upsert_screener_signals(qualified_signals)
+            upsert_screener_signals(qualified_signals, prune_unmatched=True)
             logger.info(f"Successfully persisted {len(qualified_signals)} Stage 2 signals to database.")
         except Exception as e:
             logger.error(f"Failed to persist signals to PostgreSQL: {e}")

@@ -6,7 +6,7 @@
  * rather than throwing so callers can handle errors gracefully.
  */
 
-import fetch from 'node-fetch';
+// Global fetch is natively available in Node 18+
 
 /** Shape of a successful Telegram sendMessage response */
 interface TelegramOkResponse {

@@ -762,7 +762,24 @@ def send_weekly_alert(
         if len(report_text) <= MAX_CHUNK_SIZE:
             chunks = [report_text]
         else:
-            chunks = chunk_telegram_messages(report_text[:1000], [report_text[1000:]])
+            # Split cleanly on paragraph/section boundaries to prevent HTML tag slicing
+            sections = report_text.split("\n\n")
+            chunks = []
+            curr = ""
+            for sec in sections:
+                sec_clean = sec.strip()
+                if not sec_clean:
+                    continue
+                if len(curr) + len(sec_clean) + 2 > MAX_CHUNK_SIZE:
+                    if curr:
+                        chunks.append(curr.strip())
+                    curr = sec_clean
+                else:
+                    curr = (curr + "\n\n" + sec_clean) if curr else sec_clean
+            if curr:
+                chunks.append(curr.strip())
+            if len(chunks) > 1:
+                chunks = [f"{c}\n<i>(Part {idx + 1} of {len(chunks)})</i>" for idx, c in enumerate(chunks)]
     else:
         header: str = format_alert_header(
             scan_date=scan_date,

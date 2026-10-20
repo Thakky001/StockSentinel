@@ -268,8 +268,15 @@ def prune_database_records(
     return deleted_counts
 
 
+_quality_columns_checked = False
+
+
 def ensure_quality_columns_exist(cur=None) -> None:
     """Ensures quality_score, quality_grade, and V2 breakout score columns exist in screener tables."""
+    global _quality_columns_checked
+    if _quality_columns_checked:
+        return
+
     ddl = """
     ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_score NUMERIC(5, 1);
     ALTER TABLE screener_signals ADD COLUMN IF NOT EXISTS quality_grade VARCHAR(10);
@@ -291,6 +298,7 @@ def ensure_quality_columns_exist(cur=None) -> None:
         else:
             with db_cursor(commit=True) as cursor:
                 cursor.execute(ddl)
+        _quality_columns_checked = True
     except Exception as e:
         logger.debug(f"ensure_quality_columns_exist notice (non-fatal): {e}")
 

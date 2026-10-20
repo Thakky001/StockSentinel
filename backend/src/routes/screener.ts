@@ -112,12 +112,15 @@ router.get(
 
       // Sort validation — default quality_score DESC
       const sortByRaw = (req.query.sort_by as string) || 'quality_score';
-      const sortColumn = SORT_COLUMN_MAP[sortByRaw] ?? 's.quality_score';
+      const sortColumn = Object.prototype.hasOwnProperty.call(SORT_COLUMN_MAP, sortByRaw)
+        ? SORT_COLUMN_MAP[sortByRaw]
+        : 's.quality_score';
 
       const orderRaw = ((req.query.order as string) || 'DESC').toUpperCase();
       const order = orderRaw === 'ASC' ? 'ASC' : 'DESC';
 
-      const page = Math.max(1, parseInt((req.query.page as string) || '1', 10));
+      const pageRaw = parseInt((req.query.page as string) || '1', 10);
+      const page = Math.max(1, isNaN(pageRaw) ? 1 : pageRaw);
       const limitRaw = parseInt((req.query.limit as string) || '50', 10);
       const limit = Math.min(200, Math.max(1, isNaN(limitRaw) ? 50 : limitRaw));
       const offset = (page - 1) * limit;
@@ -270,7 +273,18 @@ router.get(
         score_badge: s.score_badge ?? null,
         score_breakdown: typeof s.score_breakdown === 'string' ? (() => { try { return JSON.parse(s.score_breakdown); } catch (_) { return null; } })() : (s.score_breakdown ?? null),
         market_regime: s.market_regime ?? marketRegime,
-        recommended_shares: s.recommended_shares ? Number(s.recommended_shares) : Math.max(1, Math.floor(100 / Math.max(0.01, (Number(s.current_price) - Number(s.stop_loss_price))))),
+        recommended_shares: s.recommended_shares
+          ? Number(s.recommended_shares)
+          : (() => {
+              const currentP = Number(s.current_price || s.weekly_close || 1);
+              const stopP = Number(s.stop_loss_price || currentP * 0.92);
+              const riskPerShare = currentP - stopP;
+              const maxCapShares = Math.floor(2000 / Math.max(currentP, 0.01));
+              if (riskPerShare > 0) {
+                return Math.max(1, Math.min(Math.floor(100 / riskPerShare), maxCapShares));
+              }
+              return Math.max(1, maxCapShares);
+            })(),
       }));
 
       const responseData: ScreenerListData = {

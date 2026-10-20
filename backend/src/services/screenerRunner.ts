@@ -22,12 +22,31 @@ import fs from 'fs';
 
 /** In-memory tracking of the latest scan job for offline/zero-DB resilience */
 let activeMemoryJob: ScanJob | null = null;
+let isSpawningLock = false;
+
+/** Automatically locate the screener project root directory containing screener/src/main.py */
+function findScreenerRoot(): string {
+  const candidates = [
+    process.env.SCREENER_ROOT,
+    path.resolve(process.cwd()),
+    path.resolve(process.cwd(), '..'),
+    path.resolve(__dirname, '../../'),
+    path.resolve(__dirname, '../../../'),
+  ].filter(Boolean) as string[];
+
+  for (const c of candidates) {
+    if (fs.existsSync(path.join(c, 'screener/src/main.py'))) {
+      return c;
+    }
+  }
+  return path.resolve('../');
+}
 
 /** Configuration options for running the screener */
 export interface RunScreenerOptions {
   /** Python executable (default: process.env.PYTHON_CMD ?? 'python') */
   pythonCmd?: string;
-  /** Root directory of the StockSentinel project (default: process.env.SCREENER_ROOT ?? '../') */
+  /** Root directory of the StockSentinel project (default: process.env.SCREENER_ROOT ?? findScreenerRoot()) */
   screenerRoot?: string;
 }
 
@@ -47,53 +66,67 @@ export interface RunScreenerResult {
  * @returns RunScreenerResult with the new job_id and start timestamp
  */
 export async function runScreener(options: RunScreenerOptions = {}): Promise<RunScreenerResult> {
-  const pythonCmd = options.pythonCmd ?? process.env.PYTHON_CMD ?? 'python';
-  const screenerRoot = options.screenerRoot ?? process.env.SCREENER_ROOT ?? path.resolve('../');
-
-  // 1. Insert a RUNNING job row and get back the generated id + timestamp
-  let jobId = Math.floor(Date.now() / 1000);
-  let startedAt = new Date().toISOString();
-
-  try {
-    const insertResult = await query<{ id: number; started_at: string }>(
-      `INSERT INTO scan_jobs (job_type, status, started_at)
-       VALUES ('WEEKLY_SCREENER', 'RUNNING', NOW())
-       RETURNING id, to_char(started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS started_at`,
-    );
-
-    const row = insertResult.rows[0];
-    if (row) {
-      jobId = row.id;
-      startedAt = row.started_at;
-    }
-  } catch (err) {
-    // DB offline - in memory job will handle tracking
+  if (isSpawningLock) {
+    throw new Error('A screener job is currently being initiated. Please wait a moment.');
   }
 
-  activeMemoryJob = {
-    id: jobId,
-    job_type: 'WEEKLY_SCREENER',
-    status: 'RUNNING',
-    started_at: startedAt,
-    completed_at: null,
-    tickers_total: 514,
-    tickers_processed: 0,
-    tickers_failed: 0,
-    signals_found: 0,
-    error_message: null,
-    telegram_alert_sent: false,
-    created_at: startedAt,
-  };
+  isSpawningLock = true;
+  try {
+    const runningJobId = await getRunningJobId();
+    if (runningJobId !== null) {
+      throw new Error(`Screener job #${runningJobId} is already running.`);
+    }
 
-  // 2. Spawn the Python process asynchronously — do NOT await
-  void spawnAndTrack({ pythonCmd, screenerRoot, jobId });
+    const pythonCmd = options.pythonCmd ?? process.env.PYTHON_CMD ?? 'python';
+    const screenerRoot = options.screenerRoot ?? findScreenerRoot();
 
-  return {
-    job_id: jobId,
-    status: 'RUNNING',
-    message: `Screener job #${jobId} started successfully.`,
-    started_at: startedAt,
-  };
+    // 1. Insert a RUNNING job row and get back the generated id + timestamp
+    let jobId = Math.floor(Date.now() / 1000);
+    let startedAt = new Date().toISOString();
+
+    try {
+      const insertResult = await query<{ id: number; started_at: string }>(
+        `INSERT INTO scan_jobs (job_type, status, started_at)
+         VALUES ('WEEKLY_SCREENER', 'RUNNING', NOW())
+         RETURNING id, to_char(started_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS started_at`,
+      );
+
+      const row = insertResult.rows[0];
+      if (row) {
+        jobId = row.id;
+        startedAt = row.started_at;
+      }
+    } catch (err) {
+      // DB offline - in memory job will handle tracking
+    }
+
+    activeMemoryJob = {
+      id: jobId,
+      job_type: 'WEEKLY_SCREENER',
+      status: 'RUNNING',
+      started_at: startedAt,
+      completed_at: null,
+      tickers_total: 514,
+      tickers_processed: 0,
+      tickers_failed: 0,
+      signals_found: 0,
+      error_message: null,
+      telegram_alert_sent: false,
+      created_at: startedAt,
+    };
+
+    // 2. Spawn the Python process asynchronously — do NOT await
+    void spawnAndTrack({ pythonCmd, screenerRoot, jobId });
+
+    return {
+      job_id: jobId,
+      status: 'RUNNING',
+      message: `Screener job #${jobId} started successfully.`,
+      started_at: startedAt,
+    };
+  } finally {
+    isSpawningLock = false;
+  }
 }
 
 /** @internal Spawn the Python subprocess and update scan_jobs on completion */

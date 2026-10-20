@@ -31,10 +31,6 @@ DATABASE_URL = os.getenv(
     f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{DB_PORT}/{POSTGRES_DB}"
 )
 
-# Redis Configuration
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-REDIS_URL = os.getenv("REDIS_URL", f"redis://{REDIS_HOST}:{REDIS_PORT}/0")
 
 # Data & Cache Directories
 DATA_DIR = Path(os.getenv("DATA_DIR", str(SCREENER_DIR / "data"))).resolve()

@@ -17,31 +17,26 @@ router.post(
   '/telegram-test',
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      // Allow overriding credentials via request body (useful during setup / testing)
-      // Fall back to environment variables
-      const botToken: string =
-        (req.body?.bot_token as string) || process.env.TELEGRAM_BOT_TOKEN || '';
-      const chatId: string =
-        (req.body?.chat_id as string) || process.env.TELEGRAM_CHAT_ID || '';
-      const customMessage: string | undefined = req.body?.message as string | undefined;
+      // Use strictly server-configured credentials to prevent open relay abuse
+      const botToken: string = process.env.TELEGRAM_BOT_TOKEN || '';
+      const chatId: string = process.env.TELEGRAM_CHAT_ID || '';
 
-      // Validate that credentials are available
+      // Validate that credentials are configured on server
       if (!botToken || !chatId) {
         res.status(400).json({
           success: false,
           error: {
             code: 'MISSING_CREDENTIALS',
             message:
-              'Telegram bot token and chat ID are required. ' +
-              'Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables, ' +
-              'or pass { bot_token, chat_id } in the request body.',
+              'Telegram bot token or chat ID is not configured on the server. ' +
+              'Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables.',
           },
         });
         return;
       }
 
-      // Dispatch test message via the Telegram Bot API
-      const result = await sendTestMessage(botToken, chatId, customMessage);
+      // Dispatch standard canned test message via the Telegram Bot API
+      const result = await sendTestMessage(botToken, chatId);
 
       if (result.success) {
         res.json({

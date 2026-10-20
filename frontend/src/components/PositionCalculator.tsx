@@ -57,8 +57,8 @@ const PositionCalculator: React.FC<PositionCalculatorProps> = ({
   const actualMaxDollarLoss = positionShares * riskPerShare;
   
   // 2R Target calculations
-  const targetPrice2R = entryPrice + riskPerShare * 2;
-  const targetGain2R = positionShares * (riskPerShare * 2);
+  const targetPrice2R = isValidRisk ? entryPrice + riskPerShare * 2 : 0;
+  const targetGain2R = isValidRisk ? positionShares * (riskPerShare * 2) : 0;
 
   // Safety flags
   const isStopAboveEntry = stopLoss >= entryPrice;

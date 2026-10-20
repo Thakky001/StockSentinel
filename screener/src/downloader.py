@@ -252,16 +252,21 @@ def download_batch_with_retry(
     while attempt < max_retries:
         try:
             logger.info(f"Downloading batch of {len(chunk_tickers)} tickers (attempt {attempt + 1})...")
-            # Nexus500 pattern: period='2y' avoids crumb 429/401 rate-limiting
-            df = yf.download(
-                tickers=yf_symbols,
-                period=period,
-                interval="1d",
-                group_by="ticker",
-                threads=False,
-                progress=False,
-                auto_adjust=False,
-            )
+            download_kwargs: Dict[str, Any] = {
+                "tickers": yf_symbols,
+                "interval": "1d",
+                "group_by": "ticker",
+                "threads": False,
+                "progress": False,
+                "auto_adjust": False,
+            }
+            if start_date and end_date:
+                download_kwargs["start"] = start_date
+                download_kwargs["end"] = end_date
+            else:
+                download_kwargs["period"] = period
+
+            df = yf.download(**download_kwargs)
             if df is not None and not df.empty:
                 break
         except Exception as e:

@@ -102,23 +102,33 @@ router.get(
               open, high, low, close, volume,
               ROW_NUMBER() OVER (ORDER BY week_end) AS rn
             FROM weekly_bars
+          ),
+          calculated AS (
+            SELECT
+              week_end,
+              to_char(week_end, 'YYYY-MM-DD') AS time,
+              open, high, low, close, volume,
+              CASE
+                WHEN rn >= 30
+                  THEN ROUND(
+                         AVG(close) OVER (
+                           ORDER BY week_end
+                           ROWS BETWEEN 29 PRECEDING AND CURRENT ROW
+                         )::numeric, 4
+                       )::float
+                ELSE NULL
+              END AS sma30
+            FROM numbered
+          ),
+          recent AS (
+            SELECT *
+            FROM calculated
+            ORDER BY week_end DESC
+            LIMIT $2
           )
-          SELECT
-            to_char(week_end, 'YYYY-MM-DD') AS time,
-            open, high, low, close, volume,
-            CASE
-              WHEN rn >= 30
-                THEN ROUND(
-                       AVG(close) OVER (
-                         ORDER BY week_end
-                         ROWS BETWEEN 29 PRECEDING AND CURRENT ROW
-                       )::numeric, 4
-                     )::float
-              ELSE NULL
-            END AS sma30
-          FROM numbered
+          SELECT time, open, high, low, close, volume, sma30
+          FROM recent
           ORDER BY week_end ASC
-          LIMIT $2
         `;
 
         const chartResult = await query<{
@@ -254,7 +264,17 @@ router.get(
       }
 
       // Fallback summary from mock signals
-      const mockSignal = MOCK_SIGNALS.find((s) => s.ticker === ticker) ?? MOCK_SIGNALS[0];
+      const mockSignal = MOCK_SIGNALS.find((s) => s.ticker === ticker);
+      if (!mockSignal) {
+        res.status(404).json({
+          success: false,
+          error: {
+            code: 'NOT_FOUND',
+            message: `Stock '${ticker}' not found.`,
+          },
+        });
+        return;
+      }
       const summaryData: StockSummaryData = {
         ticker: ticker,
         name: mockSignal.name ?? ticker,
