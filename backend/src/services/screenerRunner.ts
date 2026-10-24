@@ -48,6 +48,8 @@ export interface RunScreenerOptions {
   pythonCmd?: string;
   /** Root directory of the StockSentinel project (default: process.env.SCREENER_ROOT ?? findScreenerRoot()) */
   screenerRoot?: string;
+  /** Execution mode: 'all' (sync + screen) or 'screen' (screen only). Default: 'all' */
+  mode?: 'all' | 'screen' | 'sync';
 }
 
 /** Result returned immediately (before the scan completes) */
@@ -115,8 +117,10 @@ export async function runScreener(options: RunScreenerOptions = {}): Promise<Run
       created_at: startedAt,
     };
 
+    const mode = options.mode ?? 'all';
+
     // 2. Spawn the Python process asynchronously — do NOT await
-    void spawnAndTrack({ pythonCmd, screenerRoot, jobId });
+    void spawnAndTrack({ pythonCmd, screenerRoot, jobId, mode });
 
     return {
       job_id: jobId,
@@ -134,12 +138,13 @@ async function spawnAndTrack(params: {
   pythonCmd: string;
   screenerRoot: string;
   jobId: number;
+  mode?: string;
 }): Promise<void> {
-  const { pythonCmd, screenerRoot, jobId } = params;
+  const { pythonCmd, screenerRoot, jobId, mode = 'all' } = params;
 
-  console.log(`[ScreenerRunner] Spawning job #${jobId}: ${pythonCmd} -m screener.src.main --mode screen (cwd: ${screenerRoot})`);
+  console.log(`[ScreenerRunner] Spawning job #${jobId}: ${pythonCmd} -m screener.src.main --mode ${mode} (cwd: ${screenerRoot})`);
 
-  const child = spawn(pythonCmd, ['-m', 'screener.src.main', '--mode', 'screen'], {
+  const child = spawn(pythonCmd, ['-m', 'screener.src.main', '--mode', mode], {
     cwd: screenerRoot,
     env: {
       ...process.env,

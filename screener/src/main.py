@@ -12,7 +12,7 @@ if _project_root not in sys.path:
 import argparse
 import logging
 from typing import List, Optional
-from screener.src import config, db, screener, sync, universe
+from screener.src import config, db, downloader, parquet_cache, screener, sync, universe
 
 logging.basicConfig(
     level=logging.INFO,
@@ -106,6 +106,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             f"Starting Stage 2 Breakout Screener (scan_date={args.scan_date or 'LATEST'}, "
             f"tickers={len(selected_tickers) if selected_tickers else 'ALL'})..."
         )
+        if args.scan_date is None:
+            try:
+                cached_spy = parquet_cache.load_from_parquet("SPY")
+                target_friday = downloader.resolve_trading_friday()
+                if cached_spy and cached_spy[-1]["trade_date"] < str(target_friday):
+                    logger.info(
+                        f"SPY benchmark cache ({cached_spy[-1]['trade_date']}) is older than latest trading Friday ({target_friday}). "
+                        f"Auto-syncing latest delta data before screening..."
+                    )
+                    sync.run_sync(cold_start=False, tickers=selected_tickers)
+            except Exception as auto_sync_err:
+                logger.warning(f"Pre-screen stale cache check/sync notice: {auto_sync_err}")
+
         try:
             results = screener.run_screener(
                 scan_date=args.scan_date,
